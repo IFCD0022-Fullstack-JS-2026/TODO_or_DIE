@@ -76,6 +76,7 @@ No hacer commits en `develop` ni en `main`. No usar `git push --force`.
 - Al mezclar la PR con `Closes #12`, la issue se cierra y pasa sola a `Done`.
 
 ### Equipo
+Saida
 Marwa
 
 ## Licencia
