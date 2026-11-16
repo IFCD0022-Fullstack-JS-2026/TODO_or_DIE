@@ -75,10 +75,12 @@ No hacer commits en `develop` ni en `main`. No usar `git push --force`.
 - Al empezar una issue, mueve su tarjeta a `In Progress` a mano.
 - Al mezclar la PR con `Closes #12`, la issue se cierra y pasa sola a `Done`.
 
-### Equipo
-Saida
-Marwa
-Douglas
+## Equipo
+- Douglas
+- Sergi Pérez Marí
+- Maria
+- Saida
+- Marwa
 
 ## Licencia
 
