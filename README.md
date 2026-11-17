@@ -89,4 +89,8 @@ No hacer commits en `develop` ni en `main`. No usar `git push --force`.
 
 Distribuido bajo licencia MIT. Ver [LICENSE](LICENSE).
 
+## Diseño
+
+![Diseño](C:\Users\Alumne_tarda1\Desktop\Fullstack JS - DA\Final Pr\TODO_or_DIE\docs\diseno.png)
+
 
