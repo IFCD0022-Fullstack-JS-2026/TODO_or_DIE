@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+
+.titulo {
+    flex-direction: row;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    font-size: 100px;
+    text-align: center;
+    font-weight: bold;
+    color: red;
+    background: black;
+    font-family: "Nosifer", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
