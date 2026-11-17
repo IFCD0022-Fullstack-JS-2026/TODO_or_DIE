@@ -1,0 +1,27 @@
+{
+  "name": "todo_or_die",
+  "version": "1.0.0",
+  "description": "Proyecto final del **Módulo 5** del curso **IFCD0022 · Fullstack JS 2026**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IFCD0022-Fullstack-JS-2026/TODO_or_DIE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/IFCD0022-Fullstack-JS-2026/TODO_or_DIE/issues"
+  },
+  "homepage": "https://github.com/IFCD0022-Fullstack-JS-2026/TODO_or_DIE#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0"
+  }
+}
