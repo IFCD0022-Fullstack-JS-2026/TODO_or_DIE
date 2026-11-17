@@ -91,4 +91,8 @@ No hacer commits en `develop` ni en `main`. No usar `git push --force`.
 
 Distribuido bajo licencia MIT. Ver [LICENSE](LICENSE).
 
+## Diseño
+
+![Diseño](docs/diseno.png)
+
 
