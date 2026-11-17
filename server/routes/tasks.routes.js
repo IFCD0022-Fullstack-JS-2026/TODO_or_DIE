@@ -29,7 +29,7 @@ router.get("/tasks/:id", (req, res) => {
 
 router.post('/tasks', (req, res) => {
     try {
-        const id = schemaDB.length + 1;
+        const id = Math.max(0, ...schemaDB.map((t) => t.id)) + 1;
         const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = req.body;
         const nuevaTarea = {
             id: id,
