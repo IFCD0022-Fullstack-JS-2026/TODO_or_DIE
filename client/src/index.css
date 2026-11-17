@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
+
+:root {
+
+  --color-fondo: #f8f8f8;     
+  --color-texto: #141414;    
+  --color-primario: #b3001b;  
+  --color-superficie: #fffdf5;
+
+
+  --fuente-titulo: "Nosifer", cursive;
+  --fuente-texto: system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  line-height: 1.6;
+}

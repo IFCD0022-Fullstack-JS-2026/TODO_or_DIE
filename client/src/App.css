@@ -1,16 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
-
 .titulo {
-    flex-direction: row;
-    gap: 14px;
-    margin: 0;
-    padding: 0;
-    font-size: 100px;
-    text-align: center;
-    font-weight: bold;
-    color: red;
-    background: black;
-    font-family: "Nosifer", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+  background-color: black;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 100px;
+  color: var(--color-primario);
+  font-family: var(--fuente-titulo);
+  -webkit-text-stroke: 0.9px var(--color-fondo);
+  font-weight: 400;
 }
