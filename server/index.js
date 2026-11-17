@@ -2,7 +2,7 @@ const express  = require('express')
 const cors = require('cors');
 require("dotenv").config();
 const PORT = process.env.PORT;
-const tareaRoutes = require("../routes/tarea.routes");
+const tareaRoutes = require("./routes/tarea.routes");
 const server = express()
 
 
@@ -18,7 +18,6 @@ server.use((req, res) => {
   });
 });
 
-// TODO (404): responder 404 en JSON a las rutas que no existen
 server.listen(PORT, () => {
   console.log(`===========================================`);
   console.log(`Servidor corriendo en puerto ${PORT}`);

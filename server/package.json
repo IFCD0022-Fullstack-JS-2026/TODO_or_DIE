@@ -2,10 +2,10 @@
   "name": "todo_or_die",
   "version": "1.0.0",
   "description": "Proyecto final del **Módulo 5** del curso **IFCD0022 · Fullstack JS 2026**.",
-  "main": "server/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch server/index.js"
+    "dev": "node --watch index.js"
   },
   "repository": {
     "type": "git",
