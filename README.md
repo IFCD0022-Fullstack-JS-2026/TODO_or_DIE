@@ -77,8 +77,16 @@ No hacer commits en `develop` ni en `main`. No usar `git push --force`.
 
 ## Equipo
 
-Dani
+- Dani
+- Douglas
+- Sergi Pérez Marí
+- Maria
+- Saida
+- Marwa
+
 
 ## Licencia
 
 Distribuido bajo licencia MIT. Ver [LICENSE](LICENSE).
+
+
