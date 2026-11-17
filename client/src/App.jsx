@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import './App.css'
+import { Routes, Route, NavLink } from 'react-router'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
 import Inicio from './pages/Inicio'
@@ -10,12 +10,19 @@ function App() {
     <>
       <h1 className='titulo 1'>TODO or DIE</h1>
 
-      <nav className='rutas'>
-        <a href='/login'>Login</a>
-        <a href='/registro'>Registro</a>
-        <a href='/#'>Inicio</a>
-        <a href='/tareas/nueva'>Nueva Tarea</a>
+      <nav>
+        <NavLink to="/">Inicio</NavLink>
+        <NavLink to="/login">Login</NavLink>
+        <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
+        <NavLink to="/registro">Registro</NavLink>
       </nav>
+
+      <Routes>
+         <Route path="/" element={<Inicio />} />
+         <Route path="/login" element={<Login />} />
+         <Route path="/tareas/nueva" element={<NuevaTarea />} />
+         <Route path="/registro" element={<Registro />} />
+      </Routes>
     </>
   )
 }
