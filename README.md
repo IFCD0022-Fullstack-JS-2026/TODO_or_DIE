@@ -84,6 +84,7 @@ No hacer commits en `develop` ni en `main`. No usar `git push --force`.
 - Saida
 - Marwa
 - Juan
+- Carlos
 
 
 ## Licencia
