@@ -1,5 +1,5 @@
 .titulo {
-  background-color: black;
+  background-color: var(--color-titulo-fondo);
   margin: 0;
   padding: 0;
   text-align: center;
