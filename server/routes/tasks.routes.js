@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const { z } = require("zod");
+
 
 const schemaDB = require("../db/schemaDb.js");
+const { TareaSchema } = require('../schemas/tasks.schema.js');
 
 
 router.get("/tasks", (req, res) => {
@@ -29,33 +32,49 @@ router.get("/tasks/:id", (req, res) => {
 
 router.post('/tasks', (req, res) => {
     try {
-        const id = Math.max(0, ...schemaDB.map((t) => t.id)) + 1;
-        const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = req.body;
-        const nuevaTarea = {
-            id: id,
+        const validacion = TareaSchema.safeParse(req.body);
+        if (!validacion.success) {
+            const mensajesError = (error) => {
+                return error.issues.map((err) => err.message);
+            }
+            return res.status(400).json({success: false, errors: mensajesError(validacion.error)});
+        } else {
+            const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = validacion.data;
+            const nuevoId = schemaDB.length > 0 ? Math.max(...schemaDB.map(t => t.id)) + 1 : 1;
+
+            
+            const nuevaTarea = {
+            id: nuevoId,
             titulo: titulo,
             descripcion: descripcion,
             fecha_hora: fecha_hora,
             prioridad: prioridad,
             categoria: categoria,
             user_id: user_id
-        };
-        schemaDB.push(nuevaTarea);
-        res.status(201).json({success: true, message: "Nueva tarea creada correctamente", data: nuevaTarea});
+            };
+            schemaDB.push(nuevaTarea);
+            return res.status(201).json({success: true, message: "Tarea creada correctamente", data: nuevaTarea});
+        }
     } catch (error) {
-        return res.status(500).json({success: false, message: "Error interno del servidor"});
+        return res.status(500).json({success: false, message: "Error interno del servidor", error});
     }
 });
+
 
 
 router.put('/tasks/:id', (req, res) => {
     try {
         const id = parseInt(req.params.id);
+        const validacion = TareaSchema.safeParse(req.body);
+        if (!validacion.success) {
+            return res.status(404).json({success: false, errors: validacion.error.issues[0].message});
+        } 
         const posicionTarea = schemaDB.findIndex((t) => t.id === id);
         if (posicionTarea === -1) {
             return res.status(404).json({success: false, message: "Tarea no encontrada"});
         }
-        const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = req.body;
+        const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = validacion.data;
+            
         schemaDB[posicionTarea] = {
             id: id,
             titulo: titulo,
@@ -64,15 +83,13 @@ router.put('/tasks/:id', (req, res) => {
             prioridad: prioridad,
             categoria: categoria,
             user_id: user_id
-        };
-        res.status(200).json({success: true, message: "Tarea actualizada correctamente", data: schemaDB[posicionTarea]});
+        }
+        return res.status(200).json({success: true, message: "Tarea actualizada correctamente", data: schemaDB[posicionTarea]});
     } catch (error) {
+        console.error("ERROR REAL EN EL SERVIDOR:", error);
         return res.status(500).json({success: false, message: "Error interno del servidor"});
     }
 });
-
-
-
 
 
 router.delete('/tasks/:id', (req, res) => {
