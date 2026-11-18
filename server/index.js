@@ -1,8 +1,10 @@
-const express  = require('express')
+const express = require('express')
 const cors = require('cors');
 require("dotenv").config();
 const PORT = process.env.PORT;
 const tareaRoutes = require("./routes/tarea.routes");
+const pool = require("./db/connection");
+
 const server = express()
 
 
@@ -12,15 +14,20 @@ server.use(cors());
 server.use("/api", tareaRoutes);
 
 server.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Error 404 - Ruta no encontrada",
-  });
+    res.status(404).json({
+        success: false,
+        message: "Error 404 - Ruta no encontrada",
+    });
 });
 
+
+pool.query("SELECT 1")
+    .then(() => console.log("Conexión a MySQL correcta"))
+    .catch((error) => console.error("Error al conectar con MySQL:", error.message));
+
 server.listen(PORT, () => {
-  console.log(`===========================================`);
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-  console.log(`URL http://localhost:${PORT}`);
-  console.log(`===========================================`);
+    console.log(`===========================================`);
+    console.log(`Servidor corriendo en puerto ${PORT}`);
+    console.log(`URL http://localhost:${PORT}`);
+    console.log(`===========================================`);
 });

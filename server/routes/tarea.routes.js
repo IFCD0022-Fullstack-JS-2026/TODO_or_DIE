@@ -1,22 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const getConexion = require('../db/connection.js');
-const { log } = require("console");
 
-router.get("/health", async (req, res) => {
+router.get("/health", (req, res) => {
   try {
-    const conexion = await getConexion();
-
-    const [result] = await conexion.execute('select * from users')
-    console.log('connection ok');
-    
-    res.status(200).json({ msg: result });
-
+    res.status(200).json({ msg: true });
   } catch (error) {
-    console.log('connection error')
-    res.status(500).json({ message: "connection error" + error.message });
+    res.status(500).json({ message: "Error en el servidor" });
   }
 });
-
 
 module.exports = router;
