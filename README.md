@@ -67,6 +67,12 @@ Conflictos en el paso 4: resolverlos en el editor y después `git add .` y `git 
 
 No hacer commits en `develop` ni en `main`. No usar `git push --force`.
 
+### Dependencias (npm)
+
+- Para instalar las dependencias después de clonar o de hacer `pull`, usar `npm ci`. Instala exactamente lo que indica `package-lock.json` y no lo modifica.
+- Usar `npm install <paquete>` solo para añadir o actualizar una dependencia.
+- Si `package.json` no ha cambiado, `package-lock.json` no debe ir en el commit. Si aparece modificado, descartarlo antes del commit, por ejemplo con `git restore client/package-lock.json`.
+
 ## Tablero del proyecto
 
 <https://github.com/orgs/IFCD0022-Fullstack-JS-2026/projects/1>
