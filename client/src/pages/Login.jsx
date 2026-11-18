@@ -4,7 +4,7 @@ function Login() {
     return (
         <main className="auth">
             <h1 className="auth-titulo">Login</h1>
-            <form className="auth-form">
+            <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
                 <label className="auth-campo">
                     Email
                     <input className="auth-input" type='email' name='email' placeholder='tu@email.com' />
