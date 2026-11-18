@@ -4,7 +4,7 @@ const { z } = require("zod");
 
 
 const schemaDB = require("../db/schemaDb.js");
-const { TareaSchema } = require('../schemas/tasks.schema.js');
+const { TareaSchema } = require('../schemas/task.schema.js');
 
 
 router.get("/tasks", (req, res) => {
@@ -42,7 +42,7 @@ router.post('/tasks', (req, res) => {
             const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = validacion.data;
             const nuevoId = schemaDB.length > 0 ? Math.max(...schemaDB.map(t => t.id)) + 1 : 1;
 
-            
+
             const nuevaTarea = {
             id: nuevoId,
             titulo: titulo,
@@ -67,7 +67,7 @@ router.put('/tasks/:id', (req, res) => {
         const id = parseInt(req.params.id);
         const validacion = TareaSchema.safeParse(req.body);
         if (!validacion.success) {
-            return res.status(404).json({success: false, errors: validacion.error.issues[0].message});
+            return res.status(400).json({success: false, errors: validacion.error.issues[0].message});
         } 
         const posicionTarea = schemaDB.findIndex((t) => t.id === id);
         if (posicionTarea === -1) {
