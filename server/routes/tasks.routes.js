@@ -67,7 +67,7 @@ router.put('/tasks/:id', (req, res) => {
         const id = parseInt(req.params.id);
         const validacion = TareaSchema.safeParse(req.body);
         if (!validacion.success) {
-            return res.status(400).json({success: false, errors: validacion.error.issues[0].message});
+            return res.status(400).json({success: false, errors: validacion.error.issues.map((err) => err.message)});
         } 
         const posicionTarea = schemaDB.findIndex((t) => t.id === id);
         if (posicionTarea === -1) {
