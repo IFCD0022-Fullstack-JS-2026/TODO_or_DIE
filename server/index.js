@@ -25,10 +25,14 @@ server.use((req, res) => {
     });
 });
 
+const cargarDatosPrueba = require('./db/seed.js');
 
 pool.query("SELECT 1")
-    .then(() => console.log("Conexión a MySQL correcta"))
-    .catch((error) => console.error("Error al conectar con MySQL:", error.message));
+    .then(() => {
+        console.log("Conexión a MySQL correcta")
+        return cargarDatosPrueba();
+    })
+    .catch((error) => console.error("Error con MySQL:", error.message));
 
 server.listen(PORT, () => {
     console.log(`===========================================`);
