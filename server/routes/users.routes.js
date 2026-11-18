@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { z } = require("zod");
 const bcrypt = require("bcryptjs");
 const { UserSchema } = require('../schemas/user.schema.js');
 const pool = require("../db/connection.js")
@@ -17,7 +16,7 @@ router.post("/users/register", async (req, res) => {
             const { nombre, email, password } = validacion.data;
             const [result] = await pool.query("select * from users where email = ?", [email] )
             if (result.length > 0) {
-                return res.status(409).json({success: false, errors: "Email ya exist en la base de datos"})
+                return res.status(409).json({success: false, errors: ["Email ya existe en la base de datos"]})
             }
 
             const passwordCifrada = await bcrypt.hash(password, 10);

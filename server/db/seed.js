@@ -7,8 +7,8 @@ async function cargarDatosPrueba(){
     if (filas[0].total > 0) return;
 
     // 2. Insertar usuarios en su propia consulta
-    const passwordCifrada1 = await bcrypt.hash('qwerty11d', 10);
-    const passwordCifrada2 = await bcrypt.hash('poiuyt22w', 10);
+    const passwordCifrada1 = await bcrypt.hash('qwerty11', 10);
+    const passwordCifrada2 = await bcrypt.hash('poiuyt22', 10);
     const passwordCifrada3 = await bcrypt.hash('pñolik33', 10);
     const passwordCifrada4 = await bcrypt.hash('zasxdc44', 10);
 
