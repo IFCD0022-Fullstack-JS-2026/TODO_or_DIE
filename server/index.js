@@ -8,6 +8,7 @@ const pool = require("./db/connection");
 
 const healthRoutes = require("./routes/health.routes");
 const tasksRoutes = require("./routes/tasks.routes");
+const usersRoutes = require("./routes/users.routes");
 
 const server = express()
 
@@ -17,6 +18,7 @@ server.use(cors());
 
 server.use("/api", healthRoutes);
 server.use("/api", tasksRoutes);
+server.use("/api", usersRoutes);
 
 server.use((req, res) => {
     res.status(404).json({
