@@ -32,7 +32,7 @@ pool.query("SELECT 1")
         console.log("Conexión a MySQL correcta")
         return cargarDatosPrueba();
     })
-    .catch((error) => console.error("Error al conectar con MySQL:", error.message));
+    .catch((error) => console.error("Error con MySQL:", error.message));
 
 server.listen(PORT, () => {
     console.log(`===========================================`);

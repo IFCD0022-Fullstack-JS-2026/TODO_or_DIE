@@ -18,7 +18,9 @@ async function cargarDatosPrueba(){
     // 3. Insertar tareas en su propia consulta (prioridades en minúscula y comillas simples)
     await pool.query(`
         INSERT INTO tasks (id, titulo, descripcion, fecha_hora, prioridad, categoria, user_id, created_at) 
-        VALUES 
+        VALUES
+        (DEFAULT, 'BASE DE DATOS', 'Crear la base de datos, tablas y el código', '2026-06-10 14:00:00', 'media', 'TodoOrDie', 1, '2026-06-01 08:30:00'),
+        (DEFAULT, 'CRUD DE TAREAS', 'Crear el CRUD de tareas con los datos guardados en un array en memoria. Más adelante se sustituirá por la base de datos.', '2026-06-05 18:30:00', 'alta', 'TodoOrDie', 1, '2026-06-01 09:00:00'),
         (DEFAULT, 'Revisión de presupuesto anual', 'Analizar los gastos del Q3 y Q4 con el departamento financiero.', '2026-11-20 09:30:00', 'alta', 'Presupuesto', 1, DEFAULT),
         (DEFAULT, 'Actualización de servidores', 'Aplicar parches de seguridad críticos en el clúster principal de producción.', '2026-11-21 02:00:00', 'media', 'Finanzas', 2, DEFAULT),
         (DEFAULT, 'Reunión de equipo semanal', 'Sincronización de avances del sprint y resolución de bloqueos técnicos.', '2026-11-22 10:00:00', 'media', 'Presupuesto', 3, DEFAULT),
