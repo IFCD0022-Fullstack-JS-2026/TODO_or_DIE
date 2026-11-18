@@ -2,8 +2,12 @@ const express = require('express')
 const cors = require('cors');
 require("dotenv").config();
 const PORT = process.env.PORT;
-const tareaRoutes = require("./routes/tarea.routes");
+
 const pool = require("./db/connection");
+
+
+const healthRoutes = require("./routes/health.routes");
+const tasksRoutes = require("./routes/tasks.routes");
 
 const server = express()
 
@@ -11,7 +15,8 @@ const server = express()
 server.use(express.json());
 server.use(cors());
 
-server.use("/api", tareaRoutes);
+server.use("/api", healthRoutes);
+server.use("/api", tasksRoutes);
 
 server.use((req, res) => {
     res.status(404).json({
