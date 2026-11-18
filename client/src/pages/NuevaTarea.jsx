@@ -3,7 +3,7 @@ import { useState } from "react";
 const Inicial = {
 
     titulo: "",
-    fechahora: "",
+    fecha_hora: "",
     prioridad: "",
     categoria: "",
     descripcion: ""
@@ -32,12 +32,20 @@ function NuevaTarea() {
             return
         }
 
+        if (form.prioridad.trim() === "") {
+            setError({ prioridad: "Selecciona una prioridad" })
+            return
+        }
+
+        if (form.categoria.trim() === "") {
+            setError({ categoria: "La categoria es obligatoria" })
+            return
+        }
+
         setError({});
 
         console.log(form)
     };
-
-    console.log(Inicial)
 
     return (
         <>
@@ -47,25 +55,27 @@ function NuevaTarea() {
                 <label htmlFor="titulo">Titulo</label>
                 <input type="text" id="titulo" name="titulo" placeholder="Añade aqui tu tarea..." value={form.titulo}
                     onChange={handleChange} className={error.titulo ? "input-error" : ""} />
-                {error.titulo && <p style={{ color: "red" }}>{error.titulo}</p>}
+                {error.titulo && <p style={{ color:"var(--color-primario)" }}>{error.titulo}</p>}
 
-                <label htmlFor="fechahora">Fecha y Hora</label>
-                <input type="datetime-local" id="fechahora" name="fechahora" value={form.fechahora}
+                <label htmlFor="fecha_hora">Fecha y Hora</label>
+                <input type="datetime-local" id="fecha_hora" name="fecha_hora" value={form.fecha_hora}
                     onChange={handleChange} />
 
                 <label htmlFor="prioridad">Prioridad</label>
                 <select id="prioridad" name="prioridad" value={form.prioridad}
-                    onChange={handleChange} >
+                    onChange={handleChange} className={error.prioridad ? "input-error" : ""}>
                     <option value="">-- Elije --</option>
-                    <option value="Alta">Alta</option>
-                    <option value="Media">Media</option>
-                    <option value="Baja">Baja</option>
+                    <option value="Alta">alta</option>
+                    <option value="Media">media</option>
+                    <option value="Baja">baja</option>
                 </select>
+                {error.prioridad && <p style={{ color:"var(--color-primario)" }}>{error.prioridad}</p>}
 
 
                 <label htmlFor="categoria">Categoria</label>
                 <input type="text" id="categoria" name="categoria" value={form.categoria}
-                    onChange={handleChange} />
+                    onChange={handleChange} className={error.categoria ? "input-error" : ""}/>
+                {error.categoria && <p style={{ color:"var(--color-primario)" }}>{error.categoria}</p>}
 
                 <label htmlFor="descripcion">Descripcion</label>
                 <input type="text" id="descripcion" name="descripcion" value={form.descripcion}
