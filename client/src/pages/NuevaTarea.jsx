@@ -55,17 +55,17 @@ function NuevaTarea() {
                 <h1 className="titulo2">NUEVA TAREA</h1>
 
                 <form className="formulario" onSubmit={handleSubmit}>
-                    <label htmlFor="titulo" className="campoT">Titulo</label>
+                    <label htmlFor="titulo" className="campo">Titulo</label>
                     <input type="text" id="titulo" name="titulo" placeholder="Añade aqui tu tarea..." className="input" value={form.titulo}
                         onChange={handleChange} />
                     {error.titulo && <p className="mensaje-error">{error.titulo}</p>}
 
-                    <label htmlFor="fecha_hora" className="campoF">Fecha y Hora</label>
-                    <input type="datetime-local" id="fecha_hora" name="fecha_hora" className="inputF" value={form.fecha_hora}
+                    <label htmlFor="fecha_hora" className="campo">Fecha y Hora</label>
+                    <input type="datetime-local" id="fecha_hora" name="fecha_hora" className="input" value={form.fecha_hora}
                         onChange={handleChange} />
 
-                    <label htmlFor="prioridad" className="campoP"  >Prioridad</label>
-                    <select id="prioridad" name="prioridad" className="inputP" value={form.prioridad}
+                    <label htmlFor="prioridad" className="campo"  >Prioridad</label>
+                    <select id="prioridad" name="prioridad" className="input" value={form.prioridad}
                         onChange={handleChange}>
                         <option value="">-- Elije --</option>
                         <option value="alta">Alta</option>
@@ -75,13 +75,13 @@ function NuevaTarea() {
                     {error.prioridad && <p className="mensaje-error">{error.prioridad}</p>}
 
 
-                    <label htmlFor="categoria"  className="campoC"  >Categoría</label>
-                    <input type="text" id="categoria" name="categoria" placeholder="Añade aqui tu categoría..." className="inputC" value={form.categoria}
+                    <label htmlFor="categoria"  className="campo"  >Categoría</label>
+                    <input type="text" id="categoria" name="categoria" placeholder="Añade aqui tu categoría..." className="input" value={form.categoria}
                         onChange={handleChange} />
                     {error.categoria && <p className="mensaje-error">{error.categoria}</p>}
 
-                    <label htmlFor="descripcion" className="campoD"  >Descripción</label>
-                    <input type="text" id="descripcion" name="descripcion" placeholder="Añade aqui tu descripción..." className="inputD" value={form.descripcion}
+                    <label htmlFor="descripcion" className="campo"  >Descripción</label>
+                    <input type="text" id="descripcion" name="descripcion" placeholder="Añade aqui tu descripción..." className="input" value={form.descripcion}
                         onChange={handleChange} />
 
                     <button type="submit" className="btn">Guardar</button>
