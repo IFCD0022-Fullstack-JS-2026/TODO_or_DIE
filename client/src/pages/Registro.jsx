@@ -4,7 +4,7 @@ function Registro() {
     return (
         <main className="auth">
             <h1 className="auth-titulo">Registro</h1>
-            <form className="auth-form">
+            <form className="auth-form" onSubmit={(e) => e.preventDefault()}>
                 <label className="auth-campo">
                     Nombre
                     <input className="auth-input" type='text' name='nombre' placeholder='Tu nombre' />
