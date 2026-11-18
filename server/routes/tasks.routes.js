@@ -2,37 +2,64 @@ const express = require("express");
 const router = express.Router();
 const { z } = require("zod");
 
-
-/* const schemaDB = require("../db/schemaDb.js"); */
-
 const pool = require ("../db/connection.js")
 
 const { TareaSchema } = require('../schemas/task.schema.js');
 
 
-router.get("/tasks", (req, res) => {
+router.get("/tasks", async (req, res) => {
   try {
-    res.status(200).json( schemaDB );
+    const [rows] = await pool.query("SELECT * FROM tasks");
+    res.status(200).json(rows);
   } catch (error) {
-    res.status(500).json({ message: "Error en el servidor" + error.message });
+    console.error("Error en el servidor:", error);
+    res.status(500).json({ success: false, message: "Error en el servidor: " + error.message });
   }
 });
 
+router.get("/tasks/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
 
-router.get("/tasks/:id", (req, res) => {
-    try {
-        const id = parseInt(req.params.id);
-        const tareasId = schemaDB.find(tasks => tasks.id === id);
-        if (!tareasId) {
-            return res.status(404).json({ error: "Tarea no encontrada!" });
-        }
-        res.status(200).json({ tarea: tareasId });
-    } catch (error) {
-        return res.status(500).json({ error: "Error de servidor: " + error.message });
+    if (Number.isNaN(id)) {
+      return res.status(400).json({ success: false, message: "El id debe ser un número" });
     }
+
+    const [rows] = await pool.query("SELECT * FROM tasks WHERE id = ?", [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Tarea no encontrada" });
+    }
+
+    res.status(200).json({ tarea: rows[0] });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({ error: "Error de servidor: " + error.message });
+  }
 });
 
-router.post("/tasks", async (req, res) => {
+router.delete("/tasks/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    if (Number.isNaN(id)) {
+      return res.status(400).json({ success: false, message: "El id debe ser un número" });
+    }
+
+    const [result] = await pool.query("DELETE FROM tasks WHERE id = ?", [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "Tarea no encontrada" });
+    }
+
+    res.status(200).json({ success: true, message: "Tarea eliminada" });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({ success: false, message: "Error interno del servidor" });
+  }
+});
+
+router.post('/tasks', async (req, res) => {
     try {
         const validacion = TareaSchema.safeParse(req.body);
         if (!validacion.success) {
@@ -41,7 +68,6 @@ router.post("/tasks", async (req, res) => {
             }
             return res.status(400).json({success: false, errors: mensajesError(validacion.error)});
         }
-
         const titulo = validacion.data.titulo;
         const descripcion = validacion.data.descripcion;
         const fecha_hora = validacion.data.fecha_hora;
@@ -81,27 +107,11 @@ router.put('/tasks/:id', async (req, res) => {
         if (resultado.affectedRows === 0) {
             return res.status(404).json({ message: "Tarea no encontrada" });
         }
-
         res.status(200).json({success: true, message: "Tarea actualizada correctamente"});
     } catch (error) {
+        console.error("Error en el servidor:", error);
         return res.status(500).json({success: false, message: "Error interno del servidor"});
     }
 });
-
-
-router.delete('/tasks/:id', (req, res) => {
-    try {
-        const id = parseInt(req.params.id);
-        const posicionTarea = schemaDB.findIndex((t) => t.id === id);
-        if (posicionTarea === -1) {
-            return res.status(404).json({success: false, message: "Tarea no encontrada"});
-        }
-        schemaDB.splice(posicionTarea, 1);
-        res.status(200).json({success: true, message: "Tarea eliminada correctamente"});
-    } catch (error) {
-        return res.status(500).json({success: false, message: "Error interno del servidor"});
-    }
-});
-
 
 module.exports = router;
