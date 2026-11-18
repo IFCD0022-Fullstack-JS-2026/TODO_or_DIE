@@ -3,7 +3,10 @@ const router = express.Router();
 const { z } = require("zod");
 
 
-const schemaDB = require("../db/schemaDb.js");
+/* const schemaDB = require("../db/schemaDb.js"); */
+
+const pool = require ("../db/connection.js")
+
 const { TareaSchema } = require('../schemas/task.schema.js');
 
 
@@ -29,8 +32,7 @@ router.get("/tasks/:id", (req, res) => {
     }
 });
 
-
-router.post('/tasks', (req, res) => {
+router.post("/tasks", async (req, res) => {
     try {
         const validacion = TareaSchema.safeParse(req.body);
         if (!validacion.success) {
@@ -38,55 +40,50 @@ router.post('/tasks', (req, res) => {
                 return error.issues.map((err) => err.message);
             }
             return res.status(400).json({success: false, errors: mensajesError(validacion.error)});
-        } else {
-            const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = validacion.data;
-            const nuevoId = schemaDB.length > 0 ? Math.max(...schemaDB.map(t => t.id)) + 1 : 1;
-
-
-            const nuevaTarea = {
-            id: nuevoId,
-            titulo: titulo,
-            descripcion: descripcion,
-            fecha_hora: fecha_hora,
-            prioridad: prioridad,
-            categoria: categoria,
-            user_id: user_id
-            };
-            schemaDB.push(nuevaTarea);
-            return res.status(201).json({success: true, message: "Tarea creada correctamente", data: nuevaTarea});
         }
+
+        const titulo = validacion.data.titulo;
+        const descripcion = validacion.data.descripcion;
+        const fecha_hora = validacion.data.fecha_hora;
+        const prioridad = validacion.data.prioridad;
+        const categoria = validacion.data.categoria;
+        const user_id = validacion.data.user_id;
+
+        const conexion = await pool;
+        await conexion.query("insert into tasks (titulo, descripcion, fecha_hora, prioridad, categoria, user_id) values (?, ?, ?, ?, ?, ?)", [titulo, descripcion, fecha_hora, prioridad, categoria, user_id]);
+        
+        res.status(201).json({msg: "tarea creada correctamente"});
     } catch (error) {
-        return res.status(500).json({success: false, message: "Error interno del servidor", error});
+        res.status(500).json({message: "Error de servidor", error})
     }
 });
 
 
-
-router.put('/tasks/:id', (req, res) => {
+router.put('/tasks/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id);
+
         const validacion = TareaSchema.safeParse(req.body);
         if (!validacion.success) {
             return res.status(400).json({success: false, errors: validacion.error.issues.map((err) => err.message)});
-        } 
-        const posicionTarea = schemaDB.findIndex((t) => t.id === id);
-        if (posicionTarea === -1) {
-            return res.status(404).json({success: false, message: "Tarea no encontrada"});
         }
-        const { titulo, descripcion, fecha_hora, prioridad, categoria, user_id } = validacion.data;
-            
-        schemaDB[posicionTarea] = {
-            id: id,
-            titulo: titulo,
-            descripcion: descripcion,
-            fecha_hora: fecha_hora,
-            prioridad: prioridad,
-            categoria: categoria,
-            user_id: user_id
+
+        const titulo = validacion.data.titulo;
+        const descripcion = validacion.data.descripcion;
+        const fecha_hora = validacion.data.fecha_hora;
+        const prioridad = validacion.data.prioridad;
+        const categoria = validacion.data.categoria;
+        const user_id = validacion.data.user_id;
+
+        const conexion = await pool;
+        const [resultado] = await conexion.query("update tasks set titulo=?, descripcion=?, fecha_hora=?, prioridad=?, categoria=?, user_id=? where id=?", [titulo, descripcion,  fecha_hora, prioridad, categoria, user_id, id]);
+
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ message: "Tarea no encontrada" });
         }
-        return res.status(200).json({success: true, message: "Tarea actualizada correctamente", data: schemaDB[posicionTarea]});
+
+        res.status(200).json({success: true, message: "Tarea actualizada correctamente"});
     } catch (error) {
-        console.error("ERROR REAL EN EL SERVIDOR:", error);
         return res.status(500).json({success: false, message: "Error interno del servidor"});
     }
 });
