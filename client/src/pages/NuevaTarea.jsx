@@ -54,7 +54,7 @@ function NuevaTarea() {
             <form onSubmit={handleSubmit}>
                 <label htmlFor="titulo">Titulo</label>
                 <input type="text" id="titulo" name="titulo" placeholder="Añade aqui tu tarea..." value={form.titulo}
-                    onChange={handleChange} className={error.titulo ? "input-error" : ""} />
+                    onChange={handleChange} />
                 {error.titulo && <p style={{ color:"var(--color-primario)" }}>{error.titulo}</p>}
 
                 <label htmlFor="fecha_hora">Fecha y Hora</label>
@@ -63,18 +63,18 @@ function NuevaTarea() {
 
                 <label htmlFor="prioridad">Prioridad</label>
                 <select id="prioridad" name="prioridad" value={form.prioridad}
-                    onChange={handleChange} className={error.prioridad ? "input-error" : ""}>
+                    onChange={handleChange}>
                     <option value="">-- Elije --</option>
-                    <option value="Alta">alta</option>
-                    <option value="Media">media</option>
-                    <option value="Baja">baja</option>
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
                 </select>
                 {error.prioridad && <p style={{ color:"var(--color-primario)" }}>{error.prioridad}</p>}
 
 
                 <label htmlFor="categoria">Categoria</label>
                 <input type="text" id="categoria" name="categoria" value={form.categoria}
-                    onChange={handleChange} className={error.categoria ? "input-error" : ""}/>
+                    onChange={handleChange}/>
                 {error.categoria && <p style={{ color:"var(--color-primario)" }}>{error.categoria}</p>}
 
                 <label htmlFor="descripcion">Descripcion</label>
