@@ -1,0 +1,10 @@
+{
+  "name": "todo-or-die",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n server,client \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}
