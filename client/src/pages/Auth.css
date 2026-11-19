@@ -55,3 +55,20 @@
 .auth-boton:hover {
   background: var(--color-primario);
 }
+
+.auth-error {
+  color: rgb(148, 7, 7);
+  background-color: rgb(250, 225, 225);
+  padding: 5px 10px;
+}
+
+.auth-success p{
+  color: rgb(42, 194, 93);
+  background-color: rgb(222, 252, 222);
+  padding: 5px 10px;
+
+}
+
+.login a {
+  color: blue;
+}

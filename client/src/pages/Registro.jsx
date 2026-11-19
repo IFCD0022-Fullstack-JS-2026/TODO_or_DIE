@@ -8,7 +8,7 @@ function Registro() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [mensaje, setMensaje] = useState("")
-    const [error, setError] = useState("")
+    const [error, setError] = useState([])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,20 +24,12 @@ function Registro() {
             body: JSON.stringify({ nombre: nombre, email: email, password: password })
         })
 
+        const datos = await res.json();
         if (!res.ok) {
-            switch (res.status) {
-                case 400:
-                    setError("Revisa los datos introducidos.");
-                    break;
-                case 409:
-                    setError("Ya existe una cuenta registrada con ese correo.");
-                    break;
-                case 500:
-                    setError("Error interno del servidor. Inténtalo de nuevo más tarde.");
-                    break;
-                default:
-                    setError(`Error inesperado (código ${res.status}).`);
-                    break;
+            if (datos.errors) {
+                setError(datos.errors.join(", "));
+            } else {
+                setError(datos.message);
             }
             return;
         }
@@ -62,15 +54,15 @@ function Registro() {
             <form className="auth-form" onSubmit={handleSubmit}>
                 <label className="auth-campo">
                     Nombre
-                    <input className="auth-input" type='text' name='nombre' onChange={handleInputChange} placeholder='Tu nombre' />
+                    <input className="auth-input" type='text' name='nombre' value={nombre} onChange={handleInputChange} placeholder='Tu nombre' />
                 </label>
                 <label className="auth-campo">
                     Email
-                    <input className="auth-input" type='email' name='email' onChange={handleInputChange} placeholder='tu@email.com' />
+                    <input className="auth-input" type='email' name='email' value={email} onChange={handleInputChange} placeholder='tu@email.com' />
                 </label>
                 <label className="auth-campo">
                     Contraseña
-                    <input className="auth-input" type='password' name='password' onChange={handleInputChange} placeholder='Tu contraseña secreta!' />
+                    <input className="auth-input" type='password' name='password' value={password} onChange={handleInputChange} placeholder='Tu contraseña secreta!' />
                 </label>
                 {error && (
                     <div className='auth-error'>{error}</div>
