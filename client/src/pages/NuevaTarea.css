@@ -36,7 +36,6 @@
 }
 
 .input {
-    padding: 10px 12px;
     border: 2px solid var(--color-texto);
     border-radius: 4px;
     background: var(--color-fondo);
