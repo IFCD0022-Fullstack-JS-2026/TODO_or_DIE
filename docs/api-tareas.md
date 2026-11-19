@@ -1,12 +1,12 @@
 Método: GET
 Ruta: get "/tasks"
 Qué se envía: Nada
-Qué responde: status 200 array con todas las tareas o status 500 error del servidor
+Qué responde: status 200 `{ success: true, data }` con todas las tareas en `data`, o status 500 error del servidor
 
 Método: GET
 Ruta: get "/tasks/:id"
 Qué se envía: id para leer una tarea concreta
-Qué responde: devuelve el objeto de la tarea encontranda con ese id, o devuelve el status 400 error de cliente o
+Qué responde: status 200 `{ success: true, data }` con la tarea en `data`, o devuelve el status 400 error de cliente o
 status 404 tarea no encontrada o status 500 error del servidor
 
 Método: DELETE
