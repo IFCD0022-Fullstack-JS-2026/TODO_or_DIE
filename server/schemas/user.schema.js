@@ -7,6 +7,12 @@ const UserSchema = z.object({
     password: z.string({ message: "La contraseña es obligatoria" }).min(6, { message: "La contraseña debe tener al menos 6 caracteres" })
 });
 
+const LoginSchema = z.object({
+    email: z.email({ message: "El email no es válido" }),
+    password: z.string({ message: "La contraseña es obligatoria" }).min(1, { message: "La contraseña es obligatoria" })
+});
+
 module.exports = {
-    UserSchema
+    UserSchema,
+    LoginSchema
 };
