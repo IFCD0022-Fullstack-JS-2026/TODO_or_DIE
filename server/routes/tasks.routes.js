@@ -74,13 +74,15 @@ router.post('/tasks', async (req, res) => {
         const prioridad = validacion.data.prioridad;
         const categoria = validacion.data.categoria;
         const user_id = validacion.data.user_id;
-
-        const conexion = await pool;
-        await conexion.query("insert into tasks (titulo, descripcion, fecha_hora, prioridad, categoria, user_id) values (?, ?, ?, ?, ?, ?)", [titulo, descripcion, fecha_hora, prioridad, categoria, user_id]);
         
-        res.status(201).json({msg: "tarea creada correctamente"});
+        const [result] = await pool.query("insert into tasks (titulo, descripcion, fecha_hora, prioridad, categoria, user_id) values (?, ?, ?, ?, ?, ?)", [titulo, descripcion, fecha_hora, prioridad, categoria, user_id]);
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ success: false, message: "Tarea no encontrada" });
+        }
+
+        res.status(200).json({success: true, message: "tarea creada correctamente"});
     } catch (error) {
-        res.status(500).json({message: "Error de servidor", error})
+      return res.status(500).json({ success: false, message: "Error interno del servidor" });
     }
 });
 
@@ -101,11 +103,10 @@ router.put('/tasks/:id', async (req, res) => {
         const categoria = validacion.data.categoria;
         const user_id = validacion.data.user_id;
 
-        const conexion = await pool;
-        const [resultado] = await conexion.query("update tasks set titulo=?, descripcion=?, fecha_hora=?, prioridad=?, categoria=?, user_id=? where id=?", [titulo, descripcion,  fecha_hora, prioridad, categoria, user_id, id]);
+        const [result] = await pool.query("update tasks set titulo=?, descripcion=?, fecha_hora=?, prioridad=?, categoria=?, user_id=? where id=?", [titulo, descripcion,  fecha_hora, prioridad, categoria, user_id, id]);
 
-        if (resultado.affectedRows === 0) {
-            return res.status(404).json({ message: "Tarea no encontrada" });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({success: true, message: "Tarea no encontrada" });
         }
         res.status(200).json({success: true, message: "Tarea actualizada correctamente"});
     } catch (error) {
