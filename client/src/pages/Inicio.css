@@ -1,0 +1,77 @@
+& .tituloInic {
+    text-align: center;
+}
+
+
+.tarjetas{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+    & h2 {
+        margin-left: 6rem;
+    }
+    & .card {
+        margin-inline: 8rem;
+        border-radius: 1rem;
+        padding: .5rem 1.5rem .5rem 2rem;
+        margin-bottom: 2rem;
+        line-height: .7rem;
+        position: relative;
+        height: 145px;
+        background-color: var(--color--card);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        & .desc {
+            line-height: 1.3rem;
+            padding-left: 1rem;
+        }
+        & .fecha {
+            position: absolute;
+            background-color: var(--color--fecha);
+            color: var(--color-primario);
+            top: 0;
+            right: 1rem;
+            padding: .4rem;
+            border-radius: .2rem;
+            font-size: .8rem;
+        }
+        & .priori {
+            background-color: var(--color--prioridad);
+            padding: .4rem;
+            position: absolute;
+            color: var(--color-texto);
+            top: 7rem;
+            border-radius: .3rem;
+            padding-inline: .5rem;
+        }
+        & .cat {
+            background-color: var(--color--categoria);
+            padding: .4rem;
+            position: absolute;
+            color: var(--color-texto);
+            top: 7rem;
+            left: 6.5rem;
+            border-radius: .3rem;
+            padding-inline: .5rem;
+        }
+        & .borrar {
+            background-color: var(--color-primario);
+            padding: .4rem;
+            padding-inline: 1rem;
+            position: absolute;
+            color: var(--color-superficie);
+            top: 7.5rem;
+            right: 1rem;
+            cursor: pointer;
+            border-radius: .5rem;
+            border: none;
+            &:hover{
+                background-color: var(--color-titulo-fondo);
+            }
+        }
+    }
+}
+
+
+
+
