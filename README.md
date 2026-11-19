@@ -4,11 +4,27 @@ Proyecto final del **Módulo 5** del curso **IFCD0022 · Fullstack JS 2026**.
 
 ## Descripción
 
-_Pendiente: describir el objetivo de la aplicación y sus funcionalidades principales._
-
+La Aplicación te permite crear tareas y organizar estas por categorías, además de añadir 3 niveles de prioridad y fecha de la tarea. 
+Registro de usuarios que cuenta con un sistema de seguridad de validación.  
+Utiliza el apoyo de la IA para organizar de manera automática las tareas, y cuenta con sistema de alertas y notificaciones que mantiene al usuario informado sobre sus tareas. 
+Funciona Online y Ofline. 
 ## Tecnologías
 
-_Pendiente: indicar el stack (frontend, backend, base de datos, etc.)._
+Tecnologías utilizadas para desarrollar la aplicación: 
+
+Client: 
+React
+Vite
+React Router
+
+Server: 
+Express
+mysql2
+Zod
+bcryptjs
+
+Database: 
+MySQL
 
 ## Instalación
 
@@ -17,7 +33,13 @@ git clone https://github.com/IFCD0022-Fullstack-JS-2026/TODO_or_DIE.git
 cd TODO_or_DIE
 ```
 
-_Pendiente: añadir los pasos de instalación y arranque._
+npm ci en server/ y en client/.
+Crear la base de datos con server/db/schema.sql.
+Copiar server/.env.example a server/.env y rellenarlo, con PORT=3000.
+Arrancar con npm run dev en cada carpeta. Los datos de prueba se cargan solos al arrancar el servidor.
+
+## Usuarios de Prueba
+Utilizar los datos de server/db/seed.js con el email y contraseña para probar el login.
 
 ## Normas
 
