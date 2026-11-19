@@ -33,10 +33,10 @@ git clone https://github.com/IFCD0022-Fullstack-JS-2026/TODO_or_DIE.git
 cd TODO_or_DIE
 ```
 
-npm ci en server/ y en client/.
+npm ci en la raíz, en server/ y en client/.
 Crear la base de datos con server/db/schema.sql.
 Copiar server/.env.example a server/.env y rellenarlo, con PORT=3000.
-Arrancar con npm run dev en cada carpeta. Los datos de prueba se cargan solos al arrancar el servidor.
+Arrancar con npm run dev desde la raíz: arranca el servidor y el cliente a la vez. Los datos de prueba se cargan solos al arrancar el servidor.
 
 ## Usuarios de Prueba
 Utilizar los datos de server/db/seed.js con el email y contraseña para probar el login.
