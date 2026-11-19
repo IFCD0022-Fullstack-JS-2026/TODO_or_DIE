@@ -64,23 +64,21 @@ router.post('/tasks', async (req, res) => {
         const validacion = TareaSchema.safeParse(req.body);
         if (!validacion.success) {
             const mensajesError = (error) => {
-                return error.issues.map((err) => err.message);
+              return error.issues.map((err) => err.message);
             }
             return res.status(400).json({success: false, errors: mensajesError(validacion.error)});
         }
+        
         const titulo = validacion.data.titulo;
         const descripcion = validacion.data.descripcion;
         const fecha_hora = validacion.data.fecha_hora;
         const prioridad = validacion.data.prioridad;
         const categoria = validacion.data.categoria;
         const user_id = validacion.data.user_id;
-        
-        const [result] = await pool.query("insert into tasks (titulo, descripcion, fecha_hora, prioridad, categoria, user_id) values (?, ?, ?, ?, ?, ?)", [titulo, descripcion, fecha_hora, prioridad, categoria, user_id]);
-        if (result.affectedRows === 0) {
-          return res.status(404).json({ success: false, message: "Tarea no encontrada" });
-        }
 
-        res.status(200).json({success: true, message: "tarea creada correctamente"});
+        const [result] = await pool.query("insert into tasks (titulo, descripcion, fecha_hora, prioridad, categoria, user_id) values (?, ?, ?, ?, ?, ?)", [titulo, descripcion, fecha_hora, prioridad, categoria, user_id]);
+
+        res.status(201).json({success: true, message: "tarea creada correctamente", id: result.insertId});
     } catch (error) {
       return res.status(500).json({ success: false, message: "Error interno del servidor" });
     }
@@ -106,7 +104,7 @@ router.put('/tasks/:id', async (req, res) => {
         const [result] = await pool.query("update tasks set titulo=?, descripcion=?, fecha_hora=?, prioridad=?, categoria=?, user_id=? where id=?", [titulo, descripcion,  fecha_hora, prioridad, categoria, user_id, id]);
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({success: true, message: "Tarea no encontrada" });
+            return res.status(404).json({success: false, message: "Tarea no encontrada" });
         }
         res.status(200).json({success: true, message: "Tarea actualizada correctamente"});
     } catch (error) {
