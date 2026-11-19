@@ -1,31 +1,16 @@
-:root {
-  --color-fondo: #f8f8f8;     
-  --color-texto: #141414;    
-  --color-primario: #b3001b;  
-  --color-superficie: #fffdf5;
-  --color-titulo-fondo: #000000;
-
-  --color--prioridad: #9e99ca;
-  --color--categoria: #aaaa80;
-  --color--fecha: #c1959c;
-  --color--card: #FAF8FF;
-
-  --fuente-titulo: "Nosifer", cursive;
-  --fuente-texto: system-ui, sans-serif;
-}
-
-& h1 {
+& .tituloInic {
     text-align: center;
 }
-& h2 {
-    margin-left: 6rem;
-}
+
 
 .tarjetas{
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: space-around;
+    & h2 {
+        margin-left: 6rem;
+    }
     & .card {
         margin-inline: 8rem;
         border-radius: 1rem;

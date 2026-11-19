@@ -7,6 +7,11 @@
   --color-superficie: #fffdf5;
   --color-titulo-fondo: #000000;
 
+  --color--prioridad: #9e99ca;
+  --color--categoria: #aaaa80;
+  --color--fecha: #c1959c;
+  --color--card: #FAF8FF;
+
   --fuente-titulo: "Nosifer", cursive;
   --fuente-texto: system-ui, sans-serif;
 }

@@ -4,7 +4,7 @@ import './Inicio.css';
 function Inicio() {
     return (
         <>
-            <h1>Lista de tareas</h1>
+            <h1 className='tituloInic'>Lista de tareas</h1>
                 <div className='tarjetas'>
                     <h2>Prioridad Alta</h2>
                     <section className='card'>
