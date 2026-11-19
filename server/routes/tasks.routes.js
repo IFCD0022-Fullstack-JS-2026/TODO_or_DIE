@@ -111,6 +111,6 @@ router.put('/tasks/:id', async (req, res) => {
         console.error("Error en el servidor:", error);
         return res.status(500).json({success: false, message: "Error interno del servidor"});
     }
-});
+}); 
 
 module.exports = router;
