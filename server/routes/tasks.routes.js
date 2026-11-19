@@ -31,10 +31,10 @@ router.get("/tasks/:id", async (req, res) => {
       return res.status(404).json({ success: false, message: "Tarea no encontrada" });
     }
 
-    res.status(200).json({ tarea: {success: true, data:rows[0] }});
+    res.status(200).json({ success: true, data:rows[0] });
   } catch (error) {
     console.error("Error en el servidor:", error);
-    return res.status(500).json({ error: "Error de servidor"});
+    return res.status(500).json({ success: false, message: "Error de servidor"});
   }
 });
 
