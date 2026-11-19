@@ -1,4 +1,5 @@
 const pool = require('./connection.js')
+const bcrypt = require("bcryptjs");
 
 async function cargarDatosPrueba(){
     // 1. Verificar si ya existen usuarios para evitar duplicados
@@ -6,14 +7,19 @@ async function cargarDatosPrueba(){
     if (filas[0].total > 0) return;
 
     // 2. Insertar usuarios en su propia consulta
+    const passwordCifrada1 = await bcrypt.hash('qwerty11', 10);
+    const passwordCifrada2 = await bcrypt.hash('poiuyt22', 10);
+    const passwordCifrada3 = await bcrypt.hash('pñolik33', 10);
+    const passwordCifrada4 = await bcrypt.hash('zasxdc44', 10);
+
     await pool.query(`
         INSERT INTO users (id, nombre, email, password, created_at) 
         VALUES 
-        (DEFAULT, 'Saida', 'Saida@email.com', 'qwerty11', DEFAULT),
-        (DEFAULT, 'Armand', 'Armand@email.com', 'poiuyt22', DEFAULT),
-        (DEFAULT, 'Maria', 'Maria@email.com', 'pñolik33', DEFAULT),
-        (DEFAULT, 'Dani', 'Dani@email.com', 'zasxdc44', DEFAULT);
-    `);
+        (DEFAULT, 'Saida', 'Saida@email.com', ?, DEFAULT),
+        (DEFAULT, 'Armand', 'Armand@email.com', ? , DEFAULT),
+        (DEFAULT, 'Maria', 'Maria@email.com', ? , DEFAULT),
+        (DEFAULT, 'Dani', 'Dani@email.com', ? , DEFAULT);
+    `, [passwordCifrada1, passwordCifrada2, passwordCifrada3, passwordCifrada4]);
 
     // 3. Insertar tareas en su propia consulta (prioridades en minúscula y comillas simples)
     await pool.query(`

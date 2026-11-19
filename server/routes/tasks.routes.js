@@ -78,8 +78,7 @@ router.post('/tasks', async (req, res) => {
 
         const [result] = await pool.query("insert into tasks (titulo, descripcion, fecha_hora, prioridad, categoria, user_id) values (?, ?, ?, ?, ?, ?)", [titulo, descripcion, fecha_hora, prioridad, categoria, user_id]);
 
-        res.status(201).json({
-          success: true, message: "tarea creada correctamente", id: result.insertId});
+        res.status(201).json({success: true, message: "tarea creada correctamente", id: result.insertId});
     } catch (error) {
       return res.status(500).json({ success: false, message: "Error interno del servidor" });
     }
