@@ -10,10 +10,10 @@ const { TareaSchema } = require('../schemas/task.schema.js');
 router.get("/tasks", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM tasks");
-    res.status(200).json(rows);
+    res.status(200).json({success: true, data: rows});
   } catch (error) {
     console.error("Error en el servidor:", error);
-    res.status(500).json({ success: false, message: "Error en el servidor: " + error.message });
+    res.status(500).json({ success: false, message: "Error en el servidor" });
   }
 });
 
@@ -28,13 +28,13 @@ router.get("/tasks/:id", async (req, res) => {
     const [rows] = await pool.query("SELECT * FROM tasks WHERE id = ?", [id]);
 
     if (rows.length === 0) {
-      return res.status(404).json({ error: "Tarea no encontrada" });
+      return res.status(404).json({ success: false, message: "Tarea no encontrada" });
     }
 
-    res.status(200).json({ tarea: rows[0] });
+    res.status(200).json({ success: true, data:rows[0] });
   } catch (error) {
     console.error("Error en el servidor:", error);
-    return res.status(500).json({ error: "Error de servidor: " + error.message });
+    return res.status(500).json({ success: false, message: "Error de servidor"});
   }
 });
 
