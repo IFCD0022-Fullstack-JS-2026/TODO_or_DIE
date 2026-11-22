@@ -4,7 +4,7 @@ import './Inicio.css';
 function Inicio() {
 
     const [tareasAPI, setTareasAPI] = useState([]);
-    const [refresh, setRefresh] = useState(false)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         const cargarTareas = async () => {
@@ -18,7 +18,9 @@ function Inicio() {
                 }
             };
             cargarTareas();
-    }, [refresh]);
+    }, []);
+
+    if (error) return <p className="error">No se han podido cargar las tareas: {error}</p>
 
     const eliminarTarea = async (id) => {
         try {
@@ -27,11 +29,15 @@ function Inicio() {
             });
 
             const data = await res.json();
-            alert(data.msg || "Nota eliminada");
-
-            setRefresh(prev => !prev);
+            if (res.ok) {
+                setTareasAPI((prev) => prev.filter((tarea)=> tarea.id !== id));
+                alert(data.msg || "Nota eliminada");
+            } else {
+                alert(data.message || "Error al eliminar la tarea");
+            }
         } catch (error) {
-        console.error("Error al eliminar la tarea:", error);
+            console.error("Error al eliminar la tarea:", error);
+            alert ("No se pudo conectar con el servidor");
         }
     }
 
