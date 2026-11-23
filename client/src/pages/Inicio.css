@@ -1,77 +1,113 @@
-& .tituloInic {
-    text-align: center;
+.inicio-task {
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-bg-subtle);
+    gap: 10px;
 }
 
+.inicio-calendario {
+    width: 40%;
+    height: 500px;
 
-.tarjetas{
+}
+
+.inicio{
+    padding: 40px;
+    background-color: var(--color-bg-subtle);
+    min-height: 100vh;
+   
+}
+
+.inicio-title {
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.inicio-cards {
+    width: 50%;
     display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 20px;
     flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: space-around;
-    & h2 {
-        margin-left: 6rem;
-    }
-    & .card {
-        margin-inline: 8rem;
-        border-radius: 1rem;
-        padding: .5rem 1.5rem .5rem 2rem;
-        margin-bottom: 2rem;
-        line-height: .7rem;
-        position: relative;
-        height: 145px;
-        background-color: var(--color--card);
+
+    & .inicio-card {
+        border-radius: 10px;
+        padding: 20px;
+        max-width: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: var(--color-bg);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-        & .desc {
-            line-height: 1.3rem;
-            padding-left: 1rem;
+
+        & h2 {
+            color: var(--color-text);
+            font-size: var(--fs-xl);
+            font-weight: var(--fw-medium);
+
         }
-        & .fecha {
-            position: absolute;
-            background-color: var(--color--fecha);
-            color: var(--color-primario);
-            top: 0;
-            right: 1rem;
-            padding: .4rem;
-            border-radius: .2rem;
-            font-size: .8rem;
+
+        & .inicio-desc {
+            margin-top: 10px;
+            color: var(--color-text-muted);
+
         }
-        & .priori {
-            background-color: var(--color--prioridad);
-            padding: .4rem;
-            position: absolute;
-            color: var(--color-texto);
-            top: 7rem;
-            border-radius: .3rem;
-            padding-inline: .5rem;
+
+        & .inicio-propiedad {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        & .cat {
-            background-color: var(--color--categoria);
-            padding: .4rem;
-            position: absolute;
-            color: var(--color-texto);
-            top: 7rem;
-            left: 6.5rem;
-            border-radius: .3rem;
-            padding-inline: .5rem;
+
+        & .inicio-fecha {
+            font-size: var(--fs-xs);
+            color: var(--color-text-muted);
+
         }
-        & .borrar {
-            background-color: var(--color-primario);
-            padding: .4rem;
-            padding-inline: 1rem;
-            position: absolute;
-            color: var(--color-superficie);
-            top: 7.5rem;
-            right: 1rem;
-            cursor: pointer;
-            border-radius: .5rem;
-            border: none;
-            &:hover{
-                background-color: var(--color-titulo-fondo);
+
+        & .inicio-priori-low {
+            padding: 2px 5px;
+            border-radius: 5px;
+            color: var(--color-bg);
+            background-color: var(--color-priority-low);
+            border: 1px solid var(--color-priority-low);
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        & .inicio-priori-hight {
+            margin-left: 20px;
+            margin-right: 20px;
+            padding: 2px 5px;
+            border-radius: 5px;
+            background-color: var(--color-priority-high);
+            border: 1px solid var(--color-priority-high);
+            color: var(--color-bg);
+        }
+
+        & .inicio-priori-medium {
+            margin-left: 20px;
+            margin-right: 20px;
+            border-radius: 5px;
+            padding: 2px 5px;
+            background-color: var(--color-priority-medium);
+            border: 1px solid var(--color-priority-medium);
+            color: var(--color-bg);
+        }
+
+        & .inicio-borrar {
+            padding: 2px 5px;
+            background-color: var(--color-priority-high);
+            border: 1px solid var(--color-priority-high);
+            color: var(--color-bg);
+            border-radius: 5px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: var(--color-error-text);
             }
         }
     }
 }
-
-
-
-
