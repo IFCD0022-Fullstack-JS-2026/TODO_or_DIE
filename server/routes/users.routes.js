@@ -3,8 +3,9 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const { UserSchema, LoginSchema  } = require('../schemas/user.schema.js');
+const { UserSchema, LoginSchema } = require('../schemas/user.schema.js');
 const pool = require("../db/connection.js")
+const { verificarToken } = require("../middleware/verificarToken.js");
 
 router.post("/users/register", async (req, res) => {
     try {
@@ -64,16 +65,33 @@ router.post("/users/login", async (req, res) => {
             return res.status(401).json({ success: false, message: "Email o contraseña incorrectos" });
         }
 
-        const token = jwt.sign({id: usuario.id, nombre: usuario.nombre }, process.env.JWT_SECRET, { 
+        const token = jwt.sign({ id: usuario.id, nombre: usuario.nombre }, process.env.JWT_SECRET, {
             expiresIn: "1h"
         })
 
         return res.status(200).json({
             success: true,
             message: "Login exitoso",
-            data: { id: usuario.id, nombre: usuario.nombre, email: usuario.email, token},
+            data: { id: usuario.id, nombre: usuario.nombre, email: usuario.email, token },
         });
 
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
+});
+
+router.get("/users/perfil", verificarToken, async (req, res) => {
+    try {
+        const [result] = await pool.query(
+            "select id, nombre, email from users where id = ?",
+            [req.usuario.id]
+        );
+
+        if (result.length === 0) {
+            return res.status(404).json({ success: false, message: "Usuario no encontrado" });
+        }
+
+        return res.status(200).json({ success: true, data: result[0] });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Error interno del servidor" });
     }

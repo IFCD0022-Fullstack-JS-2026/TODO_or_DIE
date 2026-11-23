@@ -1,15 +1,17 @@
 import './App.css'
-import { Routes, Route, NavLink } from 'react-router'
+import { Routes, Route, Link, NavLink } from 'react-router'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
 import Inicio from './pages/Inicio'
 import Perfil from './pages/Perfil'
 import NuevaTarea from './pages/NuevaTarea'
 import NoEncontrada from './pages/NoEncontrada'
+
 function App() {
   return (
     <>
-      <h1 className='titulo 1'>TODO or DIE</h1>
+      <header className="header">
+        <Link to="/" className="header-logo">TODO or DIE</Link>
 
       <nav>
         <NavLink to="/">Inicio</NavLink>
@@ -18,6 +20,7 @@ function App() {
         <NavLink to="/registro">Registro</NavLink>
         <NavLink to="/perfil">Perfil</NavLink>
       </nav>
+      </header>
 
       <Routes>
          <Route path="/" element={<Inicio />} />
