@@ -39,8 +39,6 @@ function Login() {
             const data = await respuesta.json();
 
             if (respuesta.status === 200) {
-                console.log(data);
-                
                 setSuccess(`Hola, ${data.data.nombre}`)
 
              }
