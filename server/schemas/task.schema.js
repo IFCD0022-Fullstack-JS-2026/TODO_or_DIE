@@ -7,7 +7,6 @@ const TareaSchema = z.object({
     fecha_hora: z.string(),
     prioridad: z.enum(["alta", "media", "baja"], { message: "La prioridad debe ser 'alta', 'media' o 'baja'" }),
     categoria: z.string(),
-    user_id: z.number().int({ message: "user_id debe ser un número entero" })
 });
 
 module.exports = {
