@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db/connection.js")
 const { TareaSchema } = require('../schemas/task.schema.js');
+const { verificarToken } = require("../middleware/verificarToken.js");
 
-
-router.get("/tasks", async (req, res) => {
+router.get("/tasks", verificarToken, async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM tasks");
+    const [rows] = await pool.query("SELECT * FROM tasks WHERE user_id = ?",
+      [req.usuario.id]
+    );
     res.status(200).json({ success: true, data: rows });
   } catch (error) {
     console.error("Error en el servidor:", error);
@@ -14,7 +16,7 @@ router.get("/tasks", async (req, res) => {
   }
 });
 
-router.get("/tasks/:id", async (req, res) => {
+router.get("/tasks/:id", verificarToken,async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
@@ -22,7 +24,7 @@ router.get("/tasks/:id", async (req, res) => {
       return res.status(400).json({ success: false, message: "El id debe ser un número" });
     }
 
-    const [rows] = await pool.query("SELECT * FROM tasks WHERE id = ?", [id]);
+    const [rows] = await pool.query("SELECT * FROM tasks WHERE id = ? AND user_id = ?", [id, req.usuario.id]);
 
     if (rows.length === 0) {
       return res.status(404).json({ success: false, message: "Tarea no encontrada" });
@@ -35,7 +37,7 @@ router.get("/tasks/:id", async (req, res) => {
   }
 });
 
-router.delete("/tasks/:id", async (req, res) => {
+router.delete("/tasks/:id", verificarToken, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
@@ -43,7 +45,7 @@ router.delete("/tasks/:id", async (req, res) => {
       return res.status(400).json({ success: false, message: "El id debe ser un número" });
     }
 
-    const [result] = await pool.query("DELETE FROM tasks WHERE id = ?", [id]);
+    const [result] = await pool.query("DELETE FROM tasks WHERE id = ? AND user_id = ?", [id, req.usuario.id]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ success: false, message: "Tarea no encontrada" });
@@ -56,7 +58,7 @@ router.delete("/tasks/:id", async (req, res) => {
   }
 });
 
-router.post('/tasks', async (req, res) => {
+router.post('/tasks', verificarToken, async (req, res) => {
   try {
     const validacion = TareaSchema.safeParse(req.body);
     if (!validacion.success) {
@@ -64,8 +66,9 @@ router.post('/tasks', async (req, res) => {
       return res.status(400).json({ success: false, errors: mensajesError(validacion.error) });
     }
 
-    const { titulo, descripcion, prioridad, categoria, user_id } = validacion.data;
+    const { titulo, descripcion, prioridad, categoria} = validacion.data;
     const fecha_hora = validacion.data.fecha_hora || null;
+    const user_id = req.usuario.id;
     const [result] = await pool.query(
       "insert into tasks (titulo, descripcion, fecha_hora, prioridad, categoria, user_id) values (?, ?, ?, ?, ?, ?)",
       [titulo, descripcion, fecha_hora, prioridad, categoria, user_id]
@@ -90,7 +93,7 @@ router.post('/tasks', async (req, res) => {
 });
 
 
-router.put('/tasks/:id', async (req, res) => {
+router.put('/tasks/:id', verificarToken, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     if (Number.isNaN(id)) {
@@ -102,12 +105,12 @@ router.put('/tasks/:id', async (req, res) => {
       return res.status(400).json({ success: false, errors: validacion.error.issues.map((err) => err.message) });
     }
 
-    const { titulo, descripcion, prioridad, categoria, user_id } = validacion.data;
+    const { titulo, descripcion, prioridad, categoria} = validacion.data;
     const fecha_hora = validacion.data.fecha_hora || null;
 
     const [result] = await pool.query(
-      "UPDATE tasks SET titulo = ?, descripcion = ?, fecha_hora = ?, prioridad = ?, categoria = ?, user_id = ? WHERE id = ?",
-      [titulo, descripcion, fecha_hora, prioridad, categoria, user_id, id]
+      "UPDATE tasks SET titulo = ?, descripcion = ?, fecha_hora = ?, prioridad = ?, categoria = ? WHERE id = ? AND user_id = ?",
+      [titulo, descripcion, fecha_hora, prioridad, categoria, id, req.usuario.id]
     );
 
     if (result.affectedRows === 0) {
