@@ -1,104 +1,110 @@
-import "./Inicio.css";
-import { Scheduler } from "calendarkit-pro";
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import './Inicio.css';
 
 function Inicio() {
-    const [events, setEvents] = useState([]);
+
+    const [tareasAPI, setTareasAPI] = useState([]);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const cargarTareas = async () => {
+            try {
+                const res = await fetch('http://localhost:3000/api/tasks');
+                const datos = await res.json();
+                if (!res.ok) throw new Error(datos.message);
+                setTareasAPI(datos.data);
+            } catch (err) {
+                setError(err.message);
+            }
+        };
+        cargarTareas();
+    }, []);
+
+    if (error) return <p className="inicio-error">No se han podido cargar las tareas: {error}</p>;
+
+    const eliminarTarea = async (id) => {
+        try {
+            const res = await fetch(`http://localhost:3000/api/tasks/${id}`, {
+                method: 'DELETE',
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                setTareasAPI((prev) => prev.filter((tarea) => tarea.id !== id));
+                alert(data.message);
+            } else {
+                alert(data.message || 'Error al eliminar la tarea');
+            }
+        } catch (error) {
+            console.error('Error al eliminar la tarea:', error);
+            alert('No se pudo conectar con el servidor');
+        }
+    };
+
     return (
-        
-            <div className="inicio">
-                <h1 className="inicio-title">Lista de tareas</h1>
-                <div className="inicio-task">
-                    <div className="inicio-cards">
-                        <section className="inicio-card">
+        <main className="inicio">
+            <h1 className="inicio-titulo">Lista de tareas</h1>
+
+            <section className="inicio-grupo">
+                <h2 className="inicio-grupo-titulo">Prioridad Alta</h2>
+                <div className="inicio-cards">
+                    {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'alta').map((tarea) => (
+                        <article key={tarea.id} className="inicio-card">
                             <div>
-                                <h2>Maquetar el lista de tareas en inicio</h2>
-                                <p className="inicio-desc">
-                                    Maquetar el listado de tareas de client/src/pages/Inicio.jsx según
-                                    el diseño (docs/diseno.png). Solo HTML y CSS, sin lógica: los
-                                    datos de la API se cargarán en otra issue.
-                                </p>
+                                <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
+                                <p className="inicio-desc">{tarea.descripcion}</p>
                             </div>
                             <div className="inicio-propiedad">
-                                <div>
-                                    <span className="inicio-fecha">19/11/2026</span>
-                                    <span className="inicio-priori-hight">Alta</span>
-                                    <span className="inicio-cat">Frontend</span>
-                                </div>
-                                <button className="inicio-borrar">Borrar</button>
+                                <span className="inicio-fecha">{tarea.fecha_hora}</span>
+                                <span className="inicio-prioridad inicio-prioridad-alta">{tarea.prioridad}</span>
+                                <span className="inicio-cat">{tarea.categoria}</span>
+                                <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
                             </div>
-                        </section>
-                        <section className="inicio-card">
-                            <div>
-                                <h2>Limpiar y validar las rutas de tareas</h2>
-                                <p className="inicio-desc">
-                                    Limpiar y validar las rutas de server/routes/tasks.routes.js
-                                </p>
-                            </div>
-                            <div className="inicio-propiedad">
-                                <div>
-                                    <span className="inicio-fecha">19/11/2026</span>
-                                    <span className="inicio-priori-medium">Media</span>
-                                    <span className="inicio-cat">Backend</span>
-                                </div>
-                                <button className="inicio-borrar">Borrar</button>
-                            </div>
-                        </section>
-                        <section className="inicio-card">
-                            <h2>Conectar el Registro con la API</h2>
-                            <p className="inicio-desc">
-                                En client/src/pages/Registro.jsx, enviar el formulario a POST
-                                http://localhost:3000/api/users/register.
-                            </p>
-                            <div className="inicio-propiedad">
-                                <div>
-                                    <span className="inicio-fecha">19/11/2026</span>
-                                    <span className="inicio-priori-low">Baja</span>
-                                    <span className="inicio-cat">Backend</span>
-                                </div>
-                                <button className="inicio-borrar">Borrar</button>
-                            </div>
-                        </section>
-                        <section className="inicio-card">
-                            <h2>Conectar el Registro con la API</h2>
-                            <p className="inicio-desc">
-                                En client/src/pages/Registro.jsx, enviar el formulario a POST
-                                http://localhost:3000/api/users/register.
-                            </p>
-                            <div className="inicio-propiedad">
-                                <div>
-                                    <span className="inicio-fecha">19/11/2026</span>
-                                    <span className="inicio-priori-low">Baja</span>
-                                    <span className="inicio-cat">Backend</span>
-                                </div>
-                                <button className="inicio-borrar">Borrar</button>
-                            </div>
-                        </section>
-                    </div>
-                    <div className="inicio-calendario">
-                        <Scheduler
-                            events={events}
-                            onEventCreate={(event) =>
-                                setEvents((list) => [
-                                    ...list,
-                                    { ...event, id: crypto.randomUUID() },
-                                ])
-                            }
-                            onEventUpdate={(event) =>
-                                setEvents((list) =>
-                                    list.map((e) => (e.id === event.id ? event : e))
-                                )
-                            }
-                            onEventDelete={(id) =>
-                                setEvents((list) => list.filter((e) => e.id !== id))
-                            }
-                        />
-                    </div>
+                        </article>
+                    ))}
                 </div>
+            </section>
 
-            </div>
+            <section className="inicio-grupo">
+                <h2 className="inicio-grupo-titulo">Prioridad Media</h2>
+                <div className="inicio-cards">
+                    {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'media').map((tarea) => (
+                        <article key={tarea.id} className="inicio-card">
+                            <div>
+                                <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
+                                <p className="inicio-desc">{tarea.descripcion}</p>
+                            </div>
+                            <div className="inicio-propiedad">
+                                <span className="inicio-fecha">{tarea.fecha_hora}</span>
+                                <span className="inicio-prioridad inicio-prioridad-media">{tarea.prioridad}</span>
+                                <span className="inicio-cat">{tarea.categoria}</span>
+                                <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </section>
 
-     
+            <section className="inicio-grupo">
+                <h2 className="inicio-grupo-titulo">Prioridad Baja</h2>
+                <div className="inicio-cards">
+                    {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'baja').map((tarea) => (
+                        <article key={tarea.id} className="inicio-card">
+                            <div>
+                                <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
+                                <p className="inicio-desc">{tarea.descripcion}</p>
+                            </div>
+                            <div className="inicio-propiedad">
+                                <span className="inicio-fecha">{tarea.fecha_hora}</span>
+                                <span className="inicio-prioridad inicio-prioridad-baja">{tarea.prioridad}</span>
+                                <span className="inicio-cat">{tarea.categoria}</span>
+                                <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </section>
+        </main>
     );
 }
 
