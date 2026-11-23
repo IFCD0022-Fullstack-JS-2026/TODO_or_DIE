@@ -1,6 +1,12 @@
 const express = require('express')
 const cors = require('cors');
 require("dotenv").config();
+
+if(!process.env.JWT_SECRET){
+    console.error('Falta JWT_SECRET en el archivo .env')
+    process.exit(1);
+}
+
 const PORT = process.env.PORT;
 
 const pool = require("./db/connection");
