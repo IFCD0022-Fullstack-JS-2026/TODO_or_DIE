@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nosifer&family=Open+Sans:wdth,wght@75..100,300..800&display=swap');
 
+
 :root {
   /* Tipografía */
   --font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
 
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
@@ -72,8 +74,72 @@
   --shadow-focus: 0 0 0 3px rgba(79, 70, 229, 0.20);
 
 
-  --fuente-titulo: "Nosifer", cursive;
-  --fuente-texto: system-ui, sans-serif;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.25rem;
+  --fs-2xl: 1.5rem;
+  --fs-3xl: 2rem;
+  --fs-display: 4rem;
+
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Colores */
+  --color-bg: #FFFFFF;
+  --color-bg-subtle: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-border-strong: #CBD5E1;
+
+  --color-text: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748B;
+  --color-placeholder: #94A3B8;
+
+  /* Primario */
+  --color-primary: #4F46E5;
+  --color-primary-hover: #4338CA;
+  --color-primary-active: #3730A3;
+  --color-primary-soft: #EEF2FF;
+  --color-on-primary: #FFFFFF;
+
+  /* Prioridades */
+  --color-priority-high: #DC2626;
+  --color-priority-medium: #B45309;
+  --color-priority-low: #15803D;
+
+  /* Estados */
+  --color-error-bg: #FEF2F2;
+  --color-error-border: #FECACA;
+  --color-error-text: #991B1B;
+  --color-success-bg: #F0FDF4;
+  --color-success-border: #BBF7D0;
+  --color-success-text: #166534;
+
+  /* Espaciado  */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Radios */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-focus: 0 0 0 3px rgba(79, 70, 229, 0.20);
 }
 
 *{
@@ -90,6 +156,9 @@ body {
 }
 
 .active{
-  color: var(--color-bg);
   background-color: var(--color-primary-active);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+
 }

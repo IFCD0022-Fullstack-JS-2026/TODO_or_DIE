@@ -1,73 +1,148 @@
 .contenedor {
-    max-width: 380px;
-    margin: 170px auto;
-    padding: 32px;
-    background: var(--color-superficie);
-    border: 2px solid var(--color-texto);
-    border-radius: 8px;
-    text-align: left;
-  
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--color-bg-subtle);
 }
 
 .titulo2 {
-    font-family: var(--fuente-texto);
-    color: var(--color-texto);
-    font-size: 28px;
-    margin: 0 0 24px;
-    text-transform: uppercase;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 0 var(--space-6);
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   text-align: center;
+  color: var(--color-text);
 }
 
 .formulario {
-
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 300px;
-    justify-content: center;
-    text-align: left;
-   
-
-}
-
-.mensaje-error {
-    color: var(--color-primario);
-}
-
-.input {
-    border: 2px solid var(--color-texto);
-    border-radius: 4px;
-    background: var(--color-fondo);
-    color: var(--color-texto);
-    font-family: var(--fuente-texto);
-    width: 100%;
-    padding: 8px;
-
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-8);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
 }
 
 .campo {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-weight: bold;
-    margin: 0 0 -13px; 
-   text-align: left;
+  margin-top: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text);
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-family);
+  font-size: var(--fs-base);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.input:hover:not(:focus) {
+  border-color: var(--color-text-muted);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-focus);
 }
 
 .btn {
-    padding: 12px;
-    background: var(--color-texto);
-    color: var(--color-superficie);
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 52px;
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-family);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 100ms ease;
 }
 
-.btn:hover {
-    background: var(--color-primario);
+.btn:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
 
+.btn:active:not(:disabled) {
+  background: var(--color-primary-active);
+  transform: scale(0.985);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mensaje-error {
+  margin: 0;
+  box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-align: center;
+  color: var(--color-error-text);
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-md);
+}
+
+.mensaje-exito {
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-align: center;
+  color: var(--color-success-text);
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 480px) {
+  .contenedor {
+    padding: var(--space-4);
+  }
+
+  .titulo2 {
+    font-size: var(--fs-2xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .formulario {
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+  }
 }

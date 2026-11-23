@@ -1,7 +1,6 @@
 import "./Inicio.css";
 import { Scheduler } from "calendarkit-pro";
-import { useState } from "react";
-
+import { useEffect, useState } from 'react'
 
 function Inicio() {
     const [events, setEvents] = useState([]);

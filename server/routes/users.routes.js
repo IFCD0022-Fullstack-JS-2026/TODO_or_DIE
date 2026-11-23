@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
 const { UserSchema, LoginSchema  } = require('../schemas/user.schema.js');
 const pool = require("../db/connection.js")
 
@@ -63,11 +64,16 @@ router.post("/users/login", async (req, res) => {
             return res.status(401).json({ success: false, message: "Email o contraseña incorrectos" });
         }
 
+        const token = jwt.sign({id: usuario.id, nombre: usuario.nombre }, process.env.JWT_SECRET, { 
+            expiresIn: "1h"
+        })
+
         return res.status(200).json({
             success: true,
             message: "Login exitoso",
-            data: { id: usuario.id, nombre: usuario.nombre, email: usuario.email }
+            data: { id: usuario.id, nombre: usuario.nombre, email: usuario.email, token},
         });
+
     } catch (error) {
         return res.status(500).json({ success: false, message: "Error interno del servidor" });
     }

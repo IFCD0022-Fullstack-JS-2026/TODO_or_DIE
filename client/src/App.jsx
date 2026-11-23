@@ -6,11 +6,10 @@ import Registro from "./pages/Registro";
 import Inicio from "./pages/Inicio";
 import NuevaTarea from "./pages/NuevaTarea";
 import { Plus, User, X } from "lucide-react";
+import NoEncontrada from './pages/NoEncontrada'
 
 function App() {
   const [modalNuevaTarea, setModalNuevaTarea] = useState(false);
-  
-
 
   useEffect(() => {
     if (!modalNuevaTarea) return;
@@ -35,7 +34,7 @@ function App() {
               <User size={16} fill="white" strokeWidth={1.75} />
               Salir
             </button>
-            
+
           </div>
         </header>
 
@@ -45,13 +44,15 @@ function App() {
             <span>Nueva Tarea</span>
           </button>
         </div>
-    
+
         <Routes>
           <Route path="/dashboard" element={<Inicio />} />
           <Route path="/login" element={<Login />} />
           <Route path="/tareas/nueva" element={<NuevaTarea />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="*" element={<NoEncontrada />} />
         </Routes>
+
 
         {modalNuevaTarea && (
           <div
@@ -80,6 +81,8 @@ function App() {
       </div>
     </div>
   );
+
+
 }
 
 export default App;
