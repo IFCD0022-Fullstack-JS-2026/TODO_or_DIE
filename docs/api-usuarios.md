@@ -68,7 +68,7 @@ Inicia sesión con email y contraseña.
 {
   "success": true,
   "message": "Login exitoso",
-  "data": { "id": 1, "nombre": "test", "email": "test@example.com" }
+  "data": { "id": 1, "nombre": "test", "email": "test@example.com", "token": "jwt:token"}
 }
 ```
 
