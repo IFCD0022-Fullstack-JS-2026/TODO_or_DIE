@@ -19,6 +19,11 @@
   color: var(--color-text);
 }
 
+.auth,
+.contenedor {
+  min-height: calc(100vh - 190px);
+}
+
 /* Login/Registro */
 .auth-titulo {
   width: 100%;

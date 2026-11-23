@@ -52,7 +52,7 @@ function NuevaTarea() {
         <>
             <div className="contenedor">
 
-                <h1 className="titulo2">NUEVA TAREA</h1>
+                <h1 className="titulo2">Nueva Tarea</h1>
 
                 <form className="formulario" onSubmit={handleSubmit}>
                     <label htmlFor="titulo" className="campo">Titulo</label>
