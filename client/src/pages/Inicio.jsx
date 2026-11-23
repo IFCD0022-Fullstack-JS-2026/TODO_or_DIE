@@ -10,8 +10,8 @@ function Inicio() {
         const cargarTareas = async () => {
             try {
                 const res = await fetch('http://localhost:3000/api/tasks');
-                    if (!res.ok) throw new Error(`Error ${res.status}`);
                 const datos = await res.json();
+                if (!res.ok) throw new Error(datos.message);
                 setTareasAPI(datos.data);
             } catch (err) {
                 setError(err.message);
@@ -31,7 +31,7 @@ function Inicio() {
             const data = await res.json();
             if (res.ok) {
                 setTareasAPI((prev) => prev.filter((tarea)=> tarea.id !== id));
-                alert(data.msg || "Nota eliminada");
+                alert(data.message);
             } else {
                 alert(data.message || "Error al eliminar la tarea");
             }
