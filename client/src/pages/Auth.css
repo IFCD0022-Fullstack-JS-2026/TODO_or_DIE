@@ -174,33 +174,6 @@
   border-radius: var(--radius-sm);
 }
 
-.auth-footer {
-  width: 100%;
-  max-width: 420px;
-  margin: var(--space-6) 0 0;
-  font-size: var(--fs-sm);
-  color: var(--color-text-secondary);
-  text-align: center;
-}
-
-.auth-link {
-  color: var(--color-primary);
-  font-weight: var(--fw-medium);
-  text-decoration: none;
-  border-radius: var(--radius-sm);
-}
-
-.auth-link:hover {
-  color: var(--color-primary-hover);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.auth-link:focus-visible {
-  outline: none;
-  box-shadow: var(--shadow-focus);
-}
-
 /* Responsive */
 @media (max-width: 480px) {
   .auth {

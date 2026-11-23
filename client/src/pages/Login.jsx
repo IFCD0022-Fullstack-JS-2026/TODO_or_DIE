@@ -1,5 +1,4 @@
 import './Auth.css'
-import { NavLink } from 'react-router'
 
 function Login() {
     return (
@@ -16,9 +15,6 @@ function Login() {
                 </label>
                 <button className="auth-boton" type='submit'>Entrar</button>
             </form>
-            <p className="auth-footer">
-                ¿No tienes cuenta? <NavLink to="/registro" className="auth-link">Regístrate</NavLink>
-            </p>
         </main>
     )
 }
