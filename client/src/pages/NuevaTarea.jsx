@@ -14,6 +14,7 @@ function NuevaTarea() {
 
     const [form, setForm] = useState(Inicial);
     const [error, setError] = useState({});
+    const [mensaje, setMensaje] = useState("");
 
 
     const handleChange = (e) => {
@@ -23,9 +24,11 @@ function NuevaTarea() {
         setForm({ ...form, [name]: valorFinal });
 
         setError({ ...error, [name]: "" });
+
+        setMensaje("");
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (form.titulo.trim() === "") {
@@ -44,8 +47,36 @@ function NuevaTarea() {
         }
 
         setError({});
+        setMensaje("");
 
-        console.log(form)
+        try {
+            const tarea = await fetch("http://localhost:3000/api/tasks",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        titulo: form.titulo, fecha_hora: form.fecha_hora,
+                        prioridad: form.prioridad, categoria: form.categoria, descripcion: form.descripcion, user_id: 1
+                    })
+                })
+
+            const datos = await tarea.json();
+
+            if (tarea.status === 201) {
+                setMensaje(datos.message)
+                setForm(Inicial)
+
+            }
+            else if (tarea.status === 400 && Array.isArray(datos.errors)) {
+                setError(datos.errors.join(", "));
+            } else {
+                setError(datos.message);
+            }
+
+        } catch (error) {
+            setError(error.message);
+        }
+
     };
 
     return (
@@ -75,7 +106,7 @@ function NuevaTarea() {
                     {error.prioridad && <p className="mensaje-error">{error.prioridad}</p>}
 
 
-                    <label htmlFor="categoria"  className="campo"  >Categoría</label>
+                    <label htmlFor="categoria" className="campo"  >Categoría</label>
                     <input type="text" id="categoria" name="categoria" placeholder="Añade aqui tu categoría..." className="input" value={form.categoria}
                         onChange={handleChange} />
                     {error.categoria && <p className="mensaje-error">{error.categoria}</p>}
@@ -83,6 +114,9 @@ function NuevaTarea() {
                     <label htmlFor="descripcion" className="campo"  >Descripción</label>
                     <input type="text" id="descripcion" name="descripcion" placeholder="Añade aqui tu descripción..." className="input" value={form.descripcion}
                         onChange={handleChange} />
+                    {error.descripcion && <p className="mensaje-error">{error.descripcion}</p>}
+
+                    {mensaje && (<p className="mensaje-exito">{mensaje}</p>)}
 
                     <button type="submit" className="btn">Guardar</button>
 
