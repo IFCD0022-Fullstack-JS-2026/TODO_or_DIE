@@ -68,13 +68,13 @@ function NuevaTarea() {
 
             }
             else if (tarea.status === 400 && Array.isArray(datos.errors)) {
-                setError(datos.errors.join(", "));
+                setError({ api: datos.errors.join(", ") });
             } else {
-                setError(datos.message);
+                setError({ api: datos.message });
             }
 
         } catch (error) {
-            setError(error.message);
+            setError({ api: error.message });
         }
 
     };
@@ -114,9 +114,11 @@ function NuevaTarea() {
                     <label htmlFor="descripcion" className="campo"  >Descripción</label>
                     <input type="text" id="descripcion" name="descripcion" placeholder="Añade aqui tu descripción..." className="input" value={form.descripcion}
                         onChange={handleChange} />
-                    {error.descripcion && <p className="mensaje-error">{error.descripcion}</p>}
 
                     {mensaje && (<p className="mensaje-exito">{mensaje}</p>)}
+
+                    {error.api && (<p className="mensaje-error">{error.api}</p>)}
+
 
                     <button type="submit" className="btn">Guardar</button>
 
