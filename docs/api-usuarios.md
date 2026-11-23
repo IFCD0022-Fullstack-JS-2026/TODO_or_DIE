@@ -86,3 +86,45 @@ Inicia sesión con email y contraseña.
 ```json
 { "success": false, "message": "Error interno del servidor" }
 ```
+
+## GET /api/users/perfil
+
+Devuelve los datos del usuario autenticado. Requiere cabecera `Authorization`.
+
+### Request headers
+
+```
+Authorization: Bearer <token>
+```
+
+El `<token>` se obtiene en la respuesta de `POST /api/users/login` (`data.token`).
+
+### Respuestas
+
+**200 OK** — token válido y usuario encontrado:
+```json
+{
+  "success": true,
+  "data": { "id": 1, "nombre": "test", "email": "test@example.com" }
+}
+```
+
+**401 Unauthorized** — sin cabecera o cabecera mal formada:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+
+**401 Unauthorized** — token inválido o caducado:
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
+
+**404 Not Found** — el token es válido pero el usuario ya no existe:
+```json
+{ "success": false, "message": "Usuario no encontrado" }
+```
+
+**500 Internal Server Error**:
+```json
+{ "success": false, "message": "Error interno del servidor" }
+```
