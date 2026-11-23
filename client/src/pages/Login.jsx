@@ -8,7 +8,6 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("")
-    const [success, setSuccess] = useState("");
     const { login } = useAuth()
     const navigate = useNavigate()
 
@@ -30,11 +29,10 @@ function Login() {
         e.preventDefault();
 
         setError("");
-        setSuccess("");
 
         try {
             await login(email, password)
-            navigate('/dashboard')
+            navigate('/')
         } catch (err) {
             setError(err.message)
         }
@@ -65,7 +63,7 @@ function Login() {
                 <button className="auth-boton" type='submit'>Entrar</button>
 
                 {error && <p className="auth-error">{error}</p>}
-                {success && <p className="auth-success">{success}</p>}
+              
             </form>
         </main>
     )
