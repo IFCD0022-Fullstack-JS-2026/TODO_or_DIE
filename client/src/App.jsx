@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Registro from './pages/Registro'
 import Inicio from './pages/Inicio'
 import NuevaTarea from './pages/NuevaTarea'
+import Perfil from './pages/Perfil'
 import NoEncontrada from './pages/NoEncontrada'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/tareas/nueva" element={<NuevaTarea />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/perfil" element={<Perfil />} />
         <Route path="*" element={<NoEncontrada />} />
       </Routes>
     </>
