@@ -116,18 +116,18 @@ router.put("/users/perfil", verificarToken, async (req, res) => {
         }
 
         const [usuario] = await pool.query("select id from users where id = ?", [req.usuario.id]);
-        if (usuario.length > 0) {
-            return res.status(404).json({ success: false, errors: ["Usuario no encontrado"] });
+        if (usuario.length === 0) {
+            return res.status(404).json({ success: false, message: ["Usuario no encontrado"] });
         }
 
         await pool.query(
-            "update users set (nombre, email, id) values (?, ?, ?)",
+            "update users set nombre = ?, email = ? where id = ?",
             [nombre, email, req.usuario.id]
         );
         return res.status(200).json({
             success: true,
             message: "Perfil actualizado",
-            data: { id, nombre, email }
+            data: { id: req.usuario.id, nombre, email }
         });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Error interno del servidor" });

@@ -131,7 +131,7 @@ El `<token>` se obtiene en la respuesta de `POST /api/users/login` (`data.token`
 ```
 ## PUT /api/users/perfil 
 
-Actualiza los datos del usuario. Requiere cabecera `Authorization`.
+Actualiza los datos del usuario, que se envian mediante el body nombre y email. Requiere cabecera `Authorization`.
 
 ### Request headers
 
