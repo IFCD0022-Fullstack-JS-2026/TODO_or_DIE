@@ -113,21 +113,23 @@ function EditarTarea() {
     }
 
     return (
-        <main className="nueva-tarea">
-            <h1>Editar Tarea</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="titulo">Título</label>
+        <main className="contenedor">
+            <h1 className="titulo2">Editar Tarea</h1>
+            <form className="formulario" onSubmit={handleSubmit}>
+                <label className="campo" htmlFor="titulo">Título</label>
                 <input
+                    className="input"
                     id="titulo"
                     name="titulo"
                     value={form.titulo}
                     onChange={handleChange}
                     placeholder="Escribe aquí el título"
                 />
-                {error.titulo && <p className="error">{error.titulo}</p>}
+                {error.titulo && <p className="mensaje-error">{error.titulo}</p>}
 
-                <label htmlFor="fecha_hora">Fecha y Hora</label>
+                <label className="campo" htmlFor="fecha_hora">Fecha y Hora</label>
                 <input
+                    className="input"
                     id="fecha_hora"
                     name="fecha_hora"
                     type="datetime-local"
@@ -135,32 +137,35 @@ function EditarTarea() {
                     onChange={handleChange}
                 />
 
-                <label htmlFor="prioridad">Prioridad</label>
+                <label className="campo" htmlFor="prioridad">Prioridad</label>
                 <select
+                    className="input"
                     id="prioridad"
                     name="prioridad"
                     value={form.prioridad}
                     onChange={handleChange}
                 >
-                    <option value="">Elige una prioridad</option>
+                    <option value="">--Elige--</option>
                     <option value="alta">Alta</option>
                     <option value="media">Media</option>
                     <option value="baja">Baja</option>
                 </select>
-                {error.prioridad && <p className="error">{error.prioridad}</p>}
+                {error.prioridad && <p className="mensaje-error">{error.prioridad}</p>}
 
-                <label htmlFor="categoria">Categoría</label>
+                <label className="campo" htmlFor="categoria">Categoría</label>
                 <input
+                    className="input"
                     id="categoria"
                     name="categoria"
                     value={form.categoria}
                     onChange={handleChange}
                     placeholder="Escribe aquí la categoría"
                 />
-                {error.categoria && <p className="error">{error.categoria}</p>}
+                {error.categoria && <p className="mensaje-error">{error.categoria}</p>}
 
-                <label htmlFor="descripcion">Descripción</label>
+                <label className="campo" htmlFor="descripcion">Descripción</label>
                 <textarea
+                    className="input"
                     id="descripcion"
                     name="descripcion"
                     value={form.descripcion}
@@ -168,10 +173,10 @@ function EditarTarea() {
                     placeholder="Escribe aquí la descripción"
                 />
 
-                {mensaje && <p className="ok">{mensaje}</p>}
-                {error.api && <p className="error">{error.api}</p>}
+                {mensaje && <p className="mensaje-exito">{mensaje}</p>}
+                {error.api && <p className="mensaje-error">{error.api}</p>}
 
-                <button type="submit">Guardar cambios</button>
+                <button className="btn" type="submit">Guardar cambios</button>
             </form>
         </main>
     );
