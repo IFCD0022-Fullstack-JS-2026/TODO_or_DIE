@@ -117,7 +117,7 @@ router.put("/users/perfil", verificarToken, async (req, res) => {
 
         const [usuario] = await pool.query("select id from users where id = ?", [req.usuario.id]);
         if (usuario.length === 0) {
-            return res.status(404).json({ success: false, message: ["Usuario no encontrado"] });
+            return res.status(404).json({ success: false, message: "Usuario no encontrado" });
         }
 
         await pool.query(
@@ -139,7 +139,7 @@ router.delete("/users/perfil", verificarToken, async (req, res) => {
     try {
        const [usuario] = await pool.query("select id from users where id = ?", [req.usuario.id]);
         if (usuario.length === 0) {
-            return res.status(404).json({ success: false, errors: ["Usuario no encontrado"] });
+            return res.status(404).json({ success: false, message: "Usuario no encontrado" });
         }
         
         await pool.query(
