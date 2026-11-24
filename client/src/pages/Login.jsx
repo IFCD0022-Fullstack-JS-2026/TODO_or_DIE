@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import './Auth.css'
+import { useAuth } from '../context/useAuth.js'
+import { useNavigate } from 'react-router'
 
 function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("")
-    const [success, setSuccess] = useState("")
+    const { login } = useAuth()
+    const navigate = useNavigate()
 
 
     const handleChange = (e) => {
@@ -25,32 +28,13 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-       setError("");
-       setSuccess("");
+        setError("");
 
-        try{
-            const respuesta = await fetch("http://localhost:3000/api/users/login", 
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password})
-                })
-            
-            const data = await respuesta.json();
-
-            if (respuesta.status === 200) {
-                setSuccess(`Hola, ${data.data.nombre}`)
-
-             }
-            else if (respuesta.status === 400 && Array.isArray(data.errors))
-             { setError(data.errors.join(", "));
-            } else {
-                setError(data.message);
-            }
-        
+        try {
+            await login(email, password)
+            navigate('/')
         } catch (err) {
-            setError(err.message);
-
+            setError(err.message)
         }
     };
 
@@ -60,26 +44,26 @@ function Login() {
             <form className="auth-form" onSubmit={handleLogin}>
                 <label className="auth-campo">
                     Email
-                    <input className="auth-input" 
-                    type='email' 
-                    name='email' 
-                    placeholder='tu@email.com' 
-                    value= {email}
-                    onChange={handleChange}/>
+                    <input className="auth-input"
+                        type='email'
+                        name='email'
+                        placeholder='tu@email.com'
+                        value={email}
+                        onChange={handleChange} />
                 </label>
                 <label className="auth-campo">
                     Contraseña
-                    <input className="auth-input" 
-                    type='password' 
-                    name='password' 
-                    placeholder='Tu contraseña secreta!' 
-                    value={password}
-                    onChange={handleChange}/>
+                    <input className="auth-input"
+                        type='password'
+                        name='password'
+                        placeholder='Tu contraseña secreta!'
+                        value={password}
+                        onChange={handleChange} />
                 </label>
                 <button className="auth-boton" type='submit'>Entrar</button>
 
                 {error && <p className="auth-error">{error}</p>}
-                {success && <p className="auth-success">{success}</p>}
+              
             </form>
         </main>
     )
