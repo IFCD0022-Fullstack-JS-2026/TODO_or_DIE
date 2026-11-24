@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const { UserSchema, LoginSchema, PerfilSchema } = require('../schemas/user.schema.js');
+const { UserSchema, LoginSchema, PerfilSchema, PasswordSchema } = require('../schemas/user.schema.js');
 const pool = require("../db/connection.js")
 const { verificarToken } = require("../middleware/verificarToken.js");
 
@@ -137,11 +137,11 @@ router.put("/users/perfil", verificarToken, async (req, res) => {
 
 router.delete("/users/perfil", verificarToken, async (req, res) => {
     try {
-       const [usuario] = await pool.query("select id from users where id = ?", [req.usuario.id]);
+        const [usuario] = await pool.query("select id from users where id = ?", [req.usuario.id]);
         if (usuario.length === 0) {
             return res.status(404).json({ success: false, message: "Usuario no encontrado" });
         }
-        
+
         await pool.query(
             "delete from tasks where user_id = ?",
             [req.usuario.id]
@@ -159,6 +159,50 @@ router.delete("/users/perfil", verificarToken, async (req, res) => {
         return res.status(500).json({ success: false, message: "Error interno del servidor" });
     }
 
+});
+
+router.put("/users/password", verificarToken, async (req, res) => {
+    try {
+        const validacion = PasswordSchema.safeParse(req.body);
+        if (!validacion.success) {
+            return res.status(400).json({
+                success: false,
+                errors: validacion.error.issues.map((err) => err.message)
+            });
+        }
+
+        const { actual, nueva } = validacion.data;
+
+        const [result] = await pool.query(
+            "SELECT password FROM users WHERE id = ?",
+            [req.usuario.id]
+        );
+
+        if (result.length === 0) {
+            return res.status(404).json({ success: false, message: "Usuario no encontrado" });
+        }
+
+        const coincide = await bcrypt.compare(actual, result[0].password);
+
+        if (!coincide) {
+            return res.status(400).json({
+                success: false,
+                errors: ["La contraseña actual no es correcta"]
+            });
+        }
+
+        const passwordCifrada = await bcrypt.hash(nueva, 10);
+
+        await pool.query(
+            "UPDATE users SET password = ? WHERE id = ?",
+            [passwordCifrada, req.usuario.id]
+        );
+
+        res.status(200).json({ success: true, message: "Contraseña actualizada" });
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
 });
 
 module.exports = router;
