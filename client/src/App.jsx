@@ -11,10 +11,10 @@ import { useAuth } from './context/useAuth.js'
 
 function App() {
   const navigate = useNavigate();
-  const { usuario, setUsuario } = useAuth();
+  const { logout, usuario } = useAuth();
 
-  const logout = () => {
-    setUsuario(null);
+  const handleLogout = () => {
+    logout();
     navigate('/login');
   };
 
@@ -24,14 +24,15 @@ function App() {
         <Link to="/" className="header-logo">TODO or DIE</Link>
 
         <nav className="header-nav">
-          <NavLink to="/">Inicio</NavLink>
-          <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
+
           {usuario ? (
             <>
+              <NavLink to="/">Inicio</NavLink>
+              <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
               <NavLink to="/perfil">Mi perfil</NavLink>
               <div className='header-login'>
                 <span>Hola, {usuario.nombre}</span>
-                <button onClick={logout} className="btn-logout">
+                <button onClick={handleLogout} className="btn-logout">
                   Cerrar sesión
                 </button>
               </div>
@@ -61,12 +62,7 @@ function App() {
           </RutaProtegida>
         }
         />
-        <Route path="/tareas/nueva" element={
-          <RutaProtegida>
-            <NuevaTarea />
-          </RutaProtegida>
-        }
-        />
+
         <Route path="/registro" element={<Registro />} />
         <Route path="/perfil" element={
           <RutaProtegida>
