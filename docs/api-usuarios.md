@@ -167,3 +167,58 @@ Status 404 Not Found: Token válido pero el usuario ya no existe: "Usuario no en
 Status 200 OK: Token válido y usuario encontrado: "Cuenta borrada"
 
 Status 500: Internal Server Error: "Error interno del servidor"
+
+## PUT /api/users/password
+
+Cambia la contraseña del usuario autenticado.
+
+### Autenticación
+
+Requiere cabecera `Authorization: Bearer <token>` (obtenido en `POST /api/users/login`).
+
+### Request body
+
+```json
+{
+  "actual": "123456",
+  "nueva": "nuevaClave123"
+}
+```
+
+- `actual`: contraseña actual del usuario.
+- `nueva`: contraseña nueva, mínimo 6 caracteres.
+
+### Respuestas
+
+**200 OK** — contraseña actualizada:
+```json
+{ "success": true, "message": "Contraseña actualizada" }
+```
+
+**400 Bad Request** — validación fallida:
+```json
+{ "success": false, "errors": ["La contraseña nueva debe tener al menos 6 caracteres"] }
+```
+
+**400 Bad Request** — contraseña actual incorrecta:
+```json
+{ "success": false, "errors": ["La contraseña actual no es correcta"] }
+```
+
+**401 Unauthorized** — sin token o token inválido/caducado:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
+
+**404 Not Found** — el usuario del token ya no existe:
+```json
+{ "success": false, "message": "Usuario no encontrado" }
+```
+
+**500 Internal Server Error**:
+```json
+{ "success": false, "message": "Error interno del servidor" }
+```
