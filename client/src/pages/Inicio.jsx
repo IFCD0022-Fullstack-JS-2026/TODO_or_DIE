@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '../context/useAuth.js';
 import './Inicio.css';
 
 function Inicio() {
-
+    const { token } = useAuth();
     const [tareasAPI, setTareasAPI] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const cargarTareas = async () => {
             try {
-                const res = await fetch('http://localhost:3000/api/tasks');
+                const res = await fetch('http://localhost:3000/api/tasks', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 const datos = await res.json();
                 if (!res.ok) throw new Error(datos.message);
                 setTareasAPI(datos.data);
@@ -18,7 +23,7 @@ function Inicio() {
             }
         };
         cargarTareas();
-    }, []);
+    }, [token]);
 
     if (error) return <p className="inicio-error">No se han podido cargar las tareas: {error}</p>;
 
@@ -26,6 +31,9 @@ function Inicio() {
         try {
             const res = await fetch(`http://localhost:3000/api/tasks/${id}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
 
             const data = await res.json();
