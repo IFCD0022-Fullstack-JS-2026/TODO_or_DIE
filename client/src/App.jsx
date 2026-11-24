@@ -27,18 +27,21 @@ function App() {
           <NavLink to="/">Inicio</NavLink>
           <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
           {usuario ? (
-            <div className='header-login'>
-              <span>Hola, {usuario.nombre}</span>
-              <button onClick={logout} className="btn-logout">
-                Cerrar sesión
-              </button>
-            </div>
-          ) : ( 
-          <>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/registro">Registro</NavLink>
-          </>)
-           
+            <>
+              <NavLink to="/perfil">Mi perfil</NavLink>
+              <div className='header-login'>
+                <span>Hola, {usuario.nombre}</span>
+                <button onClick={logout} className="btn-logout">
+                  Cerrar sesión
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <NavLink to="/login">Login</NavLink>
+              <NavLink to="/registro">Registro</NavLink>
+            </>)
+
           }
 
         </nav>
@@ -65,7 +68,11 @@ function App() {
         }
         />
         <Route path="/registro" element={<Registro />} />
-        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/perfil" element={
+          <RutaProtegida>
+            <Perfil />
+          </RutaProtegida>
+        } />
         <Route path="*" element={<NoEncontrada />} />
       </Routes>
     </>
