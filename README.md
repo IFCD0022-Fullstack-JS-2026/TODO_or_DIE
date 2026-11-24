@@ -12,19 +12,11 @@ Funciona Online y Ofline.
 
 Tecnologías utilizadas para desarrollar la aplicación: 
 
-Client: 
-React
-Vite
-React Router
+Client: React Vite React Router
 
-Server: 
-Express
-mysql2
-Zod
-bcryptjs
+Server: Express mysql2 Zod bcryptjs jsonwebtoken
 
-Database: 
-MySQL
+Database: MySQL
 
 ## Instalación
 
@@ -35,7 +27,7 @@ cd TODO_or_DIE
 
 npm ci en la raíz, en server/ y en client/.
 Crear la base de datos con server/db/schema.sql.
-Copiar server/.env.example a server/.env y rellenarlo, con PORT=3000.
+Copiar server/.env.example a server/.env y rellenarlo con los datos de la base de datos, PORT=3000 y un JWT_SECRET. El JWT_SECRET debe ser el mismo que use el servidor para firmar los tokens del login; si cambia, los tokens anteriores dejan de ser válidos.
 Arrancar con npm run dev desde la raíz: arranca el servidor y el cliente a la vez. Los datos de prueba se cargan solos al arrancar el servidor.
 
 ## Usuarios de Prueba
