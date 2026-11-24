@@ -1,5 +1,4 @@
 @media (prefers-reduced-motion: reduce) {
-
   .perfil-input,
   .perfil-boton {
     transition: none;
@@ -19,8 +18,7 @@
   color: var(--color-text);
 }
 
-.perfil,
-.contenedor {
+.perfil {
   min-height: calc(100vh - 190px);
 }
 
@@ -89,7 +87,7 @@
   box-shadow: var(--shadow-focus);
 }
 
-/* Botón principal */
+/* Botones */
 .perfil-boton {
   width: 100%;
   box-sizing: border-box;
@@ -144,11 +142,11 @@
 }
 
 .perfil-borrar:hover:not(:disabled) {
-  background-color: #C52121;
+  background-color: var(--color-error-text);
 }
 
 .perfil-borrar:active:not(:disabled) {
-  background-color: #C52121;
+  background-color: var(--color-error-text);
   transform: scale(0.985);
 }
 
@@ -160,16 +158,16 @@
 
 /* Responsive */
 @media (max-width: 480px) {
-  .auth {
+  .perfil {
     padding: var(--space-4);
   }
 
-  .auth-titulo {
+  .perfil-titulo {
     font-size: var(--fs-2xl);
     margin-bottom: var(--space-4);
   }
 
-  .auth-form {
+  .perfil-form {
     padding: var(--space-6);
     border-radius: var(--radius-lg);
   }
