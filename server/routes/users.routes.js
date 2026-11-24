@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const { UserSchema, LoginSchema } = require('../schemas/user.schema.js');
+const { UserSchema, LoginSchema, PerfilSchema } = require('../schemas/user.schema.js');
 const pool = require("../db/connection.js")
 const { verificarToken } = require("../middleware/verificarToken.js");
 
@@ -95,6 +95,70 @@ router.get("/users/perfil", verificarToken, async (req, res) => {
     } catch (error) {
         return res.status(500).json({ success: false, message: "Error interno del servidor" });
     }
+});
+
+router.put("/users/perfil", verificarToken, async (req, res) => {
+    try {
+        const validacion = PerfilSchema.safeParse(req.body);
+        if (!validacion.success) {
+            const mensajesError = (error) => {
+                return error.issues.map((err) => err.message);
+            }
+            return res.status(400).json({
+                success: false, errors: mensajesError(validacion.error)
+            });
+        }
+
+        const { nombre, email } = validacion.data;
+        const [result] = await pool.query("select id from users where email = ? and id !=?", [email, req.usuario.id]);
+        if (result.length > 0) {
+            return res.status(409).json({ success: false, errors: ["Email ya registrado"] });
+        }
+
+        const [usuario] = await pool.query("select id from users where id = ?", [req.usuario.id]);
+        if (usuario.length > 0) {
+            return res.status(404).json({ success: false, errors: ["Usuario no encontrado"] });
+        }
+
+        await pool.query(
+            "update users set (nombre, email, id) values (?, ?, ?)",
+            [nombre, email, req.usuario.id]
+        );
+        return res.status(200).json({
+            success: true,
+            message: "Perfil actualizado",
+            data: { id, nombre, email }
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
+
+});
+
+router.delete("/users/perfil", verificarToken, async (req, res) => {
+    try {
+       const [usuario] = await pool.query("select id from users where id = ?", [req.usuario.id]);
+        if (usuario.length === 0) {
+            return res.status(404).json({ success: false, errors: ["Usuario no encontrado"] });
+        }
+        
+        await pool.query(
+            "delete from tasks where user_id = ?",
+            [req.usuario.id]
+        );
+        await pool.query(
+            "delete from users where id = ?",
+            [req.usuario.id]
+        );
+        return res.status(200).json({
+            success: true,
+            message: "Cuenta borrada"
+        });
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ success: false, message: "Error interno del servidor" });
+    }
+
 });
 
 module.exports = router;

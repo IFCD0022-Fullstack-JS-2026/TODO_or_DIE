@@ -127,4 +127,43 @@ El `<token>` se obtiene en la respuesta de `POST /api/users/login` (`data.token`
 **500 Internal Server Error**:
 ```json
 { "success": false, "message": "Error interno del servidor" }
+
 ```
+## PUT /api/users/perfil 
+
+Actualiza los datos del usuario. Requiere cabecera `Authorization`.
+
+### Request headers
+
+Authorization: Bearer <token>
+
+El `<token>` se obtiene en la respuesta de `POST /api/users/login` (`data.token`).
+
+### Respuestas
+Status 400 Bad Request: Validación fallida
+
+Status 409 Conflict: Email ya existente en la base de datos: "Email ya registrado"
+
+Status 404 Not Found: Token válido pero el usuario ya no existe: "Usuario no encontrado"
+
+Status 200 OK: Token válido y usuario encontrado: "Perfil actualizado"
+
+Status 500: Internal Server Error: "Error interno del servidor"
+
+## DELETE /api/users/perfil
+
+Elimina la cuenta del usuario. Requiere cabecera `Authorization`.
+
+### Request headers
+
+Authorization: Bearer <token>
+
+El `<token>` se obtiene en la respuesta de `POST /api/users/login` (`data.token`).
+
+### Respuestas
+
+Status 404 Not Found: Token válido pero el usuario ya no existe: "Usuario no encontrado"
+
+Status 200 OK: Token válido y usuario encontrado: "Cuenta borrada"
+
+Status 500: Internal Server Error: "Error interno del servidor"

@@ -12,7 +12,13 @@ const LoginSchema = z.object({
     password: z.string({ message: "La contraseña es obligatoria" }).min(1, { message: "La contraseña es obligatoria" })
 });
 
+const PerfilSchema = z.object({
+    nombre: z.string({ message: "El nombre es obligatorio" }).min(2, { message: "El nombre es obligatorio" }),
+    email: z.email({ message: "El email no es válido" }),
+});
+
 module.exports = {
     UserSchema,
-    LoginSchema
+    LoginSchema,
+    PerfilSchema
 };
