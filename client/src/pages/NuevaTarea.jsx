@@ -115,7 +115,7 @@ function NuevaTarea() {
 
 
                     <label htmlFor="categoria" className="campo"  >Categoría</label>
-                    <input type="text" id="categoria" name="categoria" placeholder="Añade aqui tu categoría..." className="input" value={form.categoria}
+                    <input type="text" id="categoria" name="categoria" placeholder="Añade aquí tu categoría..." className="input" value={form.categoria}
                         onChange={handleChange} />
                     {error.categoria && <p className="mensaje-error">{error.categoria}</p>}
 
