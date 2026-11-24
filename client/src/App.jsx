@@ -5,6 +5,7 @@ import Registro from './pages/Registro'
 import Inicio from './pages/Inicio'
 import NuevaTarea from './pages/NuevaTarea'
 import Perfil from './pages/Perfil'
+import EditarTarea from './pages/EditarTarea'
 import NoEncontrada from './pages/NoEncontrada'
 import RutaProtegida from './components/RutaProtegida.jsx'
 import { useAuth } from './context/useAuth.js'
@@ -24,7 +25,6 @@ function App() {
         <Link to="/" className="header-logo">TODO or DIE</Link>
 
         <nav className="header-nav">
-
           {usuario ? (
             <>
               <NavLink to="/">Inicio</NavLink>
@@ -41,10 +41,8 @@ function App() {
             <>
               <NavLink to="/login">Login</NavLink>
               <NavLink to="/registro">Registro</NavLink>
-            </>)
-
-          }
-
+            </>
+          )}
         </nav>
       </header>
 
@@ -53,22 +51,30 @@ function App() {
           <RutaProtegida>
             <Inicio />
           </RutaProtegida>
-        }
-        />
+        } />
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/tareas/nueva" element={
           <RutaProtegida>
             <NuevaTarea />
           </RutaProtegida>
-        }
-        />
+        } />
 
         <Route path="/registro" element={<Registro />} />
+
         <Route path="/perfil" element={
           <RutaProtegida>
             <Perfil />
           </RutaProtegida>
         } />
+
+        <Route path="/tareas/:id/editar" element={
+          <RutaProtegida>
+            <EditarTarea />
+          </RutaProtegida>
+        } />
+
         <Route path="*" element={<NoEncontrada />} />
       </Routes>
     </>

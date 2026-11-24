@@ -137,6 +137,19 @@
   border-radius: var(--radius-md);
 }
 
+/*Mensaje de editar tarea */
+.inicio-editar {
+  margin-left: 0.5rem;
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.inicio-editar:hover {
+  text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 480px) {
   .inicio {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/useAuth.js';
+import { Link } from 'react-router';
 import './Inicio.css';
 
 function Inicio() {
@@ -66,6 +67,7 @@ function Inicio() {
                                 <span className="inicio-fecha">{tarea.fecha_hora}</span>
                                 <span className="inicio-prioridad inicio-prioridad-alta">{tarea.prioridad}</span>
                                 <span className="inicio-cat">{tarea.categoria}</span>
+
                                 <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
                             </div>
                         </article>
@@ -86,6 +88,10 @@ function Inicio() {
                                 <span className="inicio-fecha">{tarea.fecha_hora}</span>
                                 <span className="inicio-prioridad inicio-prioridad-media">{tarea.prioridad}</span>
                                 <span className="inicio-cat">{tarea.categoria}</span>
+
+                                <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
+                                    Editar
+                                </Link>
                                 <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
                             </div>
                         </article>
