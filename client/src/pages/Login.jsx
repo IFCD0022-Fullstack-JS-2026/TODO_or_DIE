@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import './Auth.css'
 import { useAuth } from '../context/useAuth.js'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate, Navigate } from 'react-router'
 
 function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("")
-    const { login } = useAuth()
+    const { login, token } = useAuth()
     const navigate = useNavigate()
 
+    if (token) {
+        return <Navigate to="/" replace />
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -65,6 +68,9 @@ function Login() {
                 {error && <p className="auth-error">{error}</p>}
               
             </form>
+            <p className='login'>
+                ¿No tienes cuenta? <Link to="/registro">Regístrate</Link>
+            </p>
         </main>
     )
 }
