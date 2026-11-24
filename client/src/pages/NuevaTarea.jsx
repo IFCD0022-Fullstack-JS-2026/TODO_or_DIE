@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from '../context/useAuth.js';
 import './NuevaTarea.css';
 
 const Inicial = {
@@ -12,6 +13,7 @@ const Inicial = {
 
 function NuevaTarea() {
 
+    const { token } = useAuth();
     const [form, setForm] = useState(Inicial);
     const [error, setError] = useState({});
     const [mensaje, setMensaje] = useState("");
@@ -32,7 +34,7 @@ function NuevaTarea() {
         e.preventDefault();
 
         if (form.titulo.trim() === "") {
-            setError({ titulo: "El Titulo es obligatorio" })
+            setError({ titulo: "El título es obligatorio" })
             return
         }
 
@@ -42,7 +44,7 @@ function NuevaTarea() {
         }
 
         if (form.categoria.trim() === "") {
-            setError({ categoria: "La categoria es obligatoria" })
+            setError({ categoria: "La categoría es obligatoria" })
             return
         }
 
@@ -53,12 +55,18 @@ function NuevaTarea() {
             const tarea = await fetch("http://localhost:3000/api/tasks",
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
                     body: JSON.stringify({
-                        titulo: form.titulo, fecha_hora: form.fecha_hora,
-                        prioridad: form.prioridad, categoria: form.categoria, descripcion: form.descripcion, user_id: 1
-                    })
-                })
+                        titulo: form.titulo,
+                        fecha_hora: form.fecha_hora,
+                        prioridad: form.prioridad,
+                        categoria: form.categoria,
+                        descripcion: form.descripcion,
+                    }),
+                });
 
             const datos = await tarea.json();
 
@@ -86,8 +94,8 @@ function NuevaTarea() {
                 <h1 className="titulo2">Nueva Tarea</h1>
 
                 <form className="formulario" onSubmit={handleSubmit}>
-                    <label htmlFor="titulo" className="campo">Titulo</label>
-                    <input type="text" id="titulo" name="titulo" placeholder="Añade aqui tu tarea..." className="input" value={form.titulo}
+                    <label htmlFor="titulo" className="campo">Título</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Añade aquí tu tarea..." className="input" value={form.titulo}
                         onChange={handleChange} />
                     {error.titulo && <p className="mensaje-error">{error.titulo}</p>}
 
@@ -98,7 +106,7 @@ function NuevaTarea() {
                     <label htmlFor="prioridad" className="campo"  >Prioridad</label>
                     <select id="prioridad" name="prioridad" className="input" value={form.prioridad}
                         onChange={handleChange}>
-                        <option value="">-- Elije --</option>
+                        <option value="">-- Elige --</option>
                         <option value="alta">Alta</option>
                         <option value="media">Media</option>
                         <option value="baja">Baja</option>
@@ -112,7 +120,7 @@ function NuevaTarea() {
                     {error.categoria && <p className="mensaje-error">{error.categoria}</p>}
 
                     <label htmlFor="descripcion" className="campo"  >Descripción</label>
-                    <input type="text" id="descripcion" name="descripcion" placeholder="Añade aqui tu descripción..." className="input" value={form.descripcion}
+                    <input type="text" id="descripcion" name="descripcion" placeholder="Añade aquí tu descripción..." className="input" value={form.descripcion}
                         onChange={handleChange} />
 
                     {mensaje && (<p className="mensaje-exito">{mensaje}</p>)}
