@@ -16,6 +16,24 @@ router.get("/tasks", verificarToken, async (req, res) => {
   }
 });
 
+router.get("/tasks/estadisticas", verificarToken, async (req, res) => {
+   try {
+    const [total] = await pool.query("SELECT COUNT(*) AS total FROM tasks WHERE user_id =?",
+      [req.usuario.id]
+    );
+    const [porPrioridad] = await pool.query("SELECT prioridad, COUNT(*) AS total FROM tasks WHERE user_id =? group by prioridad",
+      [req.usuario.id]
+    );
+    const [porCategoria] = await pool.query("SELECT categoria, COUNT(*) AS total FROM tasks WHERE user_id =? group by categoria",
+      [req.usuario.id]
+    );
+    res.status(200).json({ success: true, data: { total, porPrioridad, porCategoria } });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    res.status(500).json({ success: false, message: "Error interno del servidor" });
+  }
+});
+
 router.get("/tasks/:id", verificarToken,async (req, res) => {
   try {
     const id = parseInt(req.params.id);

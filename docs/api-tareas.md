@@ -298,3 +298,49 @@ DELETE /api/tasks/1
 ```
 
 ---
+
+## GET /api/tasks/estadisticas
+
+Devuelve estadisticas del usuario con sesion.
+
+### Qué se envía
+
+- Cabecera `Authorization`.
+- `id` de la tarea en la ruta.
+
+```
+Authorization: Bearer <token>
+GET /api/tasks/estadisticas
+```
+
+### Qué responde
+
+**200 OK** — success
+```json
+{ success: true, data: { total, porPrioridad, porCategoria } }
+```
+
+**400 Bad Request** — `id` no numérico:
+```json
+{ "success": false, "message": "El id debe ser un número" }
+```
+
+**401 Unauthorized** — sin token o token inválido:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
+
+**404 Not Found** — la tarea no existe **o es de otro usuario**:
+```json
+{ "success": false, "message": "Tarea no encontrada" }
+```
+
+**500 Internal Server Error**:
+```json
+{ "success": false, "message": "Error interno del servidor" }
+```
+
+---
