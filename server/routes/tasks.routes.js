@@ -27,7 +27,8 @@ router.get("/tasks/estadisticas", verificarToken, async (req, res) => {
     const [porCategoria] = await pool.query("SELECT categoria, COUNT(*) AS total FROM tasks WHERE user_id =? group by categoria",
       [req.usuario.id]
     );
-    res.status(200).json({ success: true, data: { total, porPrioridad, porCategoria } });
+    const totalTareas = total[0].total;
+    res.status(200).json({ success: true, data: { totalTareas, porPrioridad, porCategoria } });
   } catch (error) {
     console.error("Error en el servidor:", error);
     res.status(500).json({ success: false, message: "Error interno del servidor" });

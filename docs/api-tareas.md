@@ -306,7 +306,6 @@ Devuelve estadisticas del usuario con sesion.
 ### Qué se envía
 
 - Cabecera `Authorization`.
-- `id` de la tarea en la ruta.
 
 ```
 Authorization: Bearer <token>
@@ -317,13 +316,42 @@ GET /api/tasks/estadisticas
 
 **200 OK** — success
 ```json
-{ success: true, data: { total, porPrioridad, porCategoria } }
+{
+    "success": true,
+    "data": {
+        "totalTareas": 3,
+        "porPrioridad": [
+            {
+                "prioridad": "alta",
+                "total": 1
+            },
+            {
+                "prioridad": "media",
+                "total": 1
+            },
+            {
+                "prioridad": "baja",
+                "total": 1
+            }
+        ],
+        "porCategoria": [
+            {
+                "categoria": "bbbbbbbbbbb",
+                "total": 1
+            },
+            {
+                "categoria": "eeeeeeeeeeeeeee",
+                "total": 1
+            },
+            {
+                "categoria": "hhhhhhhhhhhhh",
+                "total": 1
+            }
+        ]
+    }
+}
 ```
 
-**400 Bad Request** — `id` no numérico:
-```json
-{ "success": false, "message": "El id debe ser un número" }
-```
 
 **401 Unauthorized** — sin token o token inválido:
 ```json
@@ -333,10 +361,6 @@ GET /api/tasks/estadisticas
 { "success": false, "message": "Token no válido o caducado" }
 ```
 
-**404 Not Found** — la tarea no existe **o es de otro usuario**:
-```json
-{ "success": false, "message": "Tarea no encontrada" }
-```
 
 **500 Internal Server Error**:
 ```json
