@@ -222,3 +222,128 @@ Requiere cabecera `Authorization: Bearer <token>` (obtenido en `POST /api/users/
 ```json
 { "success": false, "message": "Error interno del servidor" }
 ```
+
+## POST /api/users/recuperar
+
+Solicita la recuperación de contraseña mediante email.
+
+No requiere autenticación.
+
+El usuario proporciona su email y, si está registrado, recibe un enlace
+para restablecer su contraseña.
+
+El enlace contiene un token JWT de recuperación con una validez de **15
+minutos**.
+
+### Request body
+
+``` json
+{
+  "email": "test@example.com"
+}
+```
+
+### Respuestas
+
+**200 OK**
+
+La respuesta es siempre la misma, independientemente de si el email está
+registrado o no, para evitar revelar qué cuentas existen:
+
+``` json
+{
+  "success": true,
+  "message": "Si el email está registrado, te hemos enviado un enlace"
+}
+```
+
+**400 Bad Request**
+
+``` json
+{
+  "success": false,
+  "errors": ["El email no es válido"]
+}
+```
+
+**500 Internal Server Error:**
+
+``` json
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
+```
+
+## POST /api/users/restablecer
+
+Restablece la contraseña del usuario mediante el token recibido por
+email.
+
+No requiere autenticación.
+
+El token debe ser válido, no haber caducado y corresponder a una
+solicitud de recuperación de contraseña.
+
+### Request body
+
+``` json
+{
+  "token": "token_jwt_recuperacion",
+  "nueva": "nuevaClave123"
+}
+```
+
+-   `token`: token JWT recibido en el email de recuperación.
+-   `nueva`: nueva contraseña, con un mínimo de 6 caracteres.
+
+### Respuestas
+
+**200 OK**
+
+``` json
+{
+  "success": true,
+  "message": "Contraseña cambiada"
+}
+```
+
+**400 Bad Request**
+
+``` json
+{
+  "success": false,
+  "errors": [
+    "La contraseña nueva debe tener al menos 6 caracteres"
+  ]
+}
+```
+
+**400 Bad Request**
+
+``` json
+{
+  "success": false,
+  "errors": [
+    "El enlace no es válido o ha caducado"
+  ]
+}
+```
+
+**404 Not Found**
+
+``` json
+{
+  "success": false,
+  "message": "Usuario no encontrado"
+}
+```
+
+**500 Internal Server Error:**
+
+``` json
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
+```
