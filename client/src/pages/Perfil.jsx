@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './Perfil.css'
-import { useNavigate } from 'react-router';
+import { useNavigate, NavLink } from 'react-router';
 import { useAuth } from '../context/useAuth'
 
 function FormPerfil({ usuario, setUsuario, token, logout }) {
@@ -106,7 +106,6 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
 
             <button className="perfil-boton" type='submit'>Guardar</button>
             <button className="perfil-borrar" type='button' onClick={handleBorrar}>Borrar Cuenta</button>
-
         </form>
     )
 }
@@ -123,7 +122,9 @@ function Perfil() {
                 token={token}
                 logout={logout} />
 
-
+            <NavLink to="/perfil/password" className="perfil-cambiar-password">
+                Cambiar contraseña
+            </NavLink>
         </main>
     )
 }
