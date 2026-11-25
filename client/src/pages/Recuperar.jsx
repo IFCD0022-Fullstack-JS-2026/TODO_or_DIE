@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import './Auth.css'
-import { useAuth } from '../context/useAuth.js'
 
 function Recuperar() {
 
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("")
     const [error, setError] = useState("")
-    const {recuperar} = useAuth()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,15 +13,25 @@ function Recuperar() {
         setError("");
         
         try {
-            const respuesta = await recuperar(email)
-            if (respuesta?.message) {
-                setMessage(respuesta.message)
+            const respuesta = await fetch('http://localhost:3000/api/users/recuperar',{
+                method: 'POST',
+                headers: {
+                    'Content.type': 'aplicaction/json'        
+                },
+                body : JSON.stringify({email}),
+            });
+
+            const data = await respuesta.json();
+
+            if (!respuesta.ok) {
+                setError(data.errors?.join(', ') || data.message)
+                return
             }
+            setMessage(data.message)
         } catch (err) {
-            setError(err.message)
+            setError(err.message);
         }
     };
-
     return (
         <main className="auth">
             <h1 className="auth-titulo">Recuperar Contraseña</h1>

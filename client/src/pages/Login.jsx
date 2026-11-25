@@ -72,7 +72,7 @@ function Login() {
                 ¿No tienes cuenta? <Link to="/registro">Regístrate</Link>
             </p>
             <p className='login'>
-                ¿Haz olvidado tu contraseña? <Link to="/recuperar">Recuperar</Link>
+                ¿Has olvidado tu contraseña? <Link to="/recuperar">Recuperar</Link>
             </p>
         </main>
     )
