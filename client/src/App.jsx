@@ -8,6 +8,7 @@ import Perfil from './pages/Perfil'
 import EditarTarea from './pages/EditarTarea'
 import NoEncontrada from './pages/NoEncontrada'
 import RutaProtegida from './components/RutaProtegida.jsx'
+import Estadisticas from './pages/Estadisticas.jsx'
 import { useAuth } from './context/useAuth.js'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <>
               <NavLink to="/">Inicio</NavLink>
               <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
+              <NavLink to="/tareas/estadisticas">Estadisticas</NavLink>
               <NavLink to="/perfil">Mi perfil</NavLink>
               <div className='header-login'>
                 <span>Hola, {usuario.nombre}</span>
@@ -72,6 +74,12 @@ function App() {
         <Route path="/tareas/:id/editar" element={
           <RutaProtegida>
             <EditarTarea />
+          </RutaProtegida>
+        } />
+
+        <Route path="/tareas/estadisticas" element={
+          <RutaProtegida>
+            <Estadisticas />
           </RutaProtegida>
         } />
 
