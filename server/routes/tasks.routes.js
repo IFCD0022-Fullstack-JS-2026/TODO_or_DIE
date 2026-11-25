@@ -17,7 +17,7 @@ router.get("/tasks", verificarToken, async (req, res) => {
 });
 
 router.get("/tasks/estadisticas", verificarToken, async (req, res) => {
-   try {
+  try {
     const [total] = await pool.query("SELECT COUNT(*) AS total FROM tasks WHERE user_id =?",
       [req.usuario.id]
     );
@@ -35,7 +35,23 @@ router.get("/tasks/estadisticas", verificarToken, async (req, res) => {
   }
 });
 
-router.get("/tasks/:id", verificarToken,async (req, res) => {
+router.get("/tasks/hoy", verificarToken, async (req, res) => {
+
+  try {
+
+    const [hoy] = await pool.query(" SELECT * FROM tasks WHERE user_id = ? AND DATE(fecha_hora) = CURDATE() ORDER BY fecha_hora",
+      [req.usuario.id]
+    );
+    
+  
+     return res.status(200).json({ success: true, data: hoy });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({ success: false, message: "Error interno del servidor" });
+  }
+});
+
+router.get("/tasks/:id", verificarToken, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
@@ -85,7 +101,7 @@ router.post('/tasks', verificarToken, async (req, res) => {
       return res.status(400).json({ success: false, errors: mensajesError(validacion.error) });
     }
 
-    const { titulo, descripcion, prioridad, categoria} = validacion.data;
+    const { titulo, descripcion, prioridad, categoria } = validacion.data;
     const fecha_hora = validacion.data.fecha_hora || null;
     const user_id = req.usuario.id;
     const [result] = await pool.query(
@@ -124,7 +140,7 @@ router.put('/tasks/:id', verificarToken, async (req, res) => {
       return res.status(400).json({ success: false, errors: validacion.error.issues.map((err) => err.message) });
     }
 
-    const { titulo, descripcion, prioridad, categoria} = validacion.data;
+    const { titulo, descripcion, prioridad, categoria } = validacion.data;
     const fecha_hora = validacion.data.fecha_hora || null;
 
     const [result] = await pool.query(
