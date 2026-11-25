@@ -10,6 +10,7 @@ import NoEncontrada from './pages/NoEncontrada'
 import RutaProtegida from './components/RutaProtegida.jsx'
 import { useAuth } from './context/useAuth.js'
 import BotonTema from './components/BotonTema';
+import CambiarPassword from './pages/CambiarPassword';
 
 function App() {
   const navigate = useNavigate();
@@ -68,6 +69,12 @@ function App() {
         <Route path="/perfil" element={
           <RutaProtegida>
             <Perfil />
+          </RutaProtegida>
+        } />
+
+        <Route path="/perfil/password" element={
+          <RutaProtegida>
+            <CambiarPassword />
           </RutaProtegida>
         } />
 
