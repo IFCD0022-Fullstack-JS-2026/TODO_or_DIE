@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Perfil.css'
-import { Navigate } from 'react-router';
-import { useAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router';
+import { useAuth } from '../context/useAuth'
 
 function FormPerfil({ usuario, setUsuario, token, logout }) {
     const [nombre, setNombre] = useState(usuario.nombre);
@@ -10,8 +10,12 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
     const [error, setError] = useState("");
     const [mensaje, setMensaje] = useState("");
 
+    const navigate = useNavigate();
+
     const handleGuardar = async (e) => {
         e.preventDefault();
+        setError("");
+        setMensaje("");
 
         try{
             const actualizar = await fetch("http://localhost:3000/api/users/perfil", {
@@ -29,10 +33,10 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
                 setUsuario(datos.data)
                 setMensaje("Perfil actualizado")
             }
-            else if (actualizar.status === 400 || actualizar.status === 409) {
-                setMensaje(datos.error.join(", "));
+            else if ((actualizar.status === 400 || actualizar.status === 409) && Array.isArray(datos.errors)) {
+                setMensaje(datos.errors.join(", "));
             } else {
-                setError(datos.message)
+                setError(datos.message || "Error Servidor");
             }
                 
         } catch {
@@ -42,6 +46,8 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
 
     const handleBorrar = async (e) => {
         e.preventDefault();
+        setError("");
+        setMensaje("");
 
         if (window.confirm("¿Quieres eliminar esta cuenta?")) {
             try{
@@ -57,12 +63,12 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
 
             if (borrar.status === 200) {
                 logout()
-                Navigate("/login")
+                navigate("/login", { replace: true})
             }
-            else if (borrar.status === 400 || borrar.status === 409) {
-                setMensaje(datos.error.join(", "));
+            else if ((borrar.status === 400 || borrar.status === 409) && Array.isArray(datos.errors)) {
+                setMensaje(datos.errors.join(", "));
             } else {
-                setError(datos.message)
+                setError(datos.message || "Error Servidor");
             }
                 
         } catch {
@@ -86,7 +92,6 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
                     onChange={(e) => setNombre(e.target.value)} 
                     />
                 </label>
-                {mensaje && ( <p className={error ? "perfil-error" : "perfil-exito"}>{mensaje}</p>)}
 
                 <label className="perfil-campo">
                     Email
@@ -98,7 +103,8 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
                     onChange={(e) => setEmail(e.target.value)}
                    />
                 </label>
-                {mensaje && ( <p className={error ? "perfil-error" : "perfil-exito"}>{mensaje}</p>)}
+                {mensaje && <p className="perfil-exito">{mensaje}</p>}
+                {error && <p className="perfil-error">{error}</p>}
                 
                 <button className="perfil-boton" type='submit'>Guardar</button>
                 <button className="perfil-borrar" type='button' onClick={handleBorrar}>Borrar Cuenta</button>
@@ -109,13 +115,17 @@ function FormPerfil({ usuario, setUsuario, token, logout }) {
 }
 
 function Perfil() {
-    const { usuario } = useAuth();
+    const { usuario, setUsuario, token, logout } = useAuth();
     if (!usuario) return <p>Cargando...</p>;
 
     return (
         <main className="perfil">
             <h1 className="perfil-titulo">Mi Perfil</h1>
-            <FormPerfil usuario={usuario} />
+            <FormPerfil usuario={usuario}
+             setUsuario={setUsuario}
+             token={token}
+             logout={logout} />
+             
         
         </main>
     )
