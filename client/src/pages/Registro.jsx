@@ -1,14 +1,21 @@
 import './Auth.css'
 import { useState } from 'react'
-import { NavLink } from 'react-router'
+import { useAuth } from '../context/useAuth'
+import { Link, useNavigate, Navigate } from 'react-router'
 
 function Registro() {
 
     const [nombre, setNombre] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [mensaje, setMensaje] = useState("")
     const [error, setError] = useState("")
+
+    const {login, token} = useAuth()
+    const navigate = useNavigate()
+
+    if (token) {
+        return <Navigate to="/" replace />
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,24 +24,29 @@ function Registro() {
             setError("Todos los campos deben estar rellenos");
             return
         }
+        try {
+            const res = await fetch('http://localhost:3000/api/users/register', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nombre: nombre, email: email, password: password })
+            })
 
-        const res = await fetch('http://localhost:3000/api/users/register', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nombre: nombre, email: email, password: password })
-        })
-
-        const datos = await res.json();
-        if (!res.ok) {
-            if (datos.errors) {
-                setError(datos.errors.join(", "));
-            } else {
-                setError(datos.message);
+            const datos = await res.json();
+            if (!res.ok) {
+                if (datos.errors) {
+                    setError(datos.errors.join(", "));
+                } else {
+                    setError(datos.message);
+                }
+                return;
             }
-            return;
+            if (res.status === 201) {
+                await login(email, password);
+                navigate("/")
+            }
+        } catch {
+            setError("Error de conexión con el servidor")
         }
-
-        setMensaje("Cuenta creada")
     }
 
     const handleInputChange = (e) => {
@@ -69,15 +81,9 @@ function Registro() {
                 )}
                 <button className="auth-boton" type='submit'>Crear cuenta</button>
             </form>
-            {mensaje && (
-                <div className="auth-success">
-                    <p>{mensaje}</p>
-                    <nav className='login'>
-                        <NavLink to="/login">Login</NavLink>
-                    </nav>
-                </div>
-            )}
-
+            <p className='login'>
+                ¿Ya tienes cuenta? <Link to="/login">Entra</Link>
+            </p>
         </main>
     )
 }

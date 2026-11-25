@@ -167,3 +167,183 @@ Status 404 Not Found: Token válido pero el usuario ya no existe: "Usuario no en
 Status 200 OK: Token válido y usuario encontrado: "Cuenta borrada"
 
 Status 500: Internal Server Error: "Error interno del servidor"
+
+## PUT /api/users/password
+
+Cambia la contraseña del usuario autenticado.
+
+### Autenticación
+
+Requiere cabecera `Authorization: Bearer <token>` (obtenido en `POST /api/users/login`).
+
+### Request body
+
+```json
+{
+  "actual": "123456",
+  "nueva": "nuevaClave123"
+}
+```
+
+- `actual`: contraseña actual del usuario.
+- `nueva`: contraseña nueva, mínimo 6 caracteres.
+
+### Respuestas
+
+**200 OK** — contraseña actualizada:
+```json
+{ "success": true, "message": "Contraseña actualizada" }
+```
+
+**400 Bad Request** — validación fallida:
+```json
+{ "success": false, "errors": ["La contraseña nueva debe tener al menos 6 caracteres"] }
+```
+
+**400 Bad Request** — contraseña actual incorrecta:
+```json
+{ "success": false, "errors": ["La contraseña actual no es correcta"] }
+```
+
+**401 Unauthorized** — sin token o token inválido/caducado:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
+
+**404 Not Found** — el usuario del token ya no existe:
+```json
+{ "success": false, "message": "Usuario no encontrado" }
+```
+
+**500 Internal Server Error**:
+```json
+{ "success": false, "message": "Error interno del servidor" }
+```
+
+## POST /api/users/recuperar
+
+Solicita la recuperación de contraseña mediante email.
+
+No requiere autenticación.
+
+El usuario proporciona su email y, si está registrado, recibe un enlace
+para restablecer su contraseña.
+
+El enlace contiene un token JWT de recuperación con una validez de **15
+minutos**.
+
+### Request body
+
+``` json
+{
+  "email": "test@example.com"
+}
+```
+
+### Respuestas
+
+**200 OK**
+
+La respuesta es siempre la misma, independientemente de si el email está
+registrado o no, para evitar revelar qué cuentas existen:
+
+``` json
+{
+  "success": true,
+  "message": "Si el email está registrado, te hemos enviado un enlace"
+}
+```
+
+**400 Bad Request**
+
+``` json
+{
+  "success": false,
+  "errors": ["El email no es válido"]
+}
+```
+
+**500 Internal Server Error:**
+
+``` json
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
+```
+
+## POST /api/users/restablecer
+
+Restablece la contraseña del usuario mediante el token recibido por
+email.
+
+No requiere autenticación.
+
+El token debe ser válido, no haber caducado y corresponder a una
+solicitud de recuperación de contraseña.
+
+### Request body
+
+``` json
+{
+  "token": "token_jwt_recuperacion",
+  "nueva": "nuevaClave123"
+}
+```
+
+-   `token`: token JWT recibido en el email de recuperación.
+-   `nueva`: nueva contraseña, con un mínimo de 6 caracteres.
+
+### Respuestas
+
+**200 OK**
+
+``` json
+{
+  "success": true,
+  "message": "Contraseña cambiada"
+}
+```
+
+**400 Bad Request**
+
+``` json
+{
+  "success": false,
+  "errors": [
+    "La contraseña nueva debe tener al menos 6 caracteres"
+  ]
+}
+```
+
+**400 Bad Request**
+
+``` json
+{
+  "success": false,
+  "errors": [
+    "El enlace no es válido o ha caducado"
+  ]
+}
+```
+
+**404 Not Found**
+
+``` json
+{
+  "success": false,
+  "message": "Usuario no encontrado"
+}
+```
+
+**500 Internal Server Error:**
+
+``` json
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
+```
