@@ -16,7 +16,7 @@ function Recuperar() {
             const respuesta = await fetch('http://localhost:3000/api/users/recuperar',{
                 method: 'POST',
                 headers: {
-                    'Content.type': 'aplicaction/json'        
+                    'Content-Type': 'aplicaction/json'        
                 },
                 body : JSON.stringify({email}),
             });
