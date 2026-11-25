@@ -8,6 +8,8 @@ import Perfil from './pages/Perfil'
 import EditarTarea from './pages/EditarTarea'
 import NoEncontrada from './pages/NoEncontrada'
 import RutaProtegida from './components/RutaProtegida.jsx'
+import Recuperar from './pages/Recuperar.jsx'
+import Restablecer from './pages/Restablecer.jsx'
 import { useAuth } from './context/useAuth.js'
 import BotonTema from './components/BotonTema';
 import CambiarPassword from './pages/CambiarPassword';
@@ -83,6 +85,9 @@ function App() {
             <EditarTarea />
           </RutaProtegida>
         } />
+
+        <Route path="/recuperar" element={<Recuperar />} />
+        <Route path="/restablecer/:token" element={<Restablecer />} />
 
         <Route path="*" element={<NoEncontrada />} />
       </Routes>
