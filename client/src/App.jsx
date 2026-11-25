@@ -9,6 +9,7 @@ import EditarTarea from './pages/EditarTarea'
 import NoEncontrada from './pages/NoEncontrada'
 import RutaProtegida from './components/RutaProtegida.jsx'
 import { useAuth } from './context/useAuth.js'
+import BotonTema from './components/BotonTema';
 
 function App() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function App() {
         <Link to="/" className="header-logo">TODO or DIE</Link>
 
         <nav className="header-nav">
+          <BotonTema />
           {usuario ? (
             <>
               <NavLink to="/">Inicio</NavLink>
