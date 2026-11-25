@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import './Auth.css'
-import { useAuth } from '../context/useAuth.js'
 
 function Restablecer() {
 
     const { token } = useParams();
     const navigate = useNavigate();
-    const { restablecer } = useAuth();
 
     const [nueva, setNueva] = useState("");
     const [repetir, setRepetir] = useState("");
@@ -23,8 +21,20 @@ function Restablecer() {
         }
 
         try {
-            await restablecer({ token, nueva });
+            const respuesta = await fetch('http://localhost:3000/api/users/restablecer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token, nueva })
+            });
+            const data = await respuesta.json();
+            if (!respuesta.ok) {
+                setError(data.errors?.join(', ') || data.message)
+                return;
+            }
             navigate('/login');
+
         } catch (err) {
             setError(err.message)
         }
