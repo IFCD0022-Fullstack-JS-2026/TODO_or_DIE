@@ -51,6 +51,22 @@ router.get("/tasks/estadisticas", verificarToken, async (req, res) => {
   }
 });
 
+router.get("/tasks/hoy", verificarToken, async (req, res) => {
+
+  try {
+
+    const [hoy] = await pool.query(" SELECT * FROM tasks WHERE user_id = ? AND DATE(fecha_hora) = CURDATE() ORDER BY fecha_hora",
+      [req.usuario.id]
+    );
+    
+  
+     return res.status(200).json({ success: true, data: hoy });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({ success: false, message: "Error interno del servidor" });
+  }
+});
+
 router.get("/tasks/:id", verificarToken, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
