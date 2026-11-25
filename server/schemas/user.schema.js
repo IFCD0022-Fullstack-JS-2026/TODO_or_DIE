@@ -22,9 +22,20 @@ const PasswordSchema = z.object({
     nueva: z.string({ message: "La contraseña nueva es obligatoria" }).min(6, { message: "La contraseña nueva debe tener al menos 6 caracteres" })
 });
 
+const RecuperarSchema = z.object({
+    email: z.email({ message: "El email no es válido" })
+});
+
+const RestablecerSchema = z.object({
+    token: z.string({ message: "El token es obligatorio" }).min(1, { message: "El token es obligatorio" }),
+    nueva: z.string({ message: "La contraseña nueva es obligatoria" }).min(6, { message: "La contraseña nueva debe tener al menos 6 caracteres" })
+});
+
 module.exports = {
     UserSchema,
     LoginSchema,
     PerfilSchema,
-    PasswordSchema
+    PasswordSchema,
+    RecuperarSchema,
+    RestablecerSchema
 };
