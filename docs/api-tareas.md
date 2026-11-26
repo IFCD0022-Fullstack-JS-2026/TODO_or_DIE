@@ -54,7 +54,8 @@ Se pueden usar **los dos a la vez**, o **ninguno**. El resultado siempre se orde
       "fecha_hora": "2026-11-23 19:30:00",
       "prioridad": "alta",
       "categoria": "Frontend",
-      "user_id": 1
+      "user_id": 1,
+      "completada": 0
     }
   ]
 }
@@ -102,7 +103,8 @@ GET /api/tasks/1
     "fecha_hora": "2026-11-23 19:30:00",
     "prioridad": "alta",
     "categoria": "Frontend",
-    "user_id": 1
+    "user_id": 1,
+    "completada": 0
   }
 }
 ```
@@ -154,7 +156,8 @@ Content-Type: application/json
   "descripcion": "Aplicar el design system a las pantallas",
   "fecha_hora": "2026-11-23 19:30:00",
   "prioridad": "alta",
-  "categoria": "Frontend"
+  "categoria": "Frontend",
+  "completada": 0
 }
 ```
 
@@ -406,6 +409,7 @@ GET /api/tasks/hoy
             "prioridad": "alta",
             "categoria": "Test",
             "user_id": 3,
+            "completada": 0,
             "created_at": "2026-11-25 19:22:29"
         }
     ]
@@ -470,3 +474,68 @@ GET /api/tasks/categorias
 ```
 
 ---
+
+## ⚠️ Acción requerida para bases de datos existentes
+
+Antes de probar la nueva ruta `PATCH /api/tasks/:id/completada`, cada uno debe ejecutar una vez en MySQL:
+
+```sql
+ALTER TABLE tasks ADD COLUMN completada BOOLEAN NOT NULL DEFAULT FALSE;
+```
+
+## PATCH /api/tasks/:id/completada
+
+Alterna el estado de una tarea entre pendiente y completada.
+
+### Qué se envía
+
+- Cabecera `Authorization`.
+- `id` de la tarea en la ruta. **No lleva body.**
+
+```
+Authorization: Bearer <token>
+PATCH /api/tasks/1/completada
+```
+
+### Qué responde
+
+**200 OK** — tarea actualizada con su nuevo estado:
+```json
+{
+  "success": true,
+  "message": "Tarea actualizada",
+  "data": {
+    "id": 1,
+    "titulo": "Terminar el CSS",
+    "descripcion": "Aplicar el design system",
+    "fecha_hora": "2026-11-23 19:30:00",
+    "prioridad": "alta",
+    "categoria": "Frontend",
+    "user_id": 1,
+    "completada": 1
+  }
+}
+```
+
+**400 Bad Request** — `id` no numérico:
+```json
+{ "success": false, "message": "El id debe ser un número" }
+```
+
+**401 Unauthorized** — sin token o token inválido:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
+
+**404 Not Found** — la tarea no existe **o es de otro usuario**:
+```json
+{ "success": false, "message": "Tarea no encontrada" }
+```
+
+**500 Internal Server Error**:
+```json
+{ "success": false, "message": "Error interno del servidor" }
+```
