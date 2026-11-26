@@ -34,7 +34,6 @@ function App() {
             {usuario ? (
               <>
                 <NavLink to="/">Mis tareas</NavLink>
-                <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
                 <NavLink to="/tareas/estadisticas">Estadísticas</NavLink>
                 <NavLink to="/perfil">Mi perfil</NavLink>
               </>
