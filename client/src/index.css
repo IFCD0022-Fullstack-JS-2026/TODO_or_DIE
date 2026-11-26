@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nosifer&display=swap');
 
 :root {
+  color-scheme: light;
+
   /* Tipografía */
   --font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-titulo: 'Nosifer', cursive, sans-serif;
 
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
@@ -18,10 +22,11 @@
   --fw-semibold: 600;
   --fw-bold: 700;
 
-  /* Colores */
+  /* Colores (Modo Claro) */
   --color-bg: #FFFFFF;
   --color-bg-subtle: #F8FAFC;
   --color-surface: #FFFFFF;
+  --color-surface-hover: #F1F5F9;
   --color-border: #E2E8F0;
   --color-border-strong: #CBD5E1;
 
@@ -30,27 +35,40 @@
   --color-text-muted: #64748B;
   --color-placeholder: #94A3B8;
 
-  /* Primario */
+  /* Primario (azul índigo) — igual en claro y oscuro */
   --color-primary: #4F46E5;
   --color-primary-hover: #4338CA;
   --color-primary-active: #3730A3;
   --color-primary-soft: #EEF2FF;
   --color-on-primary: #FFFFFF;
+  /* Variante para texto: misma que el primario en claro */
+  --color-primary-text: #4F46E5;
 
-  /* Prioridades */
+  /* Prioridades (semáforo) — iguales en claro y oscuro */
   --color-priority-high: #DC2626;
+  --color-priority-high-bg: #FEF2F2;
   --color-priority-medium: #B45309;
+  --color-priority-medium-bg: #FFFBEB;
   --color-priority-low: #15803D;
+  --color-priority-low-bg: #F0FDF4;
 
   /* Estados */
+  --color-error: #DC2626;
   --color-error-bg: #FEF2F2;
   --color-error-border: #FECACA;
   --color-error-text: #991B1B;
+
+  --color-success: #16A34A;
   --color-success-bg: #F0FDF4;
   --color-success-border: #BBF7D0;
   --color-success-text: #166534;
 
-  /* Espaciado  */
+  --color-warning: #D97706;
+  --color-warning-bg: #FFFBEB;
+  --color-warning-border: #FDE68A;
+  --color-warning-text: #92400E;
+
+  /* Espaciado */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -68,6 +86,64 @@
   /* Sombras */
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
   --shadow-focus: 0 0 0 3px rgba(79, 70, 229, 0.20);
+}
+
+/* ============================================================
+   TEMA OSCURO
+   Solo se redefinen fondos, superficies, bordes, textos y los
+   fondos/bordes de los estados. Los colores de marca
+   (--color-primary*, --color-priority-*) se HEREDAN del :root
+   claro y se mantienen idénticos en ambos modos.
+   ============================================================ */
+:root[data-tema="dark"] {
+  color-scheme: dark;
+
+  /* Fondos y superficies */
+  --color-bg: #0B0F17;
+  --color-bg-subtle: #0F1622;
+  --color-surface: #151C28;
+  --color-surface-hover: #1E2738;
+  --color-border: #2A3548;
+  --color-border-strong: #3B4A63;
+
+  /* Textos */
+  --color-text: #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #94A3B8;
+  --color-placeholder: #64748B;
+
+  /* Primario: NO se redefine
+     Se heredan --color-primary, --color-primary-hover,
+     --color-primary-active, --color-primary-soft y
+     --color-on-primary del :root claro. */
+
+  /* Solo cambiamos la variante de texto del primario
+     para que los enlaces del menú cumplan sobre fondo oscuro
+     Mismo hue índigo, más luminoso. */
+  --color-primary-text: #818CF8;
+
+  /* Prioridades: NO se redefinen. Se heredan
+     --color-priority-high, --color-priority-medium,
+     --color-priority-low y sus -bg del :root claro. */
+
+  /* Estados: fondo y borde adaptados a superficie oscura.
+     El color base (--color-error, --color-success, --color-warning)
+     se mantiene heredado. */
+  --color-error-bg: rgba(220, 38, 38, 0.16);
+  --color-error-border: rgba(220, 38, 38, 0.35);
+  --color-error-text: #FCA5A5;
+
+  --color-success-bg: rgba(22, 163, 74, 0.16);
+  --color-success-border: rgba(22, 163, 74, 0.35);
+  --color-success-text: #86EFAC;
+
+  --color-warning-bg: rgba(217, 119, 6, 0.16);
+  --color-warning-border: rgba(217, 119, 6, 0.35);
+  --color-warning-text: #FDE68A;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-focus: 0 0 0 3px rgba(79, 70, 229, 0.28);
 }
 
 body {

@@ -71,6 +71,9 @@ function Login() {
             <p className='login'>
                 ¿No tienes cuenta? <Link to="/registro">Regístrate</Link>
             </p>
+            <p className='login'>
+                ¿Has olvidado tu contraseña? <Link to="/recuperar">Recuperar</Link>
+            </p>
         </main>
     )
 }

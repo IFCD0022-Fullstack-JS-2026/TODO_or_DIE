@@ -9,7 +9,11 @@ import EditarTarea from './pages/EditarTarea'
 import NoEncontrada from './pages/NoEncontrada'
 import RutaProtegida from './components/RutaProtegida.jsx'
 import Estadisticas from './pages/Estadisticas.jsx'
+import Recuperar from './pages/Recuperar.jsx'
+import Restablecer from './pages/Restablecer.jsx'
 import { useAuth } from './context/useAuth.js'
+import BotonTema from './components/BotonTema';
+import CambiarPassword from './pages/CambiarPassword';
 
 function App() {
   const navigate = useNavigate();
@@ -26,6 +30,7 @@ function App() {
         <Link to="/" className="header-logo">TODO or DIE</Link>
 
         <nav className="header-nav">
+          <BotonTema />
           {usuario ? (
             <>
               <NavLink to="/">Inicio</NavLink>
@@ -71,17 +76,27 @@ function App() {
           </RutaProtegida>
         } />
 
+        <Route path="/perfil/password" element={
+          <RutaProtegida>
+            <CambiarPassword />
+          </RutaProtegida>
+        } />
+
         <Route path="/tareas/:id/editar" element={
           <RutaProtegida>
             <EditarTarea />
           </RutaProtegida>
         } />
 
+
         <Route path="/tareas/estadisticas" element={
           <RutaProtegida>
             <Estadisticas />
           </RutaProtegida>
         } />
+
+        <Route path="/recuperar" element={<Recuperar />} />
+        <Route path="/restablecer/:token" element={<Restablecer />} />
 
         <Route path="*" element={<NoEncontrada />} />
       </Routes>
