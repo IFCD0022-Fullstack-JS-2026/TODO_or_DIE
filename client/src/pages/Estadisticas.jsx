@@ -9,11 +9,7 @@ function Estadisticas() {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    if (!token) {
-      setCargando(false);
-      setError("No hay sesión activa");
-      return;
-    }
+
     const cargarEstadisiticas = async () => {
       setCargando(true);
       setError(null);
@@ -63,10 +59,7 @@ function Estadisticas() {
     );
   }
 
-  const prioridades = estadisticas.porPrioridad || [];
   const categorias = estadisticas.porCategoria || [];
-
- 
 
   const prioridadesBase = [
     { prioridad: "alta", clase: "estadisticas-alta" },
