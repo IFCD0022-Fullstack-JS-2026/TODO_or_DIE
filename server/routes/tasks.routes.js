@@ -51,6 +51,22 @@ router.get("/tasks/hoy", verificarToken, async (req, res) => {
   }
 });
 
+
+router.get("/tasks/categorias", verificarToken, async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT DISTINCT categoria FROM tasks WHERE user_id = ? ORDER BY categoria", [req.usuario.id]);
+    
+    const data = rows.map((fila) => fila.categoria);
+
+    return res.status(200).json({ success: true, data });
+
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({ success: false, message: "Error interno del servidor" });
+  }
+});
+
+
 router.get("/tasks/:id", verificarToken, async (req, res) => {
   try {
     const id = parseInt(req.params.id);

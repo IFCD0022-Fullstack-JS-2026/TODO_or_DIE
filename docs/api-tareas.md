@@ -419,3 +419,45 @@ GET /api/tasks/hoy
 ```
 
 ---
+
+## GET /api/tasks/categorias 
+
+Devuelve las categorías del usuario
+
+### Qué se envía
+
+- Cabecera `Authorization`.
+
+```
+Authorization: Bearer <token>
+GET /api/tasks/categorias
+```
+
+### Qué responde
+
+**200 OK** — success
+```json
+{
+    "success": true,
+    "data": [
+        "Marketing",
+        "Presupuesto",
+        "TodoOrDie"
+    ]
+}
+```
+
+**401 Unauthorized** — sin token o token inválido:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
+
+**500 Internal Server Error**:
+```json
+{ "success": false, "message": "Error interno del servidor" }
+```
+
+---
