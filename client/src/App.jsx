@@ -29,25 +29,29 @@ function App() {
         <Link to="/" className="header-logo">TODO or DIE</Link>
 
         <nav className="header-nav">
-          <BotonTema />
-          {usuario ? (
-            <>
-              <NavLink to="/">Inicio</NavLink>
-              <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
-              <NavLink to="/perfil">Mi perfil</NavLink>
-              <div className='header-login'>
-                <span>Hola, {usuario.nombre}</span>
-                <button onClick={handleLogout} className="btn-logout">
-                  Cerrar sesión
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <NavLink to="/login">Login</NavLink>
-              <NavLink to="/registro">Registro</NavLink>
-            </>
-          )}
+          <div className="header-links">
+            {usuario ? (
+              <>
+                <NavLink to="/">Mis tareas</NavLink>
+                <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
+                <NavLink to="/perfil">Mi perfil</NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/login">Login</NavLink>
+                <NavLink to="/registro">Registro</NavLink>
+              </>
+            )}
+          </div>
+
+          <div className="header-acciones">
+            <BotonTema />
+            {usuario && (
+              <button type="button" onClick={handleLogout} className="btn-logout">
+                Cerrar sesión
+              </button>
+            )}
+          </div>
         </nav>
       </header>
 

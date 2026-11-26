@@ -1,6 +1,6 @@
 @media (prefers-reduced-motion: reduce) {
   .header-nav a,
-  .header-login button,
+  .btn-logout,
   .boton-tema {
     transition: none;
   }
@@ -26,10 +26,28 @@
   letter-spacing: -0.02em;
   color: var(--color-priority-high);
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 /* Menú */
 .header-nav {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-4);
+}
+
+.header-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.header-acciones {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -46,19 +64,9 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 
-.header-login {
-  color: var(--color-primary-text);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.header-login span {
-  margin-right: 5px;
-}
-
-.header-login button {
+.btn-logout {
   padding: var(--space-2) var(--space-4);
+  font-family: var(--font-family);
   font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
   color: var(--color-primary-text);
@@ -70,7 +78,7 @@
 }
 
 .header-nav a:hover,
-.header-login button:hover {
+.btn-logout:hover {
   background: var(--color-primary-soft);
 }
 
@@ -81,7 +89,7 @@
 
 .header-logo:focus-visible,
 .header-nav a:focus-visible,
-.header-login button:focus-visible,
+.btn-logout:focus-visible,
 .boton-tema:focus-visible {
   outline: none;
   box-shadow: var(--shadow-focus);
@@ -111,33 +119,44 @@
 }
 
 :root[data-tema="dark"] .header-nav a,
-:root[data-tema="dark"] .header-login,
-:root[data-tema="dark"] .header-login button,
+:root[data-tema="dark"] .btn-logout,
 :root[data-tema="dark"] .boton-tema {
   color: var(--color-text);
 }
 
 :root[data-tema="dark"] .header-nav a:hover,
-:root[data-tema="dark"] .header-login button:hover,
+:root[data-tema="dark"] .btn-logout:hover,
 :root[data-tema="dark"] .boton-tema:hover {
   color: var(--color-text);
   background: var(--color-surface-hover);
 }
 
-/* El enlace activo sigue destacando en modo oscuro */
 :root[data-tema="dark"] .header-nav a.active {
   color: var(--color-on-primary);
   background: var(--color-primary);
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .header {
     flex-direction: column;
+    align-items: stretch;
     padding: var(--space-4);
   }
 
+  .header-logo {
+    text-align: center;
+  }
+
   .header-nav {
+    flex-direction: column;
     justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .header-links,
+  .header-acciones {
+    justify-content: center;
+    margin-left: 0;
   }
 }
