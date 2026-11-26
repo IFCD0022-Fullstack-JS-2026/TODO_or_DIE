@@ -34,9 +34,8 @@ function App() {
           <div className="header-links">
             {usuario ? (
               <>
-                <NavLink to="/">Inicio</NavLink>
-                <NavLink to="/tasks/hoy">Para Hoy</NavLink>
                 <NavLink to="/">Mis tareas</NavLink>
+                <NavLink to="/tasks/hoy">Para Hoy</NavLink>
                 <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
                 <NavLink to="/tareas/estadisticas">Estadísticas</NavLink>
                 <NavLink to="/perfil">Mi perfil</NavLink>
