@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import './Inicio.css';
 
 function Inicio() {
-    const { token } = useAuth();
+    const { token, usuario } = useAuth();
     const [tareasAPI, setTareasAPI] = useState([]);
     const [error, setError] = useState(null);
 
@@ -76,6 +76,14 @@ function Inicio() {
 
     return (
         <main className="inicio">
+            <div className="inicio-cabecera">
+                <p className="inicio-saludo">Hola, {usuario?.nombre ?? ''}</p>
+                <Link to="/tareas/nueva" className="inicio-crear-btn">
+                    <span className="inicio-crear-icono" aria-hidden="true">➕</span>
+                    <span>Crear tarea</span>
+                </Link>
+            </div>
+
             <h1 className="inicio-titulo">Lista de tareas</h1>
 
             <form className="inicio-filtro-form" onSubmit={handleBuscar}>
