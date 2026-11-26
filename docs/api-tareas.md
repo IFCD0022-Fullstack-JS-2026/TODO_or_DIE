@@ -31,6 +31,15 @@ Solo la cabecera `Authorization`.
 Authorization: Bearer <token>
 ```
 
+### Parámetros opcionales
+
+| Parámetro | Tipo | Ejemplo | Descripción |
+|---|---|---|---|
+| `buscar` | string | `?buscar=presupuesto` | Tareas cuyo **título** o **descripción** contengan ese texto. |
+| `categoria` | string | `?categoria=Marketing` | Solo las tareas de esa **categoría exacta**. |
+
+Se pueden usar **los dos a la vez**, o **ninguno**. El resultado siempre se ordena por `fecha_hora`.
+
 ### Qué responde
 
 **200 OK** — listado de tareas del usuario:
