@@ -58,9 +58,9 @@ router.get("/tasks/hoy", verificarToken, async (req, res) => {
     const [hoy] = await pool.query(" SELECT * FROM tasks WHERE user_id = ? AND DATE(fecha_hora) = CURDATE() ORDER BY fecha_hora",
       [req.usuario.id]
     );
-    
-  
-     return res.status(200).json({ success: true, data: hoy });
+
+
+    return res.status(200).json({ success: true, data: hoy });
   } catch (error) {
     console.error("Error en el servidor:", error);
     return res.status(500).json({ success: false, message: "Error interno del servidor" });
@@ -71,7 +71,7 @@ router.get("/tasks/hoy", verificarToken, async (req, res) => {
 router.get("/tasks/categorias", verificarToken, async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT DISTINCT categoria FROM tasks WHERE user_id = ? ORDER BY categoria", [req.usuario.id]);
-    
+
     const data = rows.map((fila) => fila.categoria);
 
     return res.status(200).json({ success: true, data });
@@ -184,6 +184,38 @@ router.put('/tasks/:id', verificarToken, async (req, res) => {
       return res.status(404).json({ success: false, message: "Tarea no encontrada" });
     }
     res.status(200).json({ success: true, message: "Tarea actualizada" });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({ success: false, message: "Error interno del servidor" });
+  }
+});
+
+router.patch("/tasks/:id/completada", verificarToken, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (Number.isNaN(id)) {
+      return res.status(400).json({ success: false, message: "El id debe ser un número" });
+    }
+
+    const [update] = await pool.query(
+      "UPDATE tasks SET completada = NOT completada WHERE id = ? AND user_id = ?",
+      [id, req.usuario.id]
+    );
+
+    if (update.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "Tarea no encontrada" });
+    }
+
+    const [rows] = await pool.query(
+      "SELECT * FROM tasks WHERE id = ? AND user_id = ?",
+      [id, req.usuario.id]
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Tarea actualizada",
+      data: rows[0],
+    });
   } catch (error) {
     console.error("Error en el servidor:", error);
     return res.status(500).json({ success: false, message: "Error interno del servidor" });

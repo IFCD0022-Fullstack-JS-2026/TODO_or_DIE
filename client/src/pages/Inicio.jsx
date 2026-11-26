@@ -12,7 +12,28 @@ function Inicio() {
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
     const [filtros, setFiltros] = useState({ buscar: '', categoria: '' });
 
-    const categorias = [];
+    const [categorias, setCategorias] = useState([]);
+
+    useEffect(()=>{
+        const cargarCategorias = async() =>{
+            try {
+                const res = await fetch('http://localhost:3000/api/tasks/categorias', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const datos = await res.json();
+                if (res.ok) {
+                    setCategorias(datos.data ?? []);
+                }
+            } catch (err) {
+                console.error('Error al cargar categorías:', err);
+            }
+        }
+        if (token) cargarCategorias();
+    }, [token]);
+
+
 
     useEffect(() => {
         const cargarTareas = async () => {
@@ -113,9 +134,7 @@ function Inicio() {
                     >
                         <option value="">Todas las categorías</option>
                         {categorias.map((cat) => (
-                            <option key={cat.id ?? cat} value={cat.nombre ?? cat}>
-                                {cat.nombre ?? cat}
-                            </option>
+                            <option key={cat} value={cat}>{cat}</option>
                         ))}
                     </select>
                 </div>
