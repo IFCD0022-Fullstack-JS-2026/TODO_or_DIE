@@ -66,47 +66,60 @@ function Estadisticas() {
   const prioridades = estadisticas.porPrioridad || [];
   const categorias = estadisticas.porCategoria || [];
 
-  let alta = 0;
-  let media = 0;
-  let baja = 0;
+ 
 
-  for (let i = 0; i < prioridades.length; i++) {
-    const item = prioridades[i];
-    if (item.prioridad === "alta") alta = item.total;
-    if (item.prioridad === "media") media = item.total;
-    if (item.prioridad === "baja") baja = item.total;
-  }
+  const prioridadesBase = [
+    { prioridad: "alta", clase: "estadisticas-alta" },
+    { prioridad: "media", clase: "estadisticas-media" },
+    { prioridad: "baja", clase: "estadisticas-baja" },
+  ];
+
+  const prioridadesCompletas = prioridadesBase.map((base) => {
+    const encontrada = estadisticas.porPrioridad?.find(
+      (p) => p.prioridad === base.prioridad
+    );
+    return {
+      prioridad: base.prioridad,
+      total: encontrada ? encontrada.total : 0,
+      clase: base.clase,
+    };
+  });
 
   return (
     <main className="estadisticas">
       <h1 className="estadisticas-titulo">Estadísticas</h1>
 
       <section className="estadisticas-section">
-        <h2 className="estadisticas-subtitulo">Total de tareas</h2>
-        <p className="estadisticas-total">{estadisticas.totalTareas}</p>
-      </section>
+        <div>
+          <h2 className="estadisticas-subtitulo">Total de tareas</h2>
+          <p className="estadisticas-total"><strong>{estadisticas.totalTareas}</strong></p>
+        </div>
 
-      <section className="estadisticas-section">
-        <h2 className="estadisticas-subtitulo">Por prioridad</h2>
-        <ul className="estadisticas-lista">
-          <li className="estadisticas-alta">Alta: {alta}</li>
-          <li className="estadisticas-media">Media: {media}</li>
-          <li className="estadisticas-baja">Baja: {baja}</li>
-        </ul>
-      </section>
+        <div>
+          <h2 className="estadisticas-subtitulo">Por prioridad</h2>
+          <ul className="estadisticas-lista">
+            {prioridadesCompletas.map((p, i) => (
+              <li key={i} >
+                <span className={p.clase}>{p.prioridad}</span>: <strong>{p.total}</strong>
+              </li>
+            ))}
+        
+          </ul>
+        </div>
 
-      <section className="estadisticas-section">
-        <h2 className="estadisticas-subtitulo">Por categoría</h2>
-        <ul className="estadisticas-lista">
-          {categorias.map((item) => (
-            <li
-              key={item.categoria}
-              className="estadisticas-item estadisticas-categoria"
-            >
-              {item.categoria}: {item.total}
-            </li>
-          ))}
-        </ul>
+        <div>
+          <h2 className="estadisticas-subtitulo">Por categoría</h2>
+          <ul className="estadisticas-lista">
+            {categorias.map((item) => (
+              <li
+                key={item.categoria}
+                className="estadisticas-item estadisticas-categoria"
+              >
+                <span>{item.categoria}</span>: <strong>{item.total}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
     </main>
   );
