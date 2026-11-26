@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `task_db`.`tasks` (
   `prioridad` ENUM('alta', 'media', 'baja') NOT NULL, 
   `categoria` VARCHAR(100) NOT NULL, 
   `user_id` INT NOT NULL, 
+  `completada` BOOLEAN NOT NULL DEFAULT FALSE,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (`id`), 
   INDEX `fk_tasks_users_idx` (`user_id` ASC) VISIBLE, 

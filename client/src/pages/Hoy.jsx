@@ -24,8 +24,8 @@ function Hoy() {
 
                 if (!res.ok) throw new Error(datos.message);
                 setTareas(datos.data || "Error interno del Sevidor ");
-            } catch {
-                setError(error.message);
+            } catch (err) {
+                setError(err.message);
             } finally {
                 setCargando(false);
             }
