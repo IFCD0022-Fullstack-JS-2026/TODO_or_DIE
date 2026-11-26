@@ -6,13 +6,29 @@ const { verificarToken } = require("../middleware/verificarToken.js");
 
 router.get("/tasks", verificarToken, async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM tasks WHERE user_id = ?",
-      [req.usuario.id]
-    );
+    const { buscar, categoria } = req.query;
+
+    let sql = "SELECT * FROM tasks WHERE user_id = ?";
+    const valores = [req.usuario.id];
+
+    if (buscar) {
+      sql += " AND (titulo LIKE ? OR descripcion LIKE ?)";
+      valores.push(`%${buscar}%`, `%${buscar}%`);
+    }
+
+    if (categoria) {
+      sql += " AND categoria = ?";
+      valores.push(categoria);
+    }
+
+    sql += " ORDER BY fecha_hora";
+
+    const [rows] = await pool.query(sql, valores);
+
     res.status(200).json({ success: true, data: rows });
   } catch (error) {
     console.error("Error en el servidor:", error);
-    res.status(500).json({ success: false, message: "Error en el servidor" });
+    res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 });
 
@@ -50,6 +66,22 @@ router.get("/tasks/hoy", verificarToken, async (req, res) => {
     return res.status(500).json({ success: false, message: "Error interno del servidor" });
   }
 });
+
+
+router.get("/tasks/categorias", verificarToken, async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT DISTINCT categoria FROM tasks WHERE user_id = ? ORDER BY categoria", [req.usuario.id]);
+    
+    const data = rows.map((fila) => fila.categoria);
+
+    return res.status(200).json({ success: true, data });
+
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({ success: false, message: "Error interno del servidor" });
+  }
+});
+
 
 router.get("/tasks/:id", verificarToken, async (req, res) => {
   try {

@@ -4,27 +4,43 @@ import { Link } from 'react-router';
 import './Inicio.css';
 
 function Inicio() {
-    const { token } = useAuth();
+    const { token, usuario } = useAuth();
     const [tareasAPI, setTareasAPI] = useState([]);
     const [error, setError] = useState(null);
+
+    const [textoBusqueda, setTextoBusqueda] = useState('');
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
+    const [filtros, setFiltros] = useState({ buscar: '', categoria: '' });
+
+    const categorias = [];
 
     useEffect(() => {
         const cargarTareas = async () => {
             try {
-                const res = await fetch('http://localhost:3000/api/tasks', {
+                const params = [];
+                if (filtros.buscar.trim() !== '') {
+                    params.push(`buscar=${encodeURIComponent(filtros.buscar.trim())}`);
+                }
+                if (filtros.categoria !== '') {
+                    params.push(`categoria=${encodeURIComponent(filtros.categoria)}`);
+                }
+
+                const query = params.length > 0 ? `?${params.join('&')}` : '';
+                const res = await fetch(`http://localhost:3000/api/tasks${query}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
                 const datos = await res.json();
                 if (!res.ok) throw new Error(datos.message);
-                setTareasAPI(datos.data);
+                setError(null);
+                setTareasAPI(datos.data ?? []);
             } catch (err) {
                 setError(err.message);
             }
         };
         cargarTareas();
-    }, [token]);
+    }, [token, filtros]);
 
     if (error) return <p className="inicio-error">No se han podido cargar las tareas: {error}</p>;
 
@@ -44,93 +60,154 @@ function Inicio() {
             } else {
                 alert(data.message || 'Error al eliminar la tarea');
             }
-        } catch (error) {
-            console.error('Error al eliminar la tarea:', error);
+        } catch (err) {
+            console.error('Error al eliminar la tarea:', err);
             alert('No se pudo conectar con el servidor');
         }
     };
 
+    const handleBuscar = (e) => {
+        e.preventDefault();
+        setFiltros({
+            buscar: textoBusqueda,
+            categoria: categoriaSeleccionada
+        });
+    };
+
     return (
         <main className="inicio">
+            <div className="inicio-cabecera">
+                <p className="inicio-saludo">Hola, {usuario?.nombre ?? ''}</p>
+                <Link to="/tareas/nueva" className="inicio-crear-btn">
+                    <span className="inicio-crear-icono" aria-hidden="true">➕</span>
+                    <span>Crear tarea</span>
+                </Link>
+            </div>
+
             <h1 className="inicio-titulo">Lista de tareas</h1>
 
-            <section className="inicio-grupo">
-                <h2 className="inicio-grupo-titulo">Prioridad Alta</h2>
-                <div className="inicio-cards">
-                    {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'alta').map((tarea) => (
-                        <article key={tarea.id} className="inicio-card">
-                            <div>
-                                <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
-                                <p className="inicio-desc">{tarea.descripcion}</p>
-                            </div>
-                            <div className="inicio-propiedad">
-                                <span className="inicio-fecha">{tarea.fecha_hora}</span>
-                                <span className="inicio-prioridad inicio-prioridad-alta">{tarea.prioridad}</span>
-                                <span className="inicio-cat">{tarea.categoria}</span>
-
-                                <div className="inicio-acciones">
-                                    <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
-                                        Editar
-                                    </Link>
-                                    <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
-                                </div>
-                            </div>
-                        </article>
-                    ))}
+            <form className="inicio-filtro-form" onSubmit={handleBuscar}>
+                <div className="inicio-filtro-campo">
+                    <label htmlFor="inicio-buscar" className="inicio-filtro-label">
+                        Buscar
+                    </label>
+                    <input
+                        id="inicio-buscar"
+                        type="text"
+                        className="inicio-filtro-input"
+                        value={textoBusqueda}
+                        onChange={(e) => setTextoBusqueda(e.target.value)}
+                        placeholder="Buscar tareas..."
+                    />
                 </div>
-            </section>
 
-            <section className="inicio-grupo">
-                <h2 className="inicio-grupo-titulo">Prioridad Media</h2>
-                <div className="inicio-cards">
-                    {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'media').map((tarea) => (
-                        <article key={tarea.id} className="inicio-card">
-                            <div>
-                                <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
-                                <p className="inicio-desc">{tarea.descripcion}</p>
-                            </div>
-                            <div className="inicio-propiedad">
-                                <span className="inicio-fecha">{tarea.fecha_hora}</span>
-                                <span className="inicio-prioridad inicio-prioridad-media">{tarea.prioridad}</span>
-                                <span className="inicio-cat">{tarea.categoria}</span>
-
-                                <div className="inicio-acciones">
-                                    <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
-                                        Editar
-                                    </Link>
-                                    <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
-                                </div>
-                            </div>
-                        </article>
-                    ))}
+                <div className="inicio-filtro-campo">
+                    <label htmlFor="inicio-categoria" className="inicio-filtro-label">
+                        Categoría
+                    </label>
+                    <select
+                        id="inicio-categoria"
+                        className="inicio-filtro-select"
+                        value={categoriaSeleccionada}
+                        onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+                    >
+                        <option value="">Todas las categorías</option>
+                        {categorias.map((cat) => (
+                            <option key={cat.id ?? cat} value={cat.nombre ?? cat}>
+                                {cat.nombre ?? cat}
+                            </option>
+                        ))}
+                    </select>
                 </div>
-            </section>
 
-            <section className="inicio-grupo">
-                <h2 className="inicio-grupo-titulo">Prioridad Baja</h2>
-                <div className="inicio-cards">
-                    {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'baja').map((tarea) => (
-                        <article key={tarea.id} className="inicio-card">
-                            <div>
-                                <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
-                                <p className="inicio-desc">{tarea.descripcion}</p>
-                            </div>
-                            <div className="inicio-propiedad">
-                                <span className="inicio-fecha">{tarea.fecha_hora}</span>
-                                <span className="inicio-prioridad inicio-prioridad-baja">{tarea.prioridad}</span>
-                                <span className="inicio-cat">{tarea.categoria}</span>
+                <button type="submit" className="inicio-filtro-btn">
+                    Buscar
+                </button>
+            </form>
 
-                                <div className="inicio-acciones">
-                                    <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
-                                        Editar
-                                    </Link>
-                                    <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
-                                </div>
-                            </div>
-                        </article>
-                    ))}
-                </div>
-            </section>
+            {tareasAPI.length === 0 ? (
+                <p className="inicio-vacio">No hay tareas que coincidan</p>
+            ) : (
+                <>
+                    <section className="inicio-grupo">
+                        <h2 className="inicio-grupo-titulo">Prioridad Alta</h2>
+                        <div className="inicio-cards">
+                            {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'alta').map((tarea) => (
+                                <article key={tarea.id} className="inicio-card">
+                                    <div>
+                                        <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
+                                        <p className="inicio-desc">{tarea.descripcion}</p>
+                                    </div>
+                                    <div className="inicio-propiedad">
+                                        <span className="inicio-fecha">{tarea.fecha_hora}</span>
+                                        <span className="inicio-prioridad inicio-prioridad-alta">{tarea.prioridad}</span>
+                                        <span className="inicio-cat">{tarea.categoria}</span>
+
+                                        <div className="inicio-acciones">
+                                            <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
+                                                Editar
+                                            </Link>
+                                            <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section className="inicio-grupo">
+                        <h2 className="inicio-grupo-titulo">Prioridad Media</h2>
+                        <div className="inicio-cards">
+                            {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'media').map((tarea) => (
+                                <article key={tarea.id} className="inicio-card">
+                                    <div>
+                                        <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
+                                        <p className="inicio-desc">{tarea.descripcion}</p>
+                                    </div>
+                                    <div className="inicio-propiedad">
+                                        <span className="inicio-fecha">{tarea.fecha_hora}</span>
+                                        <span className="inicio-prioridad inicio-prioridad-media">{tarea.prioridad}</span>
+                                        <span className="inicio-cat">{tarea.categoria}</span>
+
+                                        <div className="inicio-acciones">
+                                            <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
+                                                Editar
+                                            </Link>
+                                            <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section className="inicio-grupo">
+                        <h2 className="inicio-grupo-titulo">Prioridad Baja</h2>
+                        <div className="inicio-cards">
+                            {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'baja').map((tarea) => (
+                                <article key={tarea.id} className="inicio-card">
+                                    <div>
+                                        <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
+                                        <p className="inicio-desc">{tarea.descripcion}</p>
+                                    </div>
+                                    <div className="inicio-propiedad">
+                                        <span className="inicio-fecha">{tarea.fecha_hora}</span>
+                                        <span className="inicio-prioridad inicio-prioridad-baja">{tarea.prioridad}</span>
+                                        <span className="inicio-cat">{tarea.categoria}</span>
+
+                                        <div className="inicio-acciones">
+                                            <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
+                                                Editar
+                                            </Link>
+                                            <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    </section>
+                </>
+            )}
         </main>
     );
 }

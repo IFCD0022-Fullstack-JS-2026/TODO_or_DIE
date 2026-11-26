@@ -1,8 +1,57 @@
 /* Página */
 .inicio {
+  box-sizing: border-box;
   min-height: 100vh;
   padding: var(--space-8);
   background: var(--color-bg-subtle);
+}
+
+.inicio-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.inicio-saludo {
+  margin: 0;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-secondary);
+}
+
+.inicio-crear-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-on-primary);
+  text-decoration: none;
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  transition: background-color 150ms ease;
+}
+
+.inicio-crear-icono {
+  line-height: 1;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+}
+
+.inicio-crear-btn:hover {
+  background: var(--color-primary-active);
+}
+
+.inicio-crear-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
 }
 
 .inicio-titulo {
@@ -12,6 +61,99 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--color-text);
+}
+
+/* Buscador y filtro */
+.inicio-filtro-form {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: var(--space-8);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.inicio-filtro-campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.inicio-filtro-label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-secondary);
+}
+
+.inicio-filtro-input {
+  box-sizing: border-box;
+  width: 180px;
+  max-width: 100%;
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.inicio-filtro-select {
+  box-sizing: border-box;
+  width: 190px;
+  max-width: 100%;
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.inicio-filtro-input:focus-visible,
+.inicio-filtro-select:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.inicio-filtro-btn {
+  box-sizing: border-box;
+  padding: var(--space-1) var(--space-4);
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.inicio-filtro-btn:hover {
+  background: var(--color-primary-active);
+}
+
+.inicio-filtro-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.inicio-vacio {
+  margin: var(--space-8) 0;
+  padding: var(--space-6);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  text-align: center;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
 }
 
 /* Grupo por prioridad */
@@ -167,9 +309,30 @@
     padding: var(--space-4);
   }
 
+  .inicio-cabecera {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .inicio-crear-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .inicio-titulo {
     font-size: var(--fs-2xl);
     margin-bottom: var(--space-6);
+  }
+
+  .inicio-filtro-form {
+    width: 100%;
+  }
+
+  .inicio-filtro-campo,
+  .inicio-filtro-input,
+  .inicio-filtro-select,
+  .inicio-filtro-btn {
+    width: 100%;
   }
 
   .inicio-card {

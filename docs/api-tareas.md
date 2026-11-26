@@ -31,6 +31,15 @@ Solo la cabecera `Authorization`.
 Authorization: Bearer <token>
 ```
 
+### Parámetros opcionales
+
+| Parámetro | Tipo | Ejemplo | Descripción |
+|---|---|---|---|
+| `buscar` | string | `?buscar=presupuesto` | Tareas cuyo **título** o **descripción** contengan ese texto. |
+| `categoria` | string | `?categoria=Marketing` | Solo las tareas de esa **categoría exacta**. |
+
+Se pueden usar **los dos a la vez**, o **ninguno**. El resultado siempre se ordena por `fecha_hora`.
+
 ### Qué responde
 
 **200 OK** — listado de tareas del usuario:
@@ -412,6 +421,48 @@ GET /api/tasks/hoy
 { "success": false, "message": "Token no válido o caducado" }
 ```
 
+
+**500 Internal Server Error**:
+```json
+{ "success": false, "message": "Error interno del servidor" }
+```
+
+---
+
+## GET /api/tasks/categorias 
+
+Devuelve las categorías del usuario
+
+### Qué se envía
+
+- Cabecera `Authorization`.
+
+```
+Authorization: Bearer <token>
+GET /api/tasks/categorias
+```
+
+### Qué responde
+
+**200 OK** — success
+```json
+{
+    "success": true,
+    "data": [
+        "Marketing",
+        "Presupuesto",
+        "TodoOrDie"
+    ]
+}
+```
+
+**401 Unauthorized** — sin token o token inválido:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
 
 **500 Internal Server Error**:
 ```json
