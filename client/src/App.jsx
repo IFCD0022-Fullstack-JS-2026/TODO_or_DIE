@@ -3,6 +3,7 @@ import { Routes, Route, Link, NavLink, useNavigate } from 'react-router'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
 import Inicio from './pages/Inicio'
+import Hoy from './pages/Hoy'
 import NuevaTarea from './pages/NuevaTarea'
 import Perfil from './pages/Perfil'
 import EditarTarea from './pages/EditarTarea'
@@ -34,6 +35,7 @@ function App() {
             {usuario ? (
               <>
                 <NavLink to="/">Mis tareas</NavLink>
+                <NavLink to="/tasks/hoy">Para Hoy</NavLink>
                 <NavLink to="/tareas/nueva">Nueva Tarea</NavLink>
                 <NavLink to="/tareas/estadisticas">Estadísticas</NavLink>
                 <NavLink to="/perfil">Mi perfil</NavLink>
@@ -103,6 +105,13 @@ function App() {
         <Route path="/restablecer/:token" element={<Restablecer />} />
 
         <Route path="*" element={<NoEncontrada />} />
+
+        <Route path="/tasks/hoy" element={
+          <RutaProtegida>
+            <Hoy />
+          </RutaProtegida>
+        } />
+
       </Routes>
     </>
   )
