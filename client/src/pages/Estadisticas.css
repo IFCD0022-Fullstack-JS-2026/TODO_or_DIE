@@ -65,3 +65,15 @@
 .estadisticas-baja {
   background: var(--color-priority-low);
 }
+
+@media (max-width: 768px) {
+  .estadisticas-section {
+    flex: 1;
+    padding: 5px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: -70px;
+    width: 300px;
+    
+  }
+}
