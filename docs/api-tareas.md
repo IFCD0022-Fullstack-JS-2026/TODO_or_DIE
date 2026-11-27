@@ -547,67 +547,87 @@ PATCH /api/tasks/1/completada
 ```
 
 ---
-
 ## GET /api/tasks/vencidas
 
-Obtiene las tareas vencidas del usuario autenticado.
+Devuelve las tareas vencidas del usuario: las que siguen pendientes y cuya fecha ya ha pasado.
 
 ### Qué se envía
 
 - Cabecera `Authorization`.
-- No requiere parámetros ni body.
 
-```http
-GET /api/tasks/vencidas
+```
 Authorization: Bearer <token>
+GET /api/tasks/vencidas
 ```
 
 ### Qué responde
 
-**200 OK** — listado de tareas vencidas:
-
+**200 OK** — success
 ```json
 {
-  "success": true,
-  "data": []
+    "success": true,
+    "data": [
+        {
+            "id": 3,
+            "titulo": "Tareas vencidas  #136",
+            "descripcion": "Prepararme repasando todo lo apuntado hasta aprender la secuencia de inicio de un archivo React",
+            "fecha_hora": "2026-11-26 16:10:00",
+            "prioridad": "alta",
+            "categoria": "Presupuesto",
+            "user_id": 1,
+            "completada": 0,
+            "created_at": "2026-11-27 16:10:13"
+        },
+        {
+            "id": 1,
+            "titulo": "Entrevista a candidato backend",
+            "descripcion": "Prepararme repasando todo lo apuntado hasta aprender la secuencia de inicio de un archivo React",
+            "fecha_hora": "2026-11-27 16:02:00",
+            "prioridad": "media",
+            "categoria": "Marketing",
+            "user_id": 1,
+            "completada": 0,
+            "created_at": "2026-11-27 16:02:46"
+        }
+    ]
 }
 ```
-
+**401 Unauthorized** — sin token o token inválido:
+```json
+{ "success": false, "message": "Falta el token" }
+```
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
 **500 Internal Server Error**:
-
 ```json
-{
-  "success": false,
-  "message": "Error interno del servidor"
-}
+{ "success": false, "message": "Error interno del servidor" }
 ```
-
 ---
+
 
 ## GET /api/tasks/calendario
 
-Obtiene las tareas del usuario autenticado correspondientes a un mes concreto, para mostrarlas en el calendario.
+Devuelve las tareas del usuario autenticado correspondientes al mes indicado, para mostrarlas en el calendario.
 
 ### Qué se envía
 
 - Cabecera `Authorization`.
-- Los parámetros `anio` y `mes` en la query string.
-
-| Parámetro | Tipo | Obligatorio | Descripción |
-|---|---|---|---|
-| `anio` | entero | Sí | Año de las tareas (por ejemplo, `2026`). |
-| `mes` | entero | Sí | Mes de las tareas, entre `1` y `12`. |
-
-### Ejemplo de petición
+- Parámetros obligatorios `anio` y `mes` en la query.
 
 ```http
 GET /api/tasks/calendario?anio=2026&mes=11
 Authorization: Bearer <token>
 ```
 
+| Parámetro | Tipo | Obligatorio | Descripción |
+|---|---|---|---|
+| `anio` | entero | Sí | Año de las tareas (por ejemplo, `2026`). |
+| `mes` | entero entre `1` y `12` | Sí | Mes de las tareas (por ejemplo, `11`). |
+
 ### Qué responde
 
-**200 OK** — listado de tareas del mes solicitado:
+**200 OK** — tareas del mes solicitado:
 
 ```json
 {
@@ -634,6 +654,16 @@ Authorization: Bearer <token>
   "success": false,
   "message": "El año y el mes son obligatorios"
 }
+```
+
+**401 Unauthorized** — sin token o token inválido:
+
+```json
+{ "success": false, "message": "Falta el token" }
+```
+
+```json
+{ "success": false, "message": "Token no válido o caducado" }
 ```
 
 **500 Internal Server Error**:
