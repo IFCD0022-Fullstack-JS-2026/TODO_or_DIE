@@ -14,8 +14,8 @@ function Inicio() {
 
     const [categorias, setCategorias] = useState([]);
 
-    useEffect(()=>{
-        const cargarCategorias = async() =>{
+    useEffect(() => {
+        const cargarCategorias = async () => {
             try {
                 const res = await fetch('http://localhost:3000/api/tasks/categorias', {
                     headers: {
@@ -162,6 +162,12 @@ function Inicio() {
         });
     };
 
+    const handleLimpiar = () => {
+        setTextoBusqueda('');
+        setCategoriaSeleccionada('');
+        setFiltros({ buscar: '', categoria: '' });
+    };
+
     return (
         <main className="inicio">
             <div className="inicio-cabecera">
@@ -208,6 +214,14 @@ function Inicio() {
 
                 <button type="submit" className="inicio-filtro-btn">
                     Buscar
+                </button>
+
+                <button
+                    type="button"
+                    className="inicio-filtro-btn-limpiar"
+                    onClick={handleLimpiar}
+                >
+                    Limpiar
                 </button>
             </form>
 

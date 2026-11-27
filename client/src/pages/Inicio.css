@@ -145,6 +145,30 @@
   box-shadow: var(--shadow-focus);
 }
 
+.inicio-filtro-btn-limpiar {
+  box-sizing: border-box;
+  padding: var(--space-1) var(--space-4);
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-primary);
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.inicio-filtro-btn-limpiar:hover {
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+}
+
+.inicio-filtro-btn-limpiar:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
 .inicio-vacio {
   margin: var(--space-8) 0;
   padding: var(--space-6);
@@ -357,7 +381,10 @@
   gap: var(--space-2);
 }
 
+
+
 /* Responsive */
+
 @media (max-width: 480px) {
   .inicio {
     padding: var(--space-4);
@@ -385,7 +412,8 @@
   .inicio-filtro-campo,
   .inicio-filtro-input,
   .inicio-filtro-select,
-  .inicio-filtro-btn {
+  .inicio-filtro-btn,
+  .inicio-filtro-btn-limpiar {
     width: 100%;
   }
 
