@@ -69,7 +69,7 @@ function Inicio() {
     const cambiarEstado = async (id, nuevoEstado) => {
         try {
             const tarea = tareasAPI.find((t) => t.id === id);
-            // Si el estado elegido ya es el actual, no hacemos nada
+
             if (!tarea || Boolean(tarea.completada) === nuevoEstado) return;
 
             const res = await fetch(`http://localhost:3000/api/tasks/${id}/completada`, {
