@@ -96,6 +96,7 @@ function Estadisticas() {
           </p>
           <p className="estadisticas-lista">Tareas Pendientes: <strong>{estadisticas.pendientes}</strong> </p>
         </div>
+        
 
         <div>
           <h2 className="estadisticas-subtitulo">Por prioridad</h2>
