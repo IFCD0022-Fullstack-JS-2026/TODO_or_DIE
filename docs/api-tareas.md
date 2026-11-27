@@ -545,3 +545,102 @@ PATCH /api/tasks/1/completada
 ```json
 { "success": false, "message": "Error interno del servidor" }
 ```
+
+---
+
+## GET /api/tasks/vencidas
+
+Obtiene las tareas vencidas del usuario autenticado.
+
+### Qué se envía
+
+- Cabecera `Authorization`.
+- No requiere parámetros ni body.
+
+```http
+GET /api/tasks/vencidas
+Authorization: Bearer <token>
+```
+
+### Qué responde
+
+**200 OK** — listado de tareas vencidas:
+
+```json
+{
+  "success": true,
+  "data": []
+}
+```
+
+**500 Internal Server Error**:
+
+```json
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
+```
+
+---
+
+## GET /api/tasks/calendario
+
+Obtiene las tareas del usuario autenticado correspondientes a un mes concreto, para mostrarlas en el calendario.
+
+### Qué se envía
+
+- Cabecera `Authorization`.
+- Los parámetros `anio` y `mes` en la query string.
+
+| Parámetro | Tipo | Obligatorio | Descripción |
+|---|---|---|---|
+| `anio` | entero | Sí | Año de las tareas (por ejemplo, `2026`). |
+| `mes` | entero | Sí | Mes de las tareas, entre `1` y `12`. |
+
+### Ejemplo de petición
+
+```http
+GET /api/tasks/calendario?anio=2026&mes=11
+Authorization: Bearer <token>
+```
+
+### Qué responde
+
+**200 OK** — listado de tareas del mes solicitado:
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 15,
+      "titulo": "Revisión de sprint",
+      "descripcion": "Preparar demo del calendario",
+      "fecha_hora": "2026-11-27T17:00:00.000Z",
+      "prioridad": "media",
+      "categoria": "Trabajo",
+      "completada": 0,
+      "user_id": 2
+    }
+  ]
+}
+```
+
+**400 Bad Request** — falta `anio` o `mes`, o no son números enteros válidos:
+
+```json
+{
+  "success": false,
+  "message": "El año y el mes son obligatorios"
+}
+```
+
+**500 Internal Server Error**:
+
+```json
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
+```

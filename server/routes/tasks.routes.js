@@ -84,19 +84,18 @@ router.get("/tasks/categorias", verificarToken, async (req, res) => {
 
 router.get("/tasks/calendario", verificarToken, async (req, res) => {
   try {
-    const { anio, mes } = req.query;
-    const anioNum = Number(anio);
-    const mesNum = Number(mes);
+    const anio = Number(req.query.anio);
+    const mes = Number(req.query.mes);
 
     if (
-      !anio ||
-      !mes ||
-      String(anio).trim() === "" ||
-      String(mes).trim() === "" ||
-      !Number.isInteger(anioNum) ||
-      !Number.isInteger(mesNum) ||
-      mesNum < 1 ||
-      mesNum > 12
+      !req.query.anio ||
+      !req.query.mes ||
+      String(req.query.anio).trim() === "" ||
+      String(req.query.mes).trim() === "" ||
+      !Number.isInteger(anio) ||
+      !Number.isInteger(mes) ||
+      mes < 1 ||
+      mes > 12
     ) {
       return res.status(400).json({
         success: false,
@@ -104,8 +103,9 @@ router.get("/tasks/calendario", verificarToken, async (req, res) => {
       });
     }
 
-    const [rows] = await pool.query("SELECT * FROM tasks WHERE user_id = ? AND YEAR(fecha_hora) = ? AND MONTH(fecha_hora) = ? ORDER BY fecha_hora",
-      [req.usuario.id, anioNum, mesNum]
+    const [rows] = await pool.query(
+      "SELECT * FROM tasks WHERE user_id = ? AND YEAR(fecha_hora) = ? AND MONTH(fecha_hora) = ? ORDER BY fecha_hora",
+      [req.usuario.id, anio, mes]
     );
 
     return res.status(200).json({ success: true, data: rows });
@@ -115,6 +115,9 @@ router.get("/tasks/calendario", verificarToken, async (req, res) => {
       success: false,
       message: "Error interno del servidor",
     });
+  }
+});
+
 router.get("/tasks/vencidas", verificarToken, async (req, res) => {
   try {
     const [vencidas] = await pool.query(`SELECT * FROM tasks WHERE user_id = ? AND completada = 0 AND fecha_hora < NOW() ORDER BY fecha_hora`,
