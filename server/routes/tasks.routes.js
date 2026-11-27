@@ -52,7 +52,7 @@ router.get("/tasks/estadisticas", verificarToken, async (req, res) => {
     const completadas = porCompletadas[0].total;
     const pendientes = totalTareas - completadas;
 
-    res.status(200).json({ success: true, data: { totalTareas, porPrioridad, porCategoria, porCompletadas, completadas, pendientes} });
+    res.status(200).json({ success: true, data: { totalTareas, porPrioridad, porCategoria, completadas, pendientes } });
   } catch (error) {
     console.error("Error en el servidor:", error);
     res.status(500).json({ success: false, message: "Error interno del servidor" });

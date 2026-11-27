@@ -364,11 +364,7 @@ GET /api/tasks/estadisticas
                 "total": 1
             }
         ],
-        "porCompletadas": [
-            {
-                "total": 1
-            }
-        ],
+        "completadas": 1,
         "pendientes": 3
     }
 }
