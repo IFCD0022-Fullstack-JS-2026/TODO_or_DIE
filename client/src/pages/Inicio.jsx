@@ -66,6 +66,73 @@ function Inicio() {
         }
     };
 
+    const cambiarEstado = async (id, nuevoEstado) => {
+        try {
+            const tarea = tareasAPI.find((t) => t.id === id);
+            // Si el estado elegido ya es el actual, no hacemos nada
+            if (!tarea || Boolean(tarea.completada) === nuevoEstado) return;
+
+            const res = await fetch(`http://localhost:3000/api/tasks/${id}/completada`, {
+                method: 'PATCH',
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            const datos = await res.json();
+
+            if (res.ok) {
+                setTareasAPI((prev) =>
+                    prev.map((t) => (t.id === id ? datos.data : t))
+                );
+            } else {
+                alert(datos.message || 'Error al actualizar la tarea');
+            }
+        } catch (err) {
+            console.error('Error al cambiar el estado:', err);
+            alert('No se pudo conectar con el servidor');
+        }
+    };
+
+    const renderTarjeta = (tarea) => (
+        <article
+            key={tarea.id}
+            className={`inicio-card ${tarea.completada ? 'inicio-card-hecha' : ''}`}
+        >
+            <div>
+                <h3 className="inicio-card-titulo">{tarea.titulo}</h3>
+                <p className="inicio-desc">{tarea.descripcion}</p>
+            </div>
+
+            <div className="inicio-propiedad">
+                <span className="inicio-fecha">{tarea.fecha_hora}</span>
+                <span className={`inicio-prioridad inicio-prioridad-${tarea.prioridad}`}>
+                    {tarea.prioridad}
+                </span>
+                <span className="inicio-cat">{tarea.categoria}</span>
+            </div>
+
+            <div className="inicio-botones">
+                <select
+                    className={`inicio-estado ${tarea.completada ? 'inicio-estado-hecha' : 'inicio-estado-pendiente'}`}
+                    value={tarea.completada ? 'hecha' : 'pendiente'}
+                    onChange={(e) => cambiarEstado(tarea.id, e.target.value === 'hecha')}
+                    aria-label="Estado de la tarea"
+                >
+                    <option value="pendiente">Pendiente</option>
+                    <option value="hecha">Hecha</option>
+                </select>
+
+                <div className="inicio-acciones">
+                    <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
+                        Editar
+                    </Link>
+                    <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>
+                        Borrar
+                    </button>
+                </div>
+            </div>
+        </article>
+    );
+
     const handleBuscar = (e) => {
         e.preventDefault();
         setFiltros({
@@ -132,78 +199,27 @@ function Inicio() {
                     <section className="inicio-grupo">
                         <h2 className="inicio-grupo-titulo">Prioridad Alta</h2>
                         <div className="inicio-cards">
-                            {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'alta').map((tarea) => (
-                                <article key={tarea.id} className="inicio-card">
-                                    <div>
-                                        <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
-                                        <p className="inicio-desc">{tarea.descripcion}</p>
-                                    </div>
-                                    <div className="inicio-propiedad">
-                                        <span className="inicio-fecha">{tarea.fecha_hora}</span>
-                                        <span className="inicio-prioridad inicio-prioridad-alta">{tarea.prioridad}</span>
-                                        <span className="inicio-cat">{tarea.categoria}</span>
-
-                                        <div className="inicio-acciones">
-                                            <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
-                                                Editar
-                                            </Link>
-                                            <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
+                            {tareasAPI
+                                .filter((t) => (t.prioridad ?? '').toLowerCase() === 'alta')
+                                .map(renderTarjeta)}
                         </div>
                     </section>
 
                     <section className="inicio-grupo">
                         <h2 className="inicio-grupo-titulo">Prioridad Media</h2>
                         <div className="inicio-cards">
-                            {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'media').map((tarea) => (
-                                <article key={tarea.id} className="inicio-card">
-                                    <div>
-                                        <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
-                                        <p className="inicio-desc">{tarea.descripcion}</p>
-                                    </div>
-                                    <div className="inicio-propiedad">
-                                        <span className="inicio-fecha">{tarea.fecha_hora}</span>
-                                        <span className="inicio-prioridad inicio-prioridad-media">{tarea.prioridad}</span>
-                                        <span className="inicio-cat">{tarea.categoria}</span>
-
-                                        <div className="inicio-acciones">
-                                            <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
-                                                Editar
-                                            </Link>
-                                            <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
+                            {tareasAPI
+                                .filter((t) => (t.prioridad ?? '').toLowerCase() === 'media')
+                                .map(renderTarjeta)}
                         </div>
                     </section>
 
                     <section className="inicio-grupo">
                         <h2 className="inicio-grupo-titulo">Prioridad Baja</h2>
                         <div className="inicio-cards">
-                            {tareasAPI.filter((tarea) => (tarea.prioridad ?? '').toLowerCase() === 'baja').map((tarea) => (
-                                <article key={tarea.id} className="inicio-card">
-                                    <div>
-                                        <h3 className="inicio-card-titulo">{tarea.title ?? tarea.titulo}</h3>
-                                        <p className="inicio-desc">{tarea.descripcion}</p>
-                                    </div>
-                                    <div className="inicio-propiedad">
-                                        <span className="inicio-fecha">{tarea.fecha_hora}</span>
-                                        <span className="inicio-prioridad inicio-prioridad-baja">{tarea.prioridad}</span>
-                                        <span className="inicio-cat">{tarea.categoria}</span>
-
-                                        <div className="inicio-acciones">
-                                            <Link to={`/tareas/${tarea.id}/editar`} className="inicio-editar">
-                                                Editar
-                                            </Link>
-                                            <button className="inicio-borrar" onClick={() => eliminarTarea(tarea.id)}>Borrar</button>
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
+                            {tareasAPI
+                                .filter((t) => (t.prioridad ?? '').toLowerCase() === 'baja')
+                                .map(renderTarjeta)}
                         </div>
                     </section>
                 </>

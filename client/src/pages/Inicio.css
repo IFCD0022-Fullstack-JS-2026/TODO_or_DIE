@@ -188,6 +188,7 @@
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transition: opacity 150ms ease;
 }
 
 .inicio-card-titulo {
@@ -204,7 +205,17 @@
   color: var(--color-text-muted);
 }
 
-/* Fecha, prioridad, categoría y botón */
+/* Tarjeta completada: título tachado y tarjeta más apagada */
+.inicio-card-hecha {
+  opacity: 0.6;
+}
+
+.inicio-card-hecha .inicio-card-titulo {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* Fecha, prioridad, categoría y botones */
 .inicio-propiedad {
   display: flex;
   flex-wrap: wrap;
@@ -244,6 +255,44 @@
   color: var(--color-text-secondary);
 }
 
+/* Desplegable de estado: Pendiente (aviso) por defecto, Hecha (verde) cuando está completada */
+.inicio-estado {
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-family);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-on-primary);
+  background: var(--color-warning);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.inicio-estado:hover {
+  background: var(--color-warning-text);
+}
+
+.inicio-estado:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* Las opciones se muestran con colores neutros para seguir siendo legibles */
+.inicio-estado option {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+/* Estado hecha: verde */
+.inicio-estado-hecha {
+  background: var(--color-success);
+}
+
+.inicio-estado-hecha:hover {
+  background: var(--color-success-text);
+}
+
 .inicio-borrar {
   padding: var(--space-1) var(--space-3);
   font-family: var(--font-family);
@@ -278,14 +327,13 @@
   border-radius: var(--radius-md);
 }
 
-/*Mensaje de editar tarea */
+/* Enlace Editar */
 .inicio-editar {
   padding: var(--space-1) var(--space-3);
   color: var(--color-on-primary);
   font-weight: 500;
   text-decoration: none;
   background: var(--color-primary);
-  border: 1px solid var(--color-primary);
   border-radius: var(--radius-sm);
   cursor: pointer;
 }
@@ -295,12 +343,18 @@
   text-decoration: none;
 }
 
-/* juntar botones editar + borrar */
+/* Envoltorio Editar + Borrar */
 .inicio-acciones {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-left: auto;
+}
+
+.inicio-botones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 /* Responsive */
