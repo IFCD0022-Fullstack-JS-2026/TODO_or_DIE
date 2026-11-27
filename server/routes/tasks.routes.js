@@ -82,7 +82,6 @@ router.get("/tasks/categorias", verificarToken, async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 router.get("/tasks/calendario", verificarToken, async (req, res) => {
   try {
     const { anio, mes } = req.query;
@@ -116,7 +115,6 @@ router.get("/tasks/calendario", verificarToken, async (req, res) => {
       success: false,
       message: "Error interno del servidor",
     });
-=======
 router.get("/tasks/vencidas", verificarToken, async (req, res) => {
   try {
     const [vencidas] = await pool.query(`SELECT * FROM tasks WHERE user_id = ? AND completada = 0 AND fecha_hora < NOW() ORDER BY fecha_hora`,
@@ -126,7 +124,6 @@ router.get("/tasks/vencidas", verificarToken, async (req, res) => {
   } catch (error) {
     console.error("Error al obtener tareas vencidas:", error);
     return res.status(500).json({ success: false,message: "Error interno del servidor",});
->>>>>>> origin/develop
   }
 });
 
