@@ -82,6 +82,41 @@ router.get("/tasks/categorias", verificarToken, async (req, res) => {
   }
 });
 
+router.get("/tasks/calendario", verificarToken, async (req, res) => {
+  try {
+    const { anio, mes } = req.query;
+    const anioNum = Number(anio);
+    const mesNum = Number(mes);
+
+    if (
+      !anio ||
+      !mes ||
+      String(anio).trim() === "" ||
+      String(mes).trim() === "" ||
+      !Number.isInteger(anioNum) ||
+      !Number.isInteger(mesNum) ||
+      mesNum < 1 ||
+      mesNum > 12
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "El año y el mes son obligatorios",
+      });
+    }
+
+    const [rows] = await pool.query("SELECT * FROM tasks WHERE user_id = ? AND YEAR(fecha_hora) = ? AND MONTH(fecha_hora) = ? ORDER BY fecha_hora",
+      [req.usuario.id, anioNum, mesNum]
+    );
+
+    return res.status(200).json({ success: true, data: rows });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error interno del servidor",
+    });
+  }
+});
 
 router.get("/tasks/:id", verificarToken, async (req, res) => {
   try {

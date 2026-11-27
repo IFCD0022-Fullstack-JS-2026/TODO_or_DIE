@@ -539,3 +539,45 @@ PATCH /api/tasks/1/completada
 ```json
 { "success": false, "message": "Error interno del servidor" }
 ```
+
+### Obtener tareas por mes (calendario)
+
+- **Endpoint:** `GET /api/tasks/calendario`
+- **Autenticación:** Requerida (`verificarToken` / Bearer token)
+- **Query params:**
+  - `anio`: Año de las tareas.
+  - `mes`: Mes de las tareas.
+
+
+#### Respuesta correcta (`200 OK`)
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 15,
+      "titulo": "Revisión de sprint",
+      "descripcion": "Preparar demo del calendario",
+      "fecha_hora": "2026-11-27T17:00:00.000Z",
+      "prioridad": "media",
+      "categoria": "Trabajo",
+      "completada": 0,
+      "user_id": 2
+    }
+  ]
+}
+
+#### Respuesta de error (`400 Bad Request`)
+
+{
+  "success": false,
+  "message": "El año y el mes son obligatorios"
+}
+
+#### Respuesta de error (`500 Internal Server Error`)
+
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
