@@ -55,6 +55,7 @@ function Estadisticas() {
     return (
       <div className="estadisticas">
         <p className="estadisticas-vacio">Todavia no tienes tareas</p>
+        <p className="estadisticas-completas">Todavia no tienes tareas</p>
       </div>
     );
   }
@@ -86,6 +87,14 @@ function Estadisticas() {
         <div>
           <h2 className="estadisticas-subtitulo">Total de tareas</h2>
           <p className="estadisticas-total"><strong>{estadisticas.totalTareas}</strong></p>
+          <p className="estadisticas-lista">Tareas Completadas:
+              {estadisticas.porCompletadas.map((c, i) => (
+              <li key={i} >
+                <strong>{c.total}</strong>
+              </li>
+            ))}
+          </p>
+          <p className="estadisticas-lista">Tareas Pendientes: <strong>{estadisticas.pendientes}</strong> </p>
         </div>
 
         <div>
@@ -96,7 +105,7 @@ function Estadisticas() {
                 <span className={p.clase}>{p.prioridad}</span>: <strong>{p.total}</strong>
               </li>
             ))}
-        
+
           </ul>
         </div>
 
