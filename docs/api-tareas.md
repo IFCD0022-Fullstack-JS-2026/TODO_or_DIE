@@ -571,7 +571,7 @@ GET /api/tasks/vencidas
             "id": 3,
             "titulo": "Tareas vencidas  #136",
             "descripcion": "Prepararme repasando todo lo apuntado hasta aprender la secuencia de inicio de un archivo React",
-            "fecha_hora": "2026-11-26 16:10:00",    //Tarea vencida por Fecha y pendiente
+            "fecha_hora": "2026-11-26 16:10:00",
             "prioridad": "alta",
             "categoria": "Presupuesto",
             "user_id": 1,
@@ -582,7 +582,7 @@ GET /api/tasks/vencidas
             "id": 1,
             "titulo": "Entrevista a candidato backend",
             "descripcion": "Prepararme repasando todo lo apuntado hasta aprender la secuencia de inicio de un archivo React",
-            "fecha_hora": "2026-11-27 16:02:00",     //Tarea vencida por HORA
+            "fecha_hora": "2026-11-27 16:02:00",
             "prioridad": "media",
             "categoria": "Marketing",
             "user_id": 1,
@@ -595,6 +595,7 @@ GET /api/tasks/vencidas
 **401 Unauthorized** — sin token o token inválido:
 ```json
 { "success": false, "message": "Falta el token" }
+```
 ```json
 { "success": false, "message": "Token no válido o caducado" }
 ```
