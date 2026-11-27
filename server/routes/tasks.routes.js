@@ -82,6 +82,17 @@ router.get("/tasks/categorias", verificarToken, async (req, res) => {
   }
 });
 
+router.get("/tasks/vencidas", verificarToken, async (req, res) => {
+  try {
+    const [vencidas] = await pool.query(`SELECT * FROM tasks WHERE user_id = ? AND completada = 0 AND fecha_hora < NOW() ORDER BY fecha_hora`,
+  [req.usuario.id]
+);
+    return res.status(200).json({ success: true, data: vencidas });
+  } catch (error) {
+    console.error("Error al obtener tareas vencidas:", error);
+    return res.status(500).json({ success: false,message: "Error interno del servidor",});
+  }
+});
 
 router.get("/tasks/:id", verificarToken, async (req, res) => {
   try {
