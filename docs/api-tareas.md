@@ -184,7 +184,7 @@ Content-Type: application/json
 ```json
 {
   "success": false,
-  "errors": ["La prioridad debe ser 'alta', 'media' o 'baja'"]
+  "errors": ["La prioridad debe ser 'alta', 'media' o 'baja'", "La categoría es obligatoria", "La fecha no es válida"]
 }
 ```
 
@@ -244,6 +244,12 @@ Content-Type: application/json
 ```json
 { "success": false, "errors": ["El título debe tener al menos 2 caracteres"] }
 ```
+```json
+{ "success": false, "errors": ["La categoría es obligatoria"] } 
+```
+```json
+{ "success": false, "errors": ["La fecha no es válida"]}
+``` 
 
 **401 Unauthorized** — sin token o token inválido:
 ```json
