@@ -610,3 +610,73 @@ GET /api/tasks/vencidas
 { "success": false, "message": "Error interno del servidor" }
 ```
 ---
+
+
+## GET /api/tasks/calendario
+
+Devuelve las tareas del usuario autenticado correspondientes al mes indicado, para mostrarlas en el calendario.
+
+### Qué se envía
+
+- Cabecera `Authorization`.
+- Parámetros obligatorios `anio` y `mes` en la query.
+
+```http
+GET /api/tasks/calendario?anio=2026&mes=11
+Authorization: Bearer <token>
+```
+
+| Parámetro | Tipo | Obligatorio | Descripción |
+|---|---|---|---|
+| `anio` | entero | Sí | Año de las tareas (por ejemplo, `2026`). |
+| `mes` | entero entre `1` y `12` | Sí | Mes de las tareas (por ejemplo, `11`). |
+
+### Qué responde
+
+**200 OK** — tareas del mes solicitado:
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 15,
+      "titulo": "Revisión de sprint",
+      "descripcion": "Preparar demo del calendario",
+      "fecha_hora": "2026-11-27T17:00:00.000Z",
+      "prioridad": "media",
+      "categoria": "Trabajo",
+      "completada": 0,
+      "user_id": 2
+    }
+  ]
+}
+```
+
+**400 Bad Request** — falta `anio` o `mes`, o no son números enteros válidos:
+
+```json
+{
+  "success": false,
+  "message": "El año y el mes son obligatorios"
+}
+```
+
+**401 Unauthorized** — sin token o token inválido:
+
+```json
+{ "success": false, "message": "Falta el token" }
+```
+
+```json
+{ "success": false, "message": "Token no válido o caducado" }
+```
+
+**500 Internal Server Error**:
+
+```json
+{
+  "success": false,
+  "message": "Error interno del servidor"
+}
+```

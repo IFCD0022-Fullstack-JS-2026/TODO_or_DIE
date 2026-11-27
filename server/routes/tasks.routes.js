@@ -90,6 +90,42 @@ router.get("/tasks/categorias", verificarToken, async (req, res) => {
   }
 });
 
+router.get("/tasks/calendario", verificarToken, async (req, res) => {
+  try {
+    const anio = Number(req.query.anio);
+    const mes = Number(req.query.mes);
+
+    if (
+      !req.query.anio ||
+      !req.query.mes ||
+      String(req.query.anio).trim() === "" ||
+      String(req.query.mes).trim() === "" ||
+      !Number.isInteger(anio) ||
+      !Number.isInteger(mes) ||
+      mes < 1 ||
+      mes > 12
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "El año y el mes son obligatorios",
+      });
+    }
+
+    const [rows] = await pool.query(
+      "SELECT * FROM tasks WHERE user_id = ? AND YEAR(fecha_hora) = ? AND MONTH(fecha_hora) = ? ORDER BY fecha_hora",
+      [req.usuario.id, anio, mes]
+    );
+
+    return res.status(200).json({ success: true, data: rows });
+  } catch (error) {
+    console.error("Error en el servidor:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error interno del servidor",
+    });
+  }
+});
+
 router.get("/tasks/vencidas", verificarToken, async (req, res) => {
   try {
     const [vencidas] = await pool.query(`SELECT * FROM tasks WHERE user_id = ? AND completada = 0 AND fecha_hora < NOW() ORDER BY fecha_hora`,
