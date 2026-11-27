@@ -337,15 +337,15 @@ GET /api/tasks/estadisticas
 {
     "success": true,
     "data": {
-        "totalTareas": 3,
+        "totalTareas": 4,
         "porPrioridad": [
-            {
-                "prioridad": "alta",
-                "total": 1
-            },
             {
                 "prioridad": "media",
                 "total": 1
+            },
+            {
+                "prioridad": "alta",
+                "total": 2
             },
             {
                 "prioridad": "baja",
@@ -354,18 +354,24 @@ GET /api/tasks/estadisticas
         ],
         "porCategoria": [
             {
-                "categoria": "bbbbbbbbbbb",
+                "categoria": "Presupuesto",
                 "total": 1
             },
             {
-                "categoria": "eeeeeeeeeeeeeee",
+                "categoria": "Finanzas",
                 "total": 1
             },
             {
-                "categoria": "hhhhhhhhhhhhh",
+                "categoria": "Test",
+                "total": 1
+            },
+            {
+                "categoria": "Perrito",
                 "total": 1
             }
-        ]
+        ],
+        "completadas": 1,
+        "pendientes": 3
     }
 }
 ```

@@ -86,7 +86,11 @@ function Estadisticas() {
         <div>
           <h2 className="estadisticas-subtitulo">Total de tareas</h2>
           <p className="estadisticas-total"><strong>{estadisticas.totalTareas}</strong></p>
+          <p className="estadisticas-lista">Tareas Completadas: <strong>{estadisticas.completadas}</strong></p>
+          <p className="estadisticas-lista">Tareas Pendientes: <strong>{estadisticas.pendientes}</strong></p>
         </div>
+        
+
 
         <div>
           <h2 className="estadisticas-subtitulo">Por prioridad</h2>
@@ -96,7 +100,7 @@ function Estadisticas() {
                 <span className={p.clase}>{p.prioridad}</span>: <strong>{p.total}</strong>
               </li>
             ))}
-        
+
           </ul>
         </div>
 
