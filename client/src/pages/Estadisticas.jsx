@@ -89,6 +89,7 @@ function Estadisticas() {
           <p className="estadisticas-lista">Tareas Completadas: <strong>{estadisticas.completadas}</strong></p>
           <p className="estadisticas-lista">Tareas Pendientes: <strong>{estadisticas.pendientes}</strong></p>
         </div>
+        
 
 
         <div>
