@@ -13,6 +13,26 @@ function Inicio() {
     const [filtros, setFiltros] = useState({ buscar: '', categoria: '' });
 
     const [categorias, setCategorias] = useState([]);
+    const [vencidas, setVencidas] = useState([]);
+
+    useEffect(() =>{
+        const cargarVencidas = async () => {
+            try {
+                const res = await fetch('http://localhost:3000/api/tasks/vencidas', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const datos = await res.json();
+                if (res.ok) {
+                    setVencidas(datos.data ?? []);
+                }
+            } catch (err) {
+                console.error('Error al cargar tareas vencidas:', err);
+            }
+        }
+        if (token) cargarVencidas();
+    }, [token]);
 
     useEffect(()=>{
         const cargarCategorias = async() =>{
@@ -171,6 +191,19 @@ function Inicio() {
                     <span>Crear tarea</span>
                 </Link>
             </div>
+
+            {vencidas.length > 0 && (
+                <div className='inicio-vencidas'>
+                    <p>Tienes {vencidas.length} tareas vencidas</p>
+                    <ul>
+                        {vencidas.map((t) => (
+                            <li key= {t.id}>
+                                {t.titulo} - {t.fecha_hora}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             <h1 className="inicio-titulo">Lista de tareas</h1>
 
